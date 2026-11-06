@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    overscroll-behavior: none;
+  }
+}
+
+@layer components {
+  /* Classes semânticas e limpas para facilitar a leitura */
+  .pagina-centralizada {
+    @apply min-h-screen flex flex-col items-center justify-center p-4;
+  }
+
+  .cartao {
+    @apply bg-white rounded-2xl shadow-md p-8 max-w-md w-full text-center flex flex-col items-center gap-4;
+  }
+
+  .icone-destaque {
+    @apply w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-secondary;
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  user-select: none;
+}
