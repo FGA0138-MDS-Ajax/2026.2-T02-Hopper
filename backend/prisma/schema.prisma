@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Perfil {
+  ALUNO
+  PROFESSOR
+  ADMIN
+}
+
+enum Modalidade {
+  ONLINE
+  PRESENCIAL
+  DOMICILIO
+}
+
+enum StatusAula {
+  SOLICITADA
+  CONFIRMADA
+  RECUSADA
+  REMARCADA
+  CANCELADA
+  REALIZADA
+}
+
+enum TipoNotificacao {
+  SOLICITACAO
+  CONFIRMACAO
+  RECUSA
+  REMARCACAO
+  CANCELAMENTO
+  LEMBRETE
+}
+
+model Usuario {
+  id                  String    @id @default(uuid())
+  nome                String
+  email               String    @unique
+  senhaHash           String
+  telefone            String?
+  perfil              Perfil
+  ativo               Boolean   @default(true)
+  consentimentoLgpdEm DateTime
+  criadoEm            DateTime  @default(now())
+
+  perfilProfessor PerfilProfessor?
+  aulasComoAluno  Aula[]                  @relation("AulaAluno")
+  notificacoes    Notificacao[]
+  tokens          TokenRecuperacaoSenha[]
+  historicos      HistoricoStatus[]
+  remarcacoes     Remarcacao[]
+}
+
+model PerfilProfessor {
+  id           String       @id @default(uuid())
+  usuarioId    String       @unique
+  apresentacao String       @default("")
+  valorHora    Decimal?     @db.Decimal(10, 2)
+  modalidades  Modalidade[]
+
+  usuario          Usuario           @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  materias         Materia[]         @relation("ProfessorMaterias")
+  disponibilidades Disponibilidade[]
+  bloqueios        BloqueioHorario[]
+  aulas            Aula[]
+}
+
+model Materia {
+  id    String @id @default(uuid())
+  nome  String
+  nivel String
+
+  professores PerfilProfessor[] @relation("ProfessorMaterias")
+  aulas       Aula[]
+
+  @@unique([nome, nivel])
+  @@index([nome])
+}
+
+model Disponibilidade {
+  id          String @id @default(uuid())
+  professorId String
+  diaSemana   Int
+  horaInicio  String
+  horaFim     String
+
+  professor PerfilProfessor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+
+  @@index([professorId, diaSemana])
+}
+
+model BloqueioHorario {
+  id          String   @id @default(uuid())
+  professorId String
+  inicio      DateTime
+  fim         DateTime
+  motivo      String?
+
+  professor PerfilProfessor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+
+  @@index([professorId, inicio])
+}
+
+model Aula {
+  id                 String     @id @default(uuid())
+  alunoId            String
+  professorId        String
+  materiaId          String
+  inicio             DateTime   @db.Timestamptz(3)
+  fim                DateTime   @db.Timestamptz(3)
+  modalidade         Modalidade
+  objetivo           String?
+  status             StatusAula @default(SOLICITADA)
+  anotacoes          String?
+  motivoCancelamento String?
+  serieId            String?
+  criadoEm           DateTime   @default(now())
+
+  aluno       Usuario           @relation("AulaAluno", fields: [alunoId], references: [id])
+  professor   PerfilProfessor   @relation(fields: [professorId], references: [id])
+  materia     Materia           @relation(fields: [materiaId], references: [id])
+  historico   HistoricoStatus[]
+  remarcacoes Remarcacao[]
+  avaliacao   Avaliacao?
+  notificacoes Notificacao[]
+
+  @@index([professorId, inicio])
+  @@index([alunoId, status])
+}
+
+model HistoricoStatus {
+  id       String     @id @default(uuid())
+  aulaId   String
+  status   StatusAula
+  dataHora DateTime   @default(now())
+  motivo   String?
+  autorId  String?
+
+  aula  Aula     @relation(fields: [aulaId], references: [id], onDelete: Cascade)
+  autor Usuario? @relation(fields: [autorId], references: [id])
+
+  @@index([aulaId])
+}
+
+model Remarcacao {
+  id             String   @id @default(uuid())
+  aulaId         String
+  propostoPorId  String
+  novoInicio     DateTime
+  novoFim        DateTime
+  aceita         Boolean?
+  criadoEm       DateTime @default(now())
+
+  aula        Aula    @relation(fields: [aulaId], references: [id], onDelete: Cascade)
+  propostoPor Usuario @relation(fields: [propostoPorId], references: [id])
+
+  @@index([aulaId])
+}
+
+model Avaliacao {
+  id         String  @id @default(uuid())
+  aulaId     String  @unique
+  nota       Int
+  comentario String?
+
+  aula Aula @relation(fields: [aulaId], references: [id], onDelete: Cascade)
+}
+
+model Notificacao {
+  id         String          @id @default(uuid())
+  usuarioId  String
+  aulaId     String?
+  tipo       TipoNotificacao
+  mensagem   String
+  lida       Boolean         @default(false)
+  chaveUnica String          @unique
+  criadoEm   DateTime        @default(now())
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  aula    Aula?   @relation(fields: [aulaId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId, lida])
+}
+
+model TokenRecuperacaoSenha {
+  id        String    @id @default(uuid())
+  usuarioId String
+  tokenHash String    @unique
+  expiraEm  DateTime
+  usadoEm   DateTime?
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+}
