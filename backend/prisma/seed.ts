@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { configuracaoDaConexao } from '../src/infra/conexao-banco';
 import { componentesBrasilia, criarDataBrasilia, somarMinutos } from '../src/shared/utils/datas';
 
 const CUSTO_BCRYPT = 10;
@@ -11,7 +12,7 @@ const emailAdmin = process.env.SEED_ADMIN_EMAIL ?? 'admin@aulacerta.com.br';
 const senhaPadrao = process.env.SEED_SENHA ?? 'Senha@12345';
 
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+  adapter: new PrismaPg(configuracaoDaConexao(process.env.DATABASE_URL)),
 });
 
 function horarioEmBrasilia(diasAPartirDeHoje: number, hora: number): { inicio: Date; fim: Date } {

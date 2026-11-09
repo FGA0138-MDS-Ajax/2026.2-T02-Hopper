@@ -1,9 +1,10 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { env } from '../config/env';
+import { configuracaoDaConexao } from './conexao-banco';
 
 export const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: env.DATABASE_URL }),
+  adapter: new PrismaPg(configuracaoDaConexao(env.DATABASE_URL)),
 });
 
 export type Transacao = Prisma.TransactionClient;
