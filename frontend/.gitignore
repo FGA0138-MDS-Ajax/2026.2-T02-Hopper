@@ -29,3 +29,6 @@ dist-ssr
 *.sw?
 
 *.tsbuildinfo
+
+# Relatório de cobertura dos testes
+coverage

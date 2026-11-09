@@ -1,31 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { PaginaEmConstrucao } from './pages/em-construcao';
+import { PaginaInicio } from './pages/inicio';
+import { PaginaPrivacidade } from './pages/privacidade';
+
+/** Ao trocar de página, volta ao topo (links com #âncora continuam rolando até a seção). */
+function RolarParaOTopo() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      document.getElementById(hash.slice(1))?.scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+  return null;
+}
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <RolarParaOTopo />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="pagina-centralizada">
-              <div className="cartao">
-                <img
-                  src="/logo.png"
-                  alt="Logo AulaCerta"
-                  className="w-20 h-20 object-contain drop-shadow-sm"
-                />
-
-                <h1 className="text-3xl font-bold text-primary">
-                  Aula<span className="text-secondary">Certa</span>
-                </h1>
-
-                <p className="text-sm text-slate-600">
-                  Ambiente Front-End configurado com sucesso! React + Vite + TypeScript + Tailwind CSS.
-                </p>
-              </div>
-            </div>
-          }
-        />
+        <Route path="/" element={<PaginaInicio />} />
+        <Route path="/privacidade" element={<PaginaPrivacidade />} />
+        {/* Próximas etapas: /professores, /professores/:id, /entrar, /cadastro */}
+        <Route path="*" element={<PaginaEmConstrucao />} />
       </Routes>
     </BrowserRouter>
   );
