@@ -80,7 +80,9 @@ export function PaginaCadastro() {
     setErroGeral(null);
     try {
       await cadastrar({ ...dados, telefone: dados.telefone || undefined });
-      navegar(destino, { replace: true });
+      // Professor novo vai direto completar o perfil: sem ele, não aparece na busca.
+      const proximo = dados.perfil === 'PROFESSOR' && !voltar ? '/meu-perfil?bem-vindo=1' : destino;
+      navegar(proximo, { replace: true });
     } catch (erro) {
       if (codigoDeErro(erro) === 'EMAIL_JA_CADASTRADO') {
         setError('email', { message: 'Este e-mail já tem uma conta. Entre ou use outro e-mail.' }, { shouldFocus: true });

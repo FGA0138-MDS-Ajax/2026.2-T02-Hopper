@@ -1,6 +1,8 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, CircleCheck, RefreshCw, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
+import { Abas, PainelDeAba } from '../components/abas';
+import { AvisoSucesso } from '../components/aviso-sucesso';
 import { Cabecalho } from '../components/cabecalho';
 import { CartaoAula, type Papel } from '../components/cartao-aula';
 import { Rodape } from '../components/rodape';
@@ -202,17 +204,6 @@ export function PaginaMinhasAulas() {
     setParametros(id === abaPadrao ? {} : { aba: id }, { replace: true });
   }
 
-  /** Setas do teclado movem entre as abas (padrão de abas acessíveis). */
-  function navegarComTeclado(evento: KeyboardEvent<HTMLDivElement>) {
-    const indice = abas.findIndex((aba) => aba.id === idAba);
-    const passo = evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
-    if (!passo) return;
-    evento.preventDefault();
-    const proxima = abas[(indice + passo + abas.length) % abas.length];
-    escolherAba(proxima.id);
-    document.getElementById(`aba-${proxima.id}`)?.focus();
-  }
-
   return (
     <div className="flex min-h-screen flex-col">
       <Cabecalho />
@@ -226,55 +217,26 @@ export function PaginaMinhasAulas() {
           </p>
 
           {mensagem && (
-            <div
-              role="status"
-              className="mt-6 flex items-start gap-3 rounded-xl border border-menta/30 bg-menta/10 px-4 py-3 text-sm text-emerald-900"
-            >
-              <CircleCheck size={18} className="mt-0.5 shrink-0 text-emerald-700" aria-hidden="true" />
-              <p className="flex-1">{mensagem}</p>
-              <button
-                type="button"
-                onClick={() => setMensagem(null)}
-                className="foco rounded text-emerald-800"
-                aria-label="Fechar aviso"
-              >
-                <X size={16} aria-hidden="true" />
-              </button>
+            <div className="mt-6">
+              <AvisoSucesso aoFechar={() => setMensagem(null)}>{mensagem}</AvisoSucesso>
             </div>
           )}
 
-          <div
-            role="tablist"
-            aria-label="Filtrar aulas"
-            onKeyDown={navegarComTeclado}
-            className="mt-8 flex gap-1 overflow-x-auto border-b border-slate-200"
-          >
-            {abas.map((aba) => {
-              const selecionada = aba.id === idAba;
-              return (
-                <button
-                  key={aba.id}
-                  id={`aba-${aba.id}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={selecionada}
-                  aria-controls={`painel-${aba.id}`}
-                  tabIndex={selecionada ? 0 : -1}
-                  onClick={() => escolherAba(aba.id)}
-                  className={`foco -mb-px inline-flex shrink-0 items-center whitespace-nowrap rounded-t-lg border-b-2 px-4 py-3 text-sm font-bold transition-colors ${
-                    selecionada
-                      ? 'border-secondary text-secondary'
-                      : 'border-transparent text-suave hover:text-primary'
-                  }`}
-                >
-                  {aba.rotulo}
-                  {aba.id === 'pendentes' && papel === 'PROFESSOR' && <ContadorDePendentes agora={agora} />}
-                </button>
-              );
-            })}
+          <div className="mt-8">
+            <Abas
+              rotulo="Filtrar aulas"
+              selecionada={idAba}
+              aoEscolher={escolherAba}
+              abas={abas.map((aba) => ({
+                id: aba.id,
+                rotulo: aba.rotulo,
+                complemento:
+                  aba.id === 'pendentes' && papel === 'PROFESSOR' ? <ContadorDePendentes agora={agora} /> : undefined,
+              }))}
+            />
           </div>
 
-          <div id={`painel-${abaAtual.id}`} role="tabpanel" aria-labelledby={`aba-${abaAtual.id}`} className="pt-6">
+          <PainelDeAba id={abaAtual.id} className="pt-6">
             <ListaDaAba
               key={abaAtual.id}
               aba={abaAtual}
@@ -285,7 +247,7 @@ export function PaginaMinhasAulas() {
                 window.scrollTo({ top: 0 });
               }}
             />
-          </div>
+          </PainelDeAba>
         </div>
       </main>
       <Rodape />

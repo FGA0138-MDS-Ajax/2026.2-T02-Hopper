@@ -6,6 +6,7 @@ import { PaginaCadastro } from './pages/cadastro';
 import { PaginaEmConstrucao } from './pages/em-construcao';
 import { PaginaEntrar } from './pages/entrar';
 import { PaginaInicio } from './pages/inicio';
+import { PaginaMeuPerfil } from './pages/meu-perfil';
 import { PaginaMinhasAulas } from './pages/minhas-aulas';
 import { PaginaPrivacidade } from './pages/privacidade';
 import { PaginaProfessor } from './pages/professor';
@@ -41,6 +42,14 @@ export function App() {
           <Route path="/recuperar-senha" element={<PaginaRecuperarSenha />} />
           <Route path="/redefinir-senha" element={<PaginaRedefinirSenha />} />
           <Route path="/privacidade" element={<PaginaPrivacidade />} />
+          <Route
+            path="/meu-perfil"
+            element={
+              <RotaProtegida>
+                <PaginaMeuPerfil />
+              </RotaProtegida>
+            }
+          />
           <Route
             path="/minhas-aulas"
             element={

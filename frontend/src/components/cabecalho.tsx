@@ -54,15 +54,34 @@ export function Cabecalho() {
                   Minhas aulas
                 </Link>
               )}
-              <span className="flex items-center gap-2 text-sm font-semibold text-tinta">
-                <span
-                  aria-hidden="true"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
+              {usuario.perfil === 'PROFESSOR' ? (
+                <Link
+                  to="/meu-perfil"
+                  className="foco flex items-center gap-2 rounded-xl text-sm font-semibold text-tinta hover:text-secondary"
+                  title="Meu perfil"
                 >
-                  {iniciais(usuario.nome)}
+                  <span
+                    aria-hidden="true"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
+                  >
+                    {iniciais(usuario.nome)}
+                  </span>
+                  <span>
+                    Olá, {primeiroNome(usuario.nome)}
+                    <span className="sr-only"> (meu perfil)</span>
+                  </span>
+                </Link>
+              ) : (
+                <span className="flex items-center gap-2 text-sm font-semibold text-tinta">
+                  <span
+                    aria-hidden="true"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
+                  >
+                    {iniciais(usuario.nome)}
+                  </span>
+                  Olá, {primeiroNome(usuario.nome)}
                 </span>
-                Olá, {primeiroNome(usuario.nome)}
-              </span>
+              )}
               <button
                 type="button"
                 onClick={sairDaConta}
@@ -114,6 +133,11 @@ export function Cabecalho() {
               {usuario.perfil !== 'ADMIN' && (
                 <Link to="/minhas-aulas" onClick={() => setAberto(false)} className="botao-principal mt-2">
                   Minhas aulas
+                </Link>
+              )}
+              {usuario.perfil === 'PROFESSOR' && (
+                <Link to="/meu-perfil" onClick={() => setAberto(false)} className="botao-secundario mt-2">
+                  Meu perfil
                 </Link>
               )}
               <div className="mt-2 flex items-center justify-between rounded-xl bg-white px-3 py-3">

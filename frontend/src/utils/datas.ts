@@ -1,4 +1,4 @@
-import { formatInTimeZone } from 'date-fns-tz';
+import { formatInTimeZone, fromZonedTime } from 'date-fns-tz';
 import { ptBR } from 'date-fns/locale';
 
 /** Fuso de toda a aplicação (o mesmo do back-end e do banco): horário de Brasília. */
@@ -20,6 +20,14 @@ function meioDiaUtc(chave: string): Date {
 /** Dia (aaaa-mm-dd) em que o instante cai, no horário de Brasília. */
 export function chaveDoDia(valor: DataOuIso): string {
   return formatInTimeZone(comoData(valor), FUSO_BRASILIA, 'yyyy-MM-dd');
+}
+
+/**
+ * Instante (ISO 8601) de um dia "aaaa-mm-dd" e hora "HH:mm" de parede em Brasília.
+ * Usa as regras do fuso America/Sao_Paulo, sem deslocamento fixo.
+ */
+export function instanteEmBrasilia(dia: string, horaDoDia: string): string {
+  return fromZonedTime(`${dia}T${horaDoDia}:00`, FUSO_BRASILIA).toISOString();
 }
 
 /** Lista de dias consecutivos a partir de um dia "aaaa-mm-dd". */
