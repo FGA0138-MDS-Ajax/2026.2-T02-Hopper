@@ -1,17 +1,63 @@
-# Welcome to MkDocs
+---
+title: Início
+hide:
+  - navigation
+  - toc
+---
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+<div class="ac-hero" markdown="1">
 
-## Commands
+<p class="ac-context">Grupo Hopper · MDS 2026.2</p>
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+# Documentação do AulaCerta
 
-## Project layout
+Visão do produto, decisões de arquitetura e registros do projeto em um só lugar.
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+[Conhecer o projeto](documento-de-visao.md){ .md-button .md-button--primary }
+[Explorar a arquitetura](documento-de-arquitetura.md){ .md-button }
+
+</div>
+
+## O projeto
+
+O AulaCerta é uma aplicação web para coordenar aulas particulares entre alunos e professores. O sistema reúne disponibilidade, solicitações, confirmações e acompanhamento das aulas, mantendo o status de cada pedido visível para os envolvidos.
+
+O projeto é desenvolvido pelo Grupo Hopper na disciplina Métodos de Desenvolvimento de Software, da Universidade de Brasília, no segundo semestre de 2026.
+
+---
+
+## Documentos do projeto
+
+<div class="ac-grid" markdown="1">
+
+<section class="ac-card" markdown="1">
+
+### Documento de Visão
+
+O problema, os objetivos do produto, o escopo, o planejamento e os critérios de qualidade do projeto.
+
+[Ler documento de visão →](documento-de-visao.md){ .ac-card-link }
+
+</section>
+
+<section class="ac-card" markdown="1">
+
+### Documento de Arquitetura
+
+As tecnologias, os componentes, as interfaces e as decisões que orientam a construção do sistema.
+
+[Ler documento de arquitetura →](documento-de-arquitetura.md){ .ac-card-link }
+
+</section>
+
+<section class="ac-card" markdown="1">
+
+### Atas de Reunião
+
+Os registros das reuniões da equipe, com decisões, alinhamentos e encaminhamentos do projeto.
+
+[Consultar ata de reunião →](atas-reuniao/ata-reuniao-1.md){ .ac-card-link }
+
+</section>
+
+</div>

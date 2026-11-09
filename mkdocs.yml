@@ -1,7 +1,9 @@
-site_name: Documentação
+site_name: AulaCerta | Documentação
+site_description: Documentação do AulaCerta, projeto do Grupo Hopper na disciplina Métodos de Desenvolvimento de Software.
+site_url: https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/
 
 nav:
-  - Instruções mkdocs: "index.md"
+  - Início: "index.md"
   - Documento de Visão: "documento-de-visao.md"
   - Documento de Arquitetura: "documento-de-arquitetura.md"
   - Atas de Reunião:
@@ -9,6 +11,29 @@ nav:
 
 theme:
   name: material
+  language: pt-BR
+  logo: assets/identidade/favicon.svg
+  favicon: assets/identidade/favicon.svg
+  font: false
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+
+extra_css:
+  - "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+  - stylesheets/extra.css
 
 markdown_extensions:
   - footnotes
+  - attr_list
+  - md_in_html
+
+copyright: AulaCerta · Grupo Hopper · MDS 2026.2
