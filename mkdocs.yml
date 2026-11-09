@@ -6,6 +6,15 @@ nav:
   - Início: "index.md"
   - Documento de Visão: "documento-de-visao.md"
   - Documento de Arquitetura: "documento-de-arquitetura.md"
+  - Qualidade:
+    - Visão Geral: qualidade/index.md
+    - C01 — Cadastro e Autenticação: qualidade/c01-cadastro-e-autenticacao.md
+    - C02 — Perfil e Disponibilidade: qualidade/c02-perfil-e-disponibilidade.md
+    - C03 — Busca e Solicitação: qualidade/c03-busca-e-solicitacao.md
+    - C04 — Confirmação ou Recusa: qualidade/c04-confirmacao-ou-recusa.md
+    - C05 — Remarcação e Cancelamento: qualidade/c05-remarcacao-e-cancelamento.md
+    - C06 — Acompanhamento: qualidade/c06-acompanhamento.md
+    - Requisitos Não Funcionais: qualidade/requisitos-nao-funcionais.md
   - Atas de Reunião:
     - Ata 1: "atas-reuniao/ata-reuniao-1.md"
 
@@ -32,6 +41,8 @@ extra_css:
   - stylesheets/extra.css
 
 markdown_extensions:
+  - tables
+  - admonition
   - footnotes
   - attr_list
   - md_in_html
