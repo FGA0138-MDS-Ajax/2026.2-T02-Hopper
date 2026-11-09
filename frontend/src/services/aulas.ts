@@ -37,6 +37,49 @@ export interface DadosSolicitacao {
   objetivo?: string;
 }
 
+export interface AulaDetalhe extends Aula {
+  anotacoes: string | null;
+  historico: { status: StatusAula; dataHora: string; motivo: string | null; autorId: string | null }[];
+  /** Contato do outro participante: só vem depois da confirmação (RNF06). */
+  contato: { nome: string; email: string; telefone: string | null } | null;
+}
+
+export interface FiltrosAulas {
+  status?: StatusAula;
+  de?: string;
+  ate?: string;
+  pagina?: number;
+  limite?: number;
+}
+
+export interface PaginaDeAulas {
+  itens: Aula[];
+  total: number;
+  pagina: number;
+}
+
+/** RF17/RF18: aulas do usuário logado (do aluno ou do professor), da mais recente para a mais antiga. */
+export async function listarAulas(filtros: FiltrosAulas): Promise<PaginaDeAulas> {
+  const { data } = await api.get<PaginaDeAulas>('/aulas', { params: filtros });
+  return data;
+}
+
+export async function obterAula(id: string): Promise<AulaDetalhe> {
+  const { data } = await api.get<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}`);
+  return data;
+}
+
+/** RF11/RF12: o professor aceita; a API confere conflito de horário dentro de uma transação. */
+export async function aceitarAula(id: string): Promise<AulaDetalhe> {
+  const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/aceitar`);
+  return data;
+}
+
+export async function recusarAula(id: string, motivo?: string): Promise<AulaDetalhe> {
+  const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/recusar`, motivo ? { motivo } : {});
+  return data;
+}
+
 /** RF09: o aluno solicita a aula; ela nasce com o status "Solicitada" e o professor é notificado. */
 export async function solicitarAula(dados: DadosSolicitacao): Promise<Aula[]> {
   const { data } = await api.post<{ itens: Aula[] }>('/aulas', dados);

@@ -223,11 +223,11 @@ function PedidoEnviado({ professor, aula }: { professor: ProfessorDetalhe; aula:
       </dl>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-        <Link to={`/professores/${professor.id}`} className="botao-secundario">
-          Voltar ao perfil
-        </Link>
-        <Link to="/professores" className="botao-principal">
+        <Link to="/professores" className="botao-secundario">
           Encontrar outros professores
+        </Link>
+        <Link to="/minhas-aulas?aba=pendentes" className="botao-principal">
+          Ver minhas aulas
         </Link>
       </div>
     </div>

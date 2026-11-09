@@ -49,6 +49,11 @@ export function Cabecalho() {
         <div className="hidden min-w-[12rem] items-center justify-end gap-2 md:flex">
           {usuario ? (
             <>
+              {usuario.perfil !== 'ADMIN' && (
+                <Link to="/minhas-aulas" className="botao-principal mr-2 h-10 px-4 text-sm">
+                  Minhas aulas
+                </Link>
+              )}
               <span className="flex items-center gap-2 text-sm font-semibold text-tinta">
                 <span
                   aria-hidden="true"
@@ -105,12 +110,19 @@ export function Cabecalho() {
             </a>
           ))}
           {usuario ? (
-            <div className="mt-2 flex items-center justify-between rounded-xl bg-white px-3 py-3">
-              <span className="text-sm font-semibold text-tinta">Olá, {primeiroNome(usuario.nome)}</span>
-              <button type="button" onClick={sairDaConta} className="foco rounded-lg text-sm font-bold text-primary">
-                Sair
-              </button>
-            </div>
+            <>
+              {usuario.perfil !== 'ADMIN' && (
+                <Link to="/minhas-aulas" onClick={() => setAberto(false)} className="botao-principal mt-2">
+                  Minhas aulas
+                </Link>
+              )}
+              <div className="mt-2 flex items-center justify-between rounded-xl bg-white px-3 py-3">
+                <span className="text-sm font-semibold text-tinta">Olá, {primeiroNome(usuario.nome)}</span>
+                <button type="button" onClick={sairDaConta} className="foco rounded-lg text-sm font-bold text-primary">
+                  Sair
+                </button>
+              </div>
+            </>
           ) : (
             !carregando && (
               <div className="mt-2 grid grid-cols-2 gap-2">

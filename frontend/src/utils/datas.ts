@@ -46,6 +46,16 @@ export function diaMes(chave: string): string {
   return formatInTimeZone(meioDiaUtc(chave), 'UTC', 'dd/MM');
 }
 
+/** "nov" para um dia "aaaa-mm-dd". */
+export function mesCurto(chave: string): string {
+  return formatInTimeZone(meioDiaUtc(chave), 'UTC', 'MMM', { locale: ptBR }).replace('.', '');
+}
+
+/** "09/11 às 10h02" no horário de Brasília. */
+export function dataHoraCurta(valor: DataOuIso): string {
+  return `${diaMes(chaveDoDia(valor))} às ${horaCurta(valor)}`;
+}
+
 /** "14h" ou "14h30" no horário de Brasília. */
 export function horaCurta(valor: DataOuIso): string {
   const [horas, minutos] = hora(valor).split(':');
