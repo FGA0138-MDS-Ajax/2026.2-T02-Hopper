@@ -4,8 +4,9 @@ site_url: https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/
 
 nav:
   - Início: "index.md"
-  - Documento de Visão: "documento-de-visao.md"
-  - Documento de Arquitetura: "documento-de-arquitetura.md"
+  - Documentos:
+    - Documento de Visão: "documento-de-visao.md"
+    - Documento de Arquitetura: "documento-de-arquitetura.md"
   - Qualidade:
     - Visão Geral: qualidade/index.md
     - C01 — Cadastro e Autenticação: qualidade/c01-cadastro-e-autenticacao.md
@@ -23,21 +24,35 @@ theme:
   language: pt-BR
   logo: assets/identidade/favicon.svg
   favicon: assets/identidade/favicon.svg
-  font: false
+  font:
+    text: Inter
+    code: JetBrains Mono
   palette:
-    scheme: default
-    primary: custom
-    accent: custom
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Alternar para modo escuro
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Alternar para modo claro
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.path
     - navigation.top
+    - toc.follow
     - navigation.footer
     - search.suggest
     - search.highlight
 
 extra_css:
-  - "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
   - stylesheets/extra.css
 
 markdown_extensions:

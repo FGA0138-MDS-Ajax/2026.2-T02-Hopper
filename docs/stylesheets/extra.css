@@ -1,149 +1,279 @@
-/* Identidade visual de frontend/DESIGN.md. */
-:root, [data-md-color-scheme="default"] {
+/* Identidade do AulaCerta: frontend/DESIGN.md e tokens do Tailwind.
+   A documentação usa Inter e JetBrains Mono por decisão editorial. */
+:root {
   --ac-primary: #00236f;
   --ac-secondary: #0051d5;
   --ac-ceu: #24a8d8;
   --ac-menta: #1fc58e;
+  --ac-ambar: #f59e0b;
+  --ac-error: #ba1a1a;
+  --ac-radius: 0.6rem;
+  --ac-card-radius: 0.8rem;
+}
+
+[data-md-color-scheme="default"] {
+  color-scheme: light;
   --ac-surface: #f6f8fd;
+  --ac-paper: #ffffff;
   --ac-tinta: #0f172a;
   --ac-suave: #475569;
-  --ac-line: #dce4ef;
-  --ac-shadow: 0 12px 36px rgb(0 35 111 / 5%);
-  --md-primary-fg-color: var(--ac-primary);
-  --md-primary-fg-color--light: var(--ac-secondary);
-  --md-primary-fg-color--dark: var(--ac-primary);
-  --md-accent-fg-color: var(--ac-secondary);
+  --ac-line: #e2e8f0;
+  --ac-field-line: #cbd5e1;
+  --ac-link: var(--ac-secondary);
+  --ac-soft: #eef2f8;
+  --ac-focus: #0051d54d;
+}
+
+/* O front-end define os tokens claros. Estes tons preservam a marca no escuro. */
+[data-md-color-scheme="slate"] {
+  color-scheme: dark;
+  --ac-surface: #0f172a;
+  --ac-paper: #172237;
+  --ac-tinta: #edf2fa;
+  --ac-suave: #b6c2d3;
+  --ac-line: #334155;
+  --ac-field-line: #52647f;
+  --ac-link: #8ab4ff;
+  --ac-soft: #1e2c43;
+  --ac-focus: #8ab4ff66;
+}
+
+[data-md-color-scheme] {
   --md-default-bg-color: var(--ac-surface);
   --md-default-fg-color: var(--ac-tinta);
   --md-default-fg-color--light: var(--ac-suave);
-  --md-typeset-color: var(--ac-suave);
-  --md-typeset-a-color: var(--ac-secondary);
-  --md-text-font: "Plus Jakarta Sans", sans-serif;
-  --md-code-font: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --md-default-fg-color--lighter: var(--ac-field-line);
+  --md-default-fg-color--lightest: var(--ac-line);
+  --md-primary-fg-color: var(--ac-surface);
+  --md-primary-fg-color--light: var(--ac-paper);
+  --md-primary-fg-color--dark: var(--ac-primary);
+  --md-primary-bg-color: var(--ac-tinta);
+  --md-primary-bg-color--light: var(--ac-suave);
+  --md-accent-fg-color: var(--ac-link);
+  --md-typeset-color: var(--ac-tinta);
+  --md-typeset-a-color: var(--ac-link);
+  --md-code-bg-color: var(--ac-soft);
+  --md-code-fg-color: var(--ac-tinta);
 }
 
-.md-grid { max-width: 76rem; }
+.md-grid { max-width: 1440px; }
 .md-main__inner:has(.ac-hero) { max-width: 1152px; }
-.md-header { box-shadow: none; }
-.md-header__title { font-weight: 800; letter-spacing: -0.035em; }
-.md-header__button.md-logo img { width: 1.8rem; height: 1.8rem; }
-
-/* Navegação horizontal e linha de separação nas cores da marca. */
-.md-tabs { border-bottom: 2px solid var(--ac-ceu); }
+.md-header, .md-tabs {
+  color: var(--ac-tinta);
+  background: var(--ac-surface);
+  box-shadow: none;
+}
+.md-header { border-bottom: 1px solid var(--ac-line); }
+.md-header__title { font-weight: 700; letter-spacing: -0.02em; }
+.md-header__button.md-logo img { width: 1.7rem; height: 1.7rem; }
+.md-header__button { color: var(--ac-tinta); }
+.md-tabs { border-bottom: 1px solid var(--ac-line); }
 .md-tabs__link {
-  min-height: 2.2rem;
+  display: inline-flex;
   align-items: center;
+  min-height: 2.4rem;
   margin-top: 0;
+  color: var(--ac-suave);
   font-weight: 600;
-  opacity: 0.85;
+  opacity: 1;
 }
-.md-tabs__item--active .md-tabs__link, .md-tabs__link:hover { opacity: 1; }
-.md-tabs__item--active .md-tabs__link { box-shadow: inset 0 -3px 0 var(--ac-menta); }
-.md-search__form { border-radius: 1rem; }
+.md-tabs__item--active .md-tabs__link {
+  color: var(--ac-link);
+  box-shadow: inset 0 -2px 0 var(--ac-link);
+}
+.md-tabs__link:hover { color: var(--ac-link); }
 
-.md-content__inner {
-  margin-top: 1.5rem;
-  padding: clamp(1rem, 3vw, 2rem);
-  background: white;
-  border: 1px solid var(--ac-line);
-  border-radius: 1.2rem;
-  box-shadow: var(--ac-shadow);
+.md-search__form {
+  min-height: 2.2rem;
+  border: 1px solid var(--ac-field-line);
+  border-radius: var(--ac-radius);
+  color: var(--ac-tinta);
+  background: var(--ac-paper);
+  box-shadow: none;
 }
-.md-typeset { font-size: 0.8rem; line-height: 1.8; }
+.md-search__input, .md-search__icon { color: var(--ac-tinta); }
+.md-search__input::placeholder { color: var(--ac-suave); }
+.md-search__output, .md-search__scrollwrap {
+  color: var(--ac-tinta);
+  background: var(--ac-paper);
+  box-shadow: none;
+}
+.md-search-result__meta { color: var(--ac-suave); background: var(--ac-soft); }
+
+/* Texto corrido sem molduras. Cartões são reservados a links de navegação. */
+.md-content__inner {
+  margin: 1.2rem 1.2rem 2.4rem;
+  padding: 0.6rem 0.4rem 1.6rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.md-typeset { font-size: 0.8rem; line-height: 1.75; }
+.md-typeset > p, .md-typeset > ul, .md-typeset > ol { max-width: 76ch; }
 .md-typeset h1, .md-typeset h2, .md-typeset h3, .md-typeset h4 {
-  color: var(--ac-primary);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: 1.25;
+  color: var(--ac-tinta);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
 }
 .md-typeset h1 {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--ac-line);
-  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+  font-size: clamp(1.5rem, 2.4vw, 1.8rem);
+  font-weight: 700;
 }
-.md-typeset h2 { margin-top: 2.4rem; font-size: 1.35rem; }
-.md-typeset h3 { font-size: 1.05rem; }
+.md-typeset h2 { margin: 2.2rem 0 0.8rem; font-size: 1.2rem; font-weight: 700; }
+.md-typeset h3 { margin: 1.6rem 0 0.6rem; font-size: 1rem; font-weight: 600; }
+.md-typeset h4 { font-size: 0.85rem; font-weight: 600; }
 .md-typeset strong { color: var(--ac-tinta); }
 .md-typeset hr { margin: 2rem 0; border: 0; border-top: 1px solid var(--ac-line); }
 .md-typeset a:not(.md-button):hover { text-decoration: underline; text-underline-offset: 0.2em; }
-.md-typeset a:focus-visible, .md-header a:focus-visible, .md-tabs a:focus-visible {
-  outline: 3px solid var(--ac-ceu);
-  outline-offset: 4px;
-  border-radius: 0.2rem;
-}
-.md-nav__link { padding: 0.3rem 0; line-height: 1.5; }
-.md-nav__link--active { font-weight: 700; }
+.md-typeset img { height: auto; }
+.md-typeset code { border-radius: 0.2rem; }
+.md-typeset pre > code { border: 1px solid var(--ac-line); border-radius: 0.4rem; }
 
+/* Anotação operacional do modelo C01: sem ícone nem painel decorativo. */
+.md-typeset .admonition, .md-typeset details {
+  padding: 0.4rem 1rem;
+  border: 0;
+  border-left: 2px solid var(--ac-field-line);
+  border-radius: 0;
+  color: var(--ac-tinta);
+  background: transparent;
+  box-shadow: none;
+  font-size: 0.75rem;
+}
+.md-typeset .admonition-title, .md-typeset summary {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  color: var(--ac-tinta);
+  background: transparent;
+}
+.md-typeset .admonition-title::before, .md-typeset summary::before { display: none; }
+.md-typeset .admonition.info { border-left-color: var(--ac-field-line); }
+.md-typeset .admonition.info > .admonition-title { padding: 0; background: transparent; }
+.md-typeset .admonition.info > .admonition-title::before { display: none; }
+
+/* Tabelas mantêm todas as colunas, com rolagem restrita à própria tabela. */
 .md-typeset .md-typeset__table { display: block; max-width: 100%; }
 .md-typeset table:not([class]) {
   width: 100%;
+  border: 1px solid var(--ac-line);
+  border-radius: 0.4rem;
+  background: var(--ac-paper);
+  font-size: 0.7rem;
+  line-height: 1.6;
+}
+.md-typeset table:not([class]) th {
+  color: var(--ac-tinta);
+  background: var(--ac-soft);
+  font-weight: 600;
+}
+.md-typeset table:not([class]) td, .md-typeset table:not([class]) th {
+  min-width: 5rem;
+  padding: 0.65rem 0.8rem;
   border-color: var(--ac-line);
-  border-radius: 0.65rem;
-  font-size: 0.68rem;
 }
-.md-typeset table:not([class]) th { color: var(--ac-primary); background: var(--ac-surface); font-weight: 800; }
-.md-typeset table:not([class]) tbody tr:nth-child(even) { background: #fafbfe; }
-.md-typeset table:not([class]) td, .md-typeset table:not([class]) th { min-width: 6rem; padding: 0.65rem 0.8rem; }
-.md-typeset img { height: auto; }
+.md-typeset table:not([class]) tbody tr:nth-child(even) { background: var(--ac-surface); }
 
-.md-typeset .ac-hero {
-  padding: clamp(1.4rem, 4vw, 3rem);
-  border-radius: 1.2rem;
-  color: white;
-  background: linear-gradient(135deg, var(--ac-secondary), var(--ac-primary));
+.md-nav__title { color: var(--ac-tinta); background: var(--ac-surface); box-shadow: none; }
+.md-nav__link {
+  align-items: center;
+  min-height: 2.2rem;
+  margin: 0;
+  padding: 0.35rem 0;
+  color: var(--ac-suave);
+  line-height: 1.5;
 }
-.md-typeset .ac-hero h1 {
-  max-width: 36rem;
-  margin: 0.6rem 0 1rem;
-  padding: 0;
-  border: 0;
-  color: white;
-  font-size: clamp(1.9rem, 4.5vw, 3rem);
-  line-height: 1.08;
+.md-nav__link--active, .md-nav__link:hover { color: var(--ac-link); }
+.md-nav__link--active { font-weight: 600; }
+.md-nav__item--section > .md-nav__link { color: var(--ac-tinta); font-weight: 700; }
+.md-nav--secondary { font-size: 0.68rem; }
+.md-nav--primary { font-size: 0.7rem; }
+.md-path { color: var(--ac-suave); font-size: 0.68rem; }
+
+/* Somente a ordem visual em desktop muda. O drawer nativo fica intacto. */
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary { order: -1; }
+  .md-content { order: 0; }
+  .md-sidebar--secondary .md-sidebar__inner {
+    padding-right: 0.8rem;
+    border-right: 1px solid var(--ac-line);
+  }
 }
-.md-typeset .ac-hero p { max-width: 36rem; color: #e5efff; }
-.md-typeset .ac-hero .ac-context { margin: 0; font-size: 0.7rem; font-weight: 600; }
-.md-typeset .ac-hero .md-button {
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary { order: 1; }
+  .md-sidebar--primary .md-sidebar__inner {
+    padding-left: 0.8rem;
+    border-left: 1px solid var(--ac-line);
+  }
+}
+
+/* A abertura mantém o conteúdo existente, com a sobriedade do front-end atual. */
+.md-typeset .ac-hero { padding: 1.2rem 0 1.8rem; border: 0; border-radius: 0; background: transparent; }
+.md-typeset .ac-hero h1 { max-width: 38rem; margin: 0.6rem 0 1rem; font-size: clamp(1.6rem, 3vw, 2.1rem); }
+.md-typeset .ac-hero p { max-width: 42rem; color: var(--ac-suave); }
+.md-typeset .ac-context { margin: 0; font-size: 0.7rem; font-weight: 500; }
+.md-typeset .md-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 2.4rem;
   margin: 0.5rem 0.4rem 0 0;
-  padding: 0.55rem 1rem;
-  border: 1px solid rgb(255 255 255 / 65%);
-  border-radius: 2rem;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 700;
+  padding: 0.55rem 1.2rem;
+  border: 1px solid var(--ac-field-line);
+  border-radius: var(--ac-radius);
+  color: var(--ac-link);
+  background: var(--ac-paper);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: color 120ms, background-color 120ms, border-color 120ms;
 }
-.md-typeset .ac-hero .md-button--primary { border-color: white; color: var(--ac-primary); background: white; }
-.md-typeset .ac-hero .md-button:hover { border-color: white; color: var(--ac-primary); background: #e5efff; }
+.md-typeset .md-button--primary { border-color: var(--ac-secondary); color: white; background: var(--ac-secondary); }
+.md-typeset .md-button:hover { border-color: var(--ac-link); color: var(--ac-link); background: var(--ac-paper); }
+.md-typeset .md-button--primary:hover { border-color: var(--ac-primary); color: white; background: var(--ac-primary); }
 .md-typeset .ac-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.2rem 0 0; }
 .md-typeset .ac-card {
   display: flex;
   flex-direction: column;
-  padding: 1.4rem;
+  padding: 1.2rem;
   border: 1px solid var(--ac-line);
-  border-radius: 1.2rem;
-  background: white;
-  box-shadow: var(--ac-shadow);
+  border-radius: var(--ac-card-radius);
+  background: var(--ac-paper);
+  box-shadow: none;
 }
-.md-typeset .ac-card h3 { margin: 0 0 0.5rem; }
-.md-typeset .ac-card p { margin: 0.5rem 0; }
+.md-typeset .ac-card:hover { border-color: var(--ac-field-line); }
+.md-typeset .ac-card h3 { margin: 0 0 0.5rem; font-size: 0.9rem; font-weight: 700; }
+.md-typeset .ac-card p { margin: 0.5rem 0; color: var(--ac-suave); }
 .md-typeset .ac-card p:last-child { margin-top: auto; padding-top: 0.8rem; }
-.md-typeset .ac-card-link { display: inline-flex; align-items: center; min-height: 2.2rem; font-size: 0.72rem; font-weight: 700; }
-.md-footer { background: var(--ac-primary); }
-.md-footer-meta { background: rgb(0 0 0 / 12%); }
+.md-typeset .ac-card-link { display: inline-flex; align-items: center; min-height: 2.2rem; font-size: 0.72rem; font-weight: 600; }
 
-@media (max-width: 60em) {
-  .md-typeset .ac-grid { grid-template-columns: 1fr; }
+.md-footer, .md-footer-meta { color: var(--ac-tinta); background: var(--ac-surface); }
+.md-footer { border-top: 1px solid var(--ac-line); }
+.md-footer__link, .md-copyright { color: var(--ac-tinta); }
+.md-footer__direction, .md-copyright__highlight { color: var(--ac-suave); }
+html .md-footer-meta.md-typeset a { color: var(--ac-suave); }
+
+/* Foco é funcional, não decorativo; respeitar redução de movimento. */
+a:focus-visible, button:focus-visible, input:focus-visible,
+.md-header label:focus-visible, .md-search__input:focus-visible {
+  outline: 3px solid var(--ac-link);
+  outline-offset: 3px;
+  border-radius: 0.2rem;
 }
+@media (max-width: 60em) { .md-typeset .ac-grid { grid-template-columns: 1fr; } }
 @media (max-width: 44.99em) {
-  .md-content__inner { margin: 0.8rem 0.6rem; padding: 1rem; border-radius: 1rem; }
-  .md-typeset .ac-hero { padding: 1.25rem; }
-  .md-typeset .ac-hero h1 { font-size: 1.45rem; }
-  .md-typeset .ac-hero .md-button { display: block; width: 100%; margin-right: 0; text-align: center; }
+  .md-content__inner { margin: 0.8rem 0.8rem 1.6rem; padding: 0.4rem 0; }
+  .md-typeset .ac-hero { padding: 0.6rem 0 1.2rem; }
+  .md-typeset .md-button { display: flex; width: 100%; margin-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 @media print {
-  .md-content__inner { padding: 0; border: 0; box-shadow: none; }
-  .md-typeset .ac-hero { padding: 0; background: white; }
-  .md-typeset .ac-hero h1, .md-typeset .ac-hero p { color: var(--ac-tinta); }
+  .md-content__inner { margin: 0; padding: 0; }
+  .md-typeset .ac-hero, .md-typeset .ac-card { background: white; color: black; }
+  .md-typeset .ac-card { break-inside: avoid; }
 }
