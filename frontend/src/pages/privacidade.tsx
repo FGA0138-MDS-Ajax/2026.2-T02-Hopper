@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Cabecalho } from '../components/cabecalho';
 import { Rodape } from '../components/rodape';
+import { useTitulo } from '../hooks/use-titulo';
 
 function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
@@ -13,6 +14,7 @@ function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
 
 /** Política de privacidade (RNF06 — LGPD, Lei nº 13.709/2018). */
 export function PaginaPrivacidade() {
+  useTitulo('Política de privacidade');
   return (
     <div className="flex min-h-screen flex-col">
       <Cabecalho />

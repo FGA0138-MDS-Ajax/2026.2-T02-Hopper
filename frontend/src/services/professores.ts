@@ -23,6 +23,17 @@ export interface ProfessorPublico {
   materias: Materia[];
 }
 
+/** Intervalo vindo da API: datas em ISO 8601 no horário de Brasília (ex.: "2026-11-10T08:00:00.000-03:00"). */
+export interface IntervaloApi {
+  inicio: string;
+  fim: string;
+}
+
+export interface ProfessorDetalhe extends ProfessorPublico {
+  /** Blocos livres das próximas semanas, já sem bloqueios e aulas confirmadas. */
+  horariosLivres: IntervaloApi[];
+}
+
 export interface Pagina<T> {
   itens: T[];
   total: number;
@@ -39,6 +50,11 @@ export interface FiltrosBusca {
 
 export async function buscarProfessores(filtros: FiltrosBusca): Promise<Pagina<ProfessorPublico>> {
   const { data } = await api.get<Pagina<ProfessorPublico>>('/professores', { params: filtros });
+  return data;
+}
+
+export async function buscarProfessor(id: string): Promise<ProfessorDetalhe> {
+  const { data } = await api.get<ProfessorDetalhe>(`/professores/${encodeURIComponent(id)}`);
   return data;
 }
 

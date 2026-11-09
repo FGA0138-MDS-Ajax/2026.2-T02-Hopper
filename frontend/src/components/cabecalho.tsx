@@ -32,7 +32,7 @@ export function Cabecalho() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link to="/entrar" className="foco rounded-full px-4 py-2 text-sm font-bold text-primary hover:text-secondary">
+          <Link to="/entrar" className="foco rounded-xl px-4 py-2 text-sm font-bold text-primary hover:text-secondary">
             Entrar
           </Link>
           <Link to="/cadastro" className="botao-principal h-11 text-sm">

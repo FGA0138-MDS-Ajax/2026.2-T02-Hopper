@@ -20,10 +20,6 @@ const config: Config = {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
       },
-      boxShadow: {
-        cartao: '0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 40px -12px rgba(0, 35, 111, 0.14)',
-        destaque: '0 24px 60px -20px rgba(0, 81, 213, 0.55)',
-      },
     },
   },
   plugins: [],

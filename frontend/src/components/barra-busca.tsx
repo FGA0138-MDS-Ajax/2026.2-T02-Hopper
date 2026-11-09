@@ -24,13 +24,30 @@ function useNiveis(): string[] {
   });
 }
 
+export interface ValoresBusca {
+  materia?: string;
+  nivel?: string;
+  modalidade?: Modalidade;
+}
+
+interface BarraBuscaProps {
+  /** Filtros já aplicados (ex.: vindos da URL na página de busca). */
+  inicial?: ValoresBusca;
+}
+
 /** Busca por matéria, nível e modalidade (RF07); leva para /professores com os filtros na URL. */
-export function BarraBusca() {
+export function BarraBusca({ inicial = {} }: BarraBuscaProps) {
   const navegar = useNavigate();
-  const niveis = useNiveis();
-  const [materia, setMateria] = useState('');
-  const [nivel, setNivel] = useState('');
-  const [modalidade, setModalidade] = useState<Modalidade | ''>('');
+  const niveisDisponiveis = useNiveis();
+  const [materia, setMateria] = useState(inicial.materia ?? '');
+  const [nivel, setNivel] = useState(inicial.nivel ?? '');
+  const [modalidade, setModalidade] = useState<Modalidade | ''>(inicial.modalidade ?? '');
+
+  // Um nível vindo da URL que não está na lista continua selecionável.
+  const niveis =
+    inicial.nivel && !niveisDisponiveis.includes(inicial.nivel)
+      ? [...niveisDisponiveis, inicial.nivel]
+      : niveisDisponiveis;
 
   function enviar(evento: FormEvent) {
     evento.preventDefault();
@@ -50,9 +67,9 @@ export function BarraBusca() {
       role="search"
       aria-label="Buscar professores"
       onSubmit={enviar}
-      className="flex w-full flex-col gap-1 rounded-[1.75rem] bg-white p-2 shadow-cartao ring-1 ring-slate-200/70 lg:flex-row lg:items-center lg:rounded-full"
+      className="flex w-full flex-col gap-1 rounded-2xl border border-slate-300 bg-white p-2 shadow-sm lg:flex-row lg:items-center"
     >
-      <label className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-full px-4 focus-within:bg-surface">
+      <label className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-xl px-4 focus-within:bg-surface">
         <BookOpen size={20} className="shrink-0 text-secondary" aria-hidden="true" />
         <span className="sr-only">Matéria</span>
         <input
@@ -67,7 +84,7 @@ export function BarraBusca() {
 
       {divisor}
 
-      <label className="flex h-12 shrink-0 items-center rounded-full px-4 focus-within:bg-surface lg:w-44">
+      <label className="flex h-12 shrink-0 items-center rounded-xl px-4 focus-within:bg-surface lg:w-44">
         <span className="sr-only">Nível</span>
         <select value={nivel} onChange={(evento) => setNivel(evento.target.value)} className={classeSeletor}>
           <option value="">Todos os níveis</option>
@@ -81,7 +98,7 @@ export function BarraBusca() {
 
       {divisor}
 
-      <label className="flex h-12 shrink-0 items-center rounded-full px-4 focus-within:bg-surface lg:w-[14.75rem]">
+      <label className="flex h-12 shrink-0 items-center rounded-xl px-4 focus-within:bg-surface lg:w-[14.75rem]">
         <span className="sr-only">Modalidade</span>
         <select
           value={modalidade}

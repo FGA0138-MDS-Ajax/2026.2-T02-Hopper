@@ -28,7 +28,7 @@ Definidas em `tailwind.config.ts`. Use sempre o nome do token, nunca o hexadecim
 | `tinta` | `#0f172a` | Texto principal (slate-900) |
 | `suave` | `#475569` | Texto secundário (slate-600; contraste AA sobre branco e `surface`) |
 
-**Painel escuro (gradiente)**: `bg-gradient-to-br from-secondary to-primary` com texto branco. Usado no máximo **uma vez por tela**, para o elemento mais importante.
+**Painel escuro**: `bg-primary` sólido (sem gradiente) com texto branco. Usado no máximo **uma vez por tela**, para o elemento mais importante.
 
 ### Status da aula
 
@@ -46,29 +46,32 @@ Fonte única: **Plus Jakarta Sans** (400, 500, 600, 700, 800).
 
 | Papel | Classes |
 |---|---|
-| Título de tela (display) | `text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05]` |
+| Título da página inicial | `text-[2.25rem] sm:text-[3.25rem] font-extrabold tracking-tight leading-[1.08]` |
+| Título de tela | `text-3xl sm:text-5xl font-extrabold tracking-tight` |
 | Título de seção | `text-2xl sm:text-3xl font-extrabold tracking-tight` |
 | Título de cartão | `text-lg font-bold` |
 | Corpo | `text-base text-suave` |
 | Número grande | `text-4xl font-extrabold tabular-nums` |
 
-Regra do título: **uma palavra** pode ganhar `text-secondary` para dar ênfase ("Marque sua aula **certa**.").
+Regra do título: texto em `text-tinta`; **um trecho curto** pode ganhar `text-secondary` para dar ênfase ("agende sua **próxima aula.**"). No máximo um por tela.
 
 ## 4. Forma e espaço
 
-- Cantos: cartões `rounded-3xl`, campos e botões `rounded-2xl` ou `rounded-full` (pílula), selos `rounded-full`.
-- Sombra: `shadow-cartao` (suave e larga). Nada de bordas pesadas; quando precisar, `border-slate-200/70`.
+- Cantos: cartões, painéis e barra de busca `rounded-2xl`; botões, campos e chips `rounded-xl`/`rounded-lg`; tags pequenas `rounded-md`. `rounded-full` só para avatares e selos de status.
+- Separação por **borda fina**, não por sombra: cartões `border-slate-200`, botões secundários e campos `border-slate-300`. Sombra no máximo `shadow-sm`.
+- Sem animação de "pular" no hover; o hover muda só a cor da borda ou do texto.
 - Largura máxima do conteúdo: `max-w-6xl`, com margem lateral `px-4 sm:px-6`.
 - Espaço entre seções: `py-16 sm:py-24`.
 
 ## 5. Componentes
 
-- **Botão principal**: `bg-secondary text-white rounded-full px-6 h-12 font-bold`, hover `bg-primary`.
-- **Botão secundário**: branco, `border border-slate-200`, texto `primary`.
-- **Barra de busca**: pílula branca grande com sombra; campo de matéria + seletor de modalidade + botão. No celular os itens empilham.
-- **Chips de matéria**: pílulas brancas com ícone; ao clicar, buscam pela matéria.
-- **Cartão de professor**: avatar de iniciais, nome, matérias (até 3 + "+N"), modalidades, valor/hora e botão "Ver horários".
-- **Ícones**: `lucide-react`, traço 2, tamanho 18–22 px.
+- **Botão principal** (`.botao-principal`): `bg-secondary`, texto branco, `rounded-xl`, `h-12`, hover `bg-primary`.
+- **Botão secundário** (`.botao-secundario`): branco, `border-slate-300`, texto `primary`.
+- **Cartão** (`.cartao`): branco, `rounded-2xl`, `border-slate-200`.
+- **Barra de busca**: retângulo branco com borda; matéria + nível + modalidade + botão. No celular os itens empilham.
+- **Chips de matéria**: texto simples com borda, sem ícone; ao clicar, buscam pela matéria.
+- **Cartão de professor**: avatar redondo de iniciais em tom suave, nome, modalidades, matérias em tags `rounded-md` azuis (`bg-secondary/10 text-secondary`, até 3 + "+N"), valor/hora e botão "Ver horários".
+- **Ícones** (`lucide-react`, 16–20 px): só quando carregam informação (modalidade, ação de botão, status). Nunca como enfeite ao lado de títulos ou em listas de benefícios.
 
 ## 6. Acessibilidade e responsividade (RNF02, RNF05)
 

@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { PaginaEmConstrucao } from './pages/em-construcao';
 import { PaginaInicio } from './pages/inicio';
 import { PaginaPrivacidade } from './pages/privacidade';
+import { PaginaProfessor } from './pages/professor';
+import { PaginaProfessores } from './pages/professores';
 
 /** Ao trocar de página, volta ao topo (links com #âncora continuam rolando até a seção). */
 function RolarParaOTopo() {
@@ -23,8 +25,10 @@ export function App() {
       <RolarParaOTopo />
       <Routes>
         <Route path="/" element={<PaginaInicio />} />
+        <Route path="/professores" element={<PaginaProfessores />} />
+        <Route path="/professores/:id" element={<PaginaProfessor />} />
         <Route path="/privacidade" element={<PaginaPrivacidade />} />
-        {/* Próximas etapas: /professores, /professores/:id, /entrar, /cadastro */}
+        {/* Próximas etapas: /professores/:id/solicitar, /entrar, /cadastro */}
         <Route path="*" element={<PaginaEmConstrucao />} />
       </Routes>
     </BrowserRouter>

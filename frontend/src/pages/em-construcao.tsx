@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Cabecalho } from '../components/cabecalho';
+import { useTitulo } from '../hooks/use-titulo';
 
 /** Temporária: ocupa as rotas das telas que ainda serão construídas. */
 export function PaginaEmConstrucao() {
+  useTitulo('Em construção');
   return (
     <div className="flex min-h-screen flex-col">
       <Cabecalho />

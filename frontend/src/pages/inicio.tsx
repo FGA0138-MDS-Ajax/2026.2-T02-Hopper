@@ -1,29 +1,11 @@
 import { Link } from 'react-router-dom';
-import {
-  ArrowRight,
-  Atom,
-  BookOpen,
-  Calculator,
-  CalendarCheck,
-  CircleCheck,
-  Dna,
-  FlaskConical,
-  Globe,
-  Landmark,
-  Languages,
-  ListChecks,
-  Monitor,
-  Music,
-  PenLine,
-  RefreshCw,
-  Search,
-  type LucideIcon,
-} from 'lucide-react';
+import { ArrowRight, CircleCheck, RefreshCw } from 'lucide-react';
 import { BarraBusca } from '../components/barra-busca';
 import { Cabecalho } from '../components/cabecalho';
 import { CartaoProfessor, CartaoProfessorEsqueleto } from '../components/cartao-professor';
 import { Rodape } from '../components/rodape';
 import { useMaterias, useProfessores } from '../hooks/use-professores';
+import { useTitulo } from '../hooks/use-titulo';
 
 // ---------------------------------------------------------------------------
 // Matérias populares
@@ -31,28 +13,6 @@ import { useMaterias, useProfessores } from '../hooks/use-professores';
 
 const MATERIAS_PADRAO = ['Matemática', 'Português', 'Inglês', 'Física', 'Química', 'Redação', 'Biologia', 'História'];
 const MAXIMO_CHIPS = 8;
-
-const ICONES_MATERIA: [RegExp, LucideIcon][] = [
-  [/matem/, Calculator],
-  [/fisic/, Atom],
-  [/quimic/, FlaskConical],
-  [/biolog/, Dna],
-  [/ingl|espanh|franc|idioma/, Languages],
-  [/portug|redac|literat/, PenLine],
-  [/histor/, Landmark],
-  [/geograf/, Globe],
-  [/music|violao|piano|canto/, Music],
-  [/program|informat|comput/, Monitor],
-];
-
-function normalizar(texto: string): string {
-  return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-}
-
-function iconeDaMateria(nome: string): LucideIcon {
-  const chave = normalizar(nome);
-  return ICONES_MATERIA.find(([padrao]) => padrao.test(chave))?.[1] ?? BookOpen;
-}
 
 function MateriasPopulares() {
   const { data } = useMaterias();
@@ -64,20 +24,16 @@ function MateriasPopulares() {
     <div>
       <p className="text-sm font-semibold text-suave">Matérias populares</p>
       <ul className="mt-3 flex flex-wrap justify-center gap-2">
-        {nomes.map((nome) => {
-          const Icone = iconeDaMateria(nome);
-          return (
-            <li key={nome}>
-              <Link
-                to={`/professores?materia=${encodeURIComponent(nome)}`}
-                className="foco inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-tinta ring-1 ring-slate-200/80 transition-colors hover:text-secondary hover:ring-secondary"
-              >
-                <Icone size={17} className="text-secondary" aria-hidden="true" />
-                {nome}
-              </Link>
-            </li>
-          );
-        })}
+        {nomes.map((nome) => (
+          <li key={nome}>
+            <Link
+              to={`/professores?materia=${encodeURIComponent(nome)}`}
+              className="foco inline-flex h-10 items-center rounded-lg border border-slate-300 bg-white px-3.5 text-sm font-semibold text-tinta transition-colors hover:border-secondary hover:text-secondary"
+            >
+              {nome}
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );
@@ -90,7 +46,7 @@ function MateriasPopulares() {
 function Hero() {
   return (
     <section className="conteudo flex flex-col items-center pb-16 pt-12 text-center sm:pb-20 sm:pt-20">
-      <h1 className="max-w-4xl text-[2.35rem] font-extrabold leading-[1.06] tracking-tight text-tinta sm:text-6xl">
+      <h1 className="max-w-4xl text-[2.25rem] font-extrabold leading-[1.08] tracking-tight text-tinta sm:text-[3.25rem]">
         Encontre um professor e agende sua <span className="text-secondary">próxima aula.</span>
       </h1>
       <p className="mt-6 max-w-2xl text-lg text-suave">
@@ -115,17 +71,14 @@ function Hero() {
 
 const BENEFICIOS = [
   {
-    icone: Search,
     titulo: 'Agendamento simples',
     texto: 'Encontre um professor e solicite sua aula em poucos passos.',
   },
   {
-    icone: CalendarCheck,
     titulo: 'Horários atualizados',
     texto: 'Consulte a disponibilidade e escolha o melhor horário para você.',
   },
   {
-    icone: ListChecks,
     titulo: 'Tudo organizado',
     texto: 'Acompanhe suas solicitações, aulas confirmadas e próximos compromissos.',
   },
@@ -134,14 +87,11 @@ const BENEFICIOS = [
 function Beneficios() {
   return (
     <section aria-label="Benefícios" className="conteudo">
-      <ul className="grid gap-8 border-y border-slate-200/80 py-10 sm:grid-cols-3 sm:gap-6">
+      <ul className="grid gap-8 border-y border-slate-200 py-10 sm:grid-cols-3 sm:gap-6">
         {BENEFICIOS.map((beneficio) => (
-          <li key={beneficio.titulo} className="flex gap-4">
-            <beneficio.icone size={24} className="mt-0.5 shrink-0 text-secondary" aria-hidden="true" />
-            <div>
-              <h2 className="font-bold text-tinta">{beneficio.titulo}</h2>
-              <p className="mt-1 text-sm text-suave">{beneficio.texto}</p>
-            </div>
+          <li key={beneficio.titulo}>
+            <h2 className="font-bold text-tinta">{beneficio.titulo}</h2>
+            <p className="mt-1 text-sm text-suave">{beneficio.texto}</p>
           </li>
         ))}
       </ul>
@@ -289,7 +239,7 @@ const VANTAGENS_PROFESSOR = [
 function ParaProfessores() {
   return (
     <section id="para-professores" className="conteudo scroll-mt-24 py-16 sm:py-24">
-      <div className="grid gap-10 rounded-[1.75rem] bg-gradient-to-br from-secondary to-primary px-6 py-12 text-white sm:px-12 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+      <div className="grid gap-10 rounded-2xl bg-primary px-6 py-12 text-white sm:px-12 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center">
         <div>
           <h2 className="text-3xl font-extrabold leading-tight tracking-tight sm:text-[2.6rem]">
             Mais tempo para ensinar. Menos trabalho para organizar.
@@ -300,7 +250,7 @@ function ParaProfessores() {
           </p>
           <Link
             to="/cadastro?perfil=PROFESSOR"
-            className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 font-bold text-primary transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+            className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-white px-6 font-bold text-primary transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
           >
             Quero dar aulas
             <ArrowRight size={18} aria-hidden="true" />
@@ -327,11 +277,12 @@ function ParaProfessores() {
 // ---------------------------------------------------------------------------
 
 export function PaginaInicio() {
+  useTitulo();
   return (
     <div className="flex min-h-screen flex-col">
       <a
         href="#conteudo"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:font-bold focus:text-primary focus:shadow-cartao"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-white focus:px-4 focus:py-2 focus:font-bold focus:text-primary focus:shadow-md"
       >
         Pular para o conteúdo
       </a>

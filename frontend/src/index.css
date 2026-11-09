@@ -26,15 +26,15 @@
   }
 
   .botao-principal {
-    @apply inline-flex h-12 items-center justify-center gap-2 rounded-full bg-secondary px-6 font-bold text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-secondary/30;
+    @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-secondary px-6 font-bold text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-secondary/30;
   }
 
   .botao-secundario {
-    @apply inline-flex h-12 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-6 font-bold text-primary transition-colors hover:border-secondary hover:text-secondary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-secondary/30;
+    @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 font-bold text-primary transition-colors hover:border-secondary hover:text-secondary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-secondary/30;
   }
 
   .cartao {
-    @apply rounded-3xl bg-white shadow-cartao;
+    @apply rounded-2xl border border-slate-200 bg-white;
   }
 
   .foco {
