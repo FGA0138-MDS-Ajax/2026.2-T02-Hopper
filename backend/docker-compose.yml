@@ -28,11 +28,10 @@ services:
       JWT_SECRET: segredo-local-com-mais-de-32-caracteres-aqui
       JWT_EXPIRES_IN: 2h
       CORS_ORIGIN: http://localhost:5173
-      SMTP_HOST: localhost
-      SMTP_PORT: 1025
-      SMTP_USER: usuario
-      SMTP_PASS: senha
-      SMTP_FROM: AulaCerta <nao-responda@aulacerta.com.br>
+      # Sem BREVO_API_KEY, o link de redefinição de senha aparece no log do contêiner.
+      BREVO_API_KEY: ${BREVO_API_KEY:-}
+      EMAIL_REMETENTE: nao-responda@aulacerta.com.br
+      EMAIL_REMETENTE_NOME: AulaCerta
       FRONTEND_URL: http://localhost:5173
     ports:
       - '3333:3333'
