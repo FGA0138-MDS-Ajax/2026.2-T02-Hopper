@@ -2,8 +2,11 @@ import {
   componentesBrasilia,
   criarDataBrasilia,
   faixasSeSobrepoem,
+  deslocamentoDoFusoEmMinutos,
   formatarDataHoraBrasilia,
+  formatarIsoBrasilia,
   gerarHorariosLivres,
+  serializarDatasNoFuso,
   horaParaMinutos,
   intervaloCabeNaGrade,
   intervalosSobrepoem,
@@ -102,6 +105,49 @@ describe('datas', () => {
     expect(intervaloCabeNaGrade(grade, dentro)).toBe(true);
     expect(intervaloCabeNaGrade(grade, fora)).toBe(false);
     expect(intervaloCabeNaGrade(grade, outroDia)).toBe(false);
+  });
+
+  it('usa o fuso America/Sao_Paulo (-03:00, sem horario de verao desde 2019)', () => {
+    expect(deslocamentoDoFusoEmMinutos(new Date('2026-11-09T12:00:00.000Z'))).toBe(-180);
+    expect(deslocamentoDoFusoEmMinutos(new Date('2026-01-15T12:00:00.000Z'))).toBe(-180);
+  });
+
+  it('respeita o horario de verao historico do fuso (jan/2018 era -02:00)', () => {
+    expect(deslocamentoDoFusoEmMinutos(new Date('2018-01-15T12:00:00.000Z'))).toBe(-120);
+    expect(criarDataBrasilia(2018, 1, 15, 10).toISOString()).toBe('2018-01-15T12:00:00.000Z');
+  });
+
+  it('normaliza dia fora do mes ao criar a data', () => {
+    expect(componentesBrasilia(criarDataBrasilia(2026, 11, 31, 9))).toMatchObject({
+      ano: 2026,
+      mes: 12,
+      dia: 1,
+      hora: 9,
+    });
+  });
+
+  it('formata em ISO 8601 com o deslocamento de Brasilia', () => {
+    expect(formatarIsoBrasilia(new Date('2026-11-10T11:00:00.000Z'))).toBe(
+      '2026-11-10T08:00:00.000-03:00',
+    );
+    expect(formatarIsoBrasilia(new Date('2026-11-10T02:30:45.123Z'))).toBe(
+      '2026-11-09T23:30:45.123-03:00',
+    );
+    const texto = formatarIsoBrasilia(new Date('2026-11-10T11:00:00.000Z'));
+    expect(new Date(texto).toISOString()).toBe('2026-11-10T11:00:00.000Z');
+  });
+
+  it('serializa as datas do JSON das respostas no horario de Brasilia', () => {
+    const corpo = {
+      aula: { inicio: new Date('2026-11-10T11:00:00.000Z'), nome: 'Física' },
+      lista: [new Date('2026-11-10T12:00:00.000Z')],
+      vazio: null,
+    };
+    expect(JSON.parse(JSON.stringify(corpo, serializarDatasNoFuso))).toEqual({
+      aula: { inicio: '2026-11-10T08:00:00.000-03:00', nome: 'Física' },
+      lista: ['2026-11-10T09:00:00.000-03:00'],
+      vazio: null,
+    });
   });
 
   it('formata data e hora no fuso de Brasilia', () => {

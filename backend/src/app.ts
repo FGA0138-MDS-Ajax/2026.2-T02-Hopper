@@ -25,6 +25,7 @@ import { criarRotasUsuarios } from './modules/usuarios/usuarios.routes';
 import { UsuariosService } from './modules/usuarios/usuarios.service';
 import { middlewareCors, middlewareHelmet } from './shared/middlewares/cors';
 import { rotaNaoEncontrada, tratarErros } from './shared/middlewares/tratar-erros';
+import { serializarDatasNoFuso } from './shared/utils/datas';
 import { criarSeguranca } from './shared/utils/seguranca';
 
 export interface DependenciasDoApp {
@@ -73,13 +74,15 @@ export function criarApp(dependencias: DependenciasDoApp = {}): Express {
 
   const app = express();
   app.disable('x-powered-by');
+  // Todas as datas das respostas saem em ISO 8601 no horário de Brasília (-03:00).
+  app.set('json replacer', serializarDatasNoFuso);
   app.use(middlewareHelmet);
   app.use(middlewareCors);
   app.use(express.json({ limit: LIMITE_DO_CORPO }));
 
   const api = express.Router();
   api.get('/saude', (_req, res) => {
-    res.status(200).json({ status: 'ok', horario: new Date().toISOString() });
+    res.status(200).json({ status: 'ok', horario: new Date() });
   });
   api.use(criarRotasUsuarios(new UsuariosController(usuariosServico)));
   api.use('/aulas', criarRotasAulas(new AulasController(aulasServico)));

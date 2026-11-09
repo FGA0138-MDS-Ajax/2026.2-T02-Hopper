@@ -2,10 +2,10 @@ import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { componentesBrasilia, criarDataBrasilia, somarMinutos } from '../src/shared/utils/datas';
 
 const CUSTO_BCRYPT = 10;
-const DESLOCAMENTO_BRASILIA_HORAS = 3;
-const MS_POR_DIA = 24 * 60 * 60 * 1000;
+const DURACAO_DA_AULA_MINUTOS = 60;
 
 const emailAdmin = process.env.SEED_ADMIN_EMAIL ?? 'admin@aulacerta.com.br';
 const senhaPadrao = process.env.SEED_SENHA ?? 'Senha@12345';
@@ -15,16 +15,9 @@ const prisma = new PrismaClient({
 });
 
 function horarioEmBrasilia(diasAPartirDeHoje: number, hora: number): { inicio: Date; fim: Date } {
-  const base = new Date(Date.now() + diasAPartirDeHoje * MS_POR_DIA);
-  const inicio = new Date(
-    Date.UTC(
-      base.getUTCFullYear(),
-      base.getUTCMonth(),
-      base.getUTCDate(),
-      hora + DESLOCAMENTO_BRASILIA_HORAS,
-    ),
-  );
-  return { inicio, fim: new Date(inicio.getTime() + 60 * 60 * 1000) };
+  const hoje = componentesBrasilia(new Date());
+  const inicio = criarDataBrasilia(hoje.ano, hoje.mes, hoje.dia + diasAPartirDeHoje, hora);
+  return { inicio, fim: somarMinutos(inicio, DURACAO_DA_AULA_MINUTOS) };
 }
 
 async function criarUsuario(

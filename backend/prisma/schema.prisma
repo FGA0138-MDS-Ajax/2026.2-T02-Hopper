@@ -37,15 +37,15 @@ enum TipoNotificacao {
 }
 
 model Usuario {
-  id                  String    @id @default(uuid())
+  id                  String   @id @default(uuid())
   nome                String
-  email               String    @unique
+  email               String   @unique
   senhaHash           String
   telefone            String?
   perfil              Perfil
-  ativo               Boolean   @default(true)
-  consentimentoLgpdEm DateTime
-  criadoEm            DateTime  @default(now())
+  ativo               Boolean  @default(true)
+  consentimentoLgpdEm DateTime @db.Timestamptz(3)
+  criadoEm            DateTime @default(now()) @db.Timestamptz(3)
 
   perfilProfessor PerfilProfessor?
   aulasComoAluno  Aula[]                  @relation("AulaAluno")
@@ -96,8 +96,8 @@ model Disponibilidade {
 model BloqueioHorario {
   id          String   @id @default(uuid())
   professorId String
-  inicio      DateTime
-  fim         DateTime
+  inicio      DateTime @db.Timestamptz(3)
+  fim         DateTime @db.Timestamptz(3)
   motivo      String?
 
   professor PerfilProfessor @relation(fields: [professorId], references: [id], onDelete: Cascade)
@@ -118,14 +118,14 @@ model Aula {
   anotacoes          String?
   motivoCancelamento String?
   serieId            String?
-  criadoEm           DateTime   @default(now())
+  criadoEm           DateTime   @default(now()) @db.Timestamptz(3)
 
-  aluno       Usuario           @relation("AulaAluno", fields: [alunoId], references: [id])
-  professor   PerfilProfessor   @relation(fields: [professorId], references: [id])
-  materia     Materia           @relation(fields: [materiaId], references: [id])
-  historico   HistoricoStatus[]
-  remarcacoes Remarcacao[]
-  avaliacao   Avaliacao?
+  aluno        Usuario           @relation("AulaAluno", fields: [alunoId], references: [id])
+  professor    PerfilProfessor   @relation(fields: [professorId], references: [id])
+  materia      Materia           @relation(fields: [materiaId], references: [id])
+  historico    HistoricoStatus[]
+  remarcacoes  Remarcacao[]
+  avaliacao    Avaliacao?
   notificacoes Notificacao[]
 
   @@index([professorId, inicio])
@@ -136,7 +136,7 @@ model HistoricoStatus {
   id       String     @id @default(uuid())
   aulaId   String
   status   StatusAula
-  dataHora DateTime   @default(now())
+  dataHora DateTime   @default(now()) @db.Timestamptz(3)
   motivo   String?
   autorId  String?
 
@@ -147,13 +147,13 @@ model HistoricoStatus {
 }
 
 model Remarcacao {
-  id             String   @id @default(uuid())
-  aulaId         String
-  propostoPorId  String
-  novoInicio     DateTime
-  novoFim        DateTime
-  aceita         Boolean?
-  criadoEm       DateTime @default(now())
+  id            String   @id @default(uuid())
+  aulaId        String
+  propostoPorId String
+  novoInicio    DateTime @db.Timestamptz(3)
+  novoFim       DateTime @db.Timestamptz(3)
+  aceita        Boolean?
+  criadoEm      DateTime @default(now()) @db.Timestamptz(3)
 
   aula        Aula    @relation(fields: [aulaId], references: [id], onDelete: Cascade)
   propostoPor Usuario @relation(fields: [propostoPorId], references: [id])
@@ -178,7 +178,7 @@ model Notificacao {
   mensagem   String
   lida       Boolean         @default(false)
   chaveUnica String          @unique
-  criadoEm   DateTime        @default(now())
+  criadoEm   DateTime        @default(now()) @db.Timestamptz(3)
 
   usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   aula    Aula?   @relation(fields: [aulaId], references: [id], onDelete: Cascade)
@@ -190,8 +190,8 @@ model TokenRecuperacaoSenha {
   id        String    @id @default(uuid())
   usuarioId String
   tokenHash String    @unique
-  expiraEm  DateTime
-  usadoEm   DateTime?
+  expiraEm  DateTime  @db.Timestamptz(3)
+  usadoEm   DateTime? @db.Timestamptz(3)
 
   usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 

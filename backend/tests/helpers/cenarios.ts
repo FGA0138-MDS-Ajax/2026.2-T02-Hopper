@@ -1,7 +1,12 @@
 import type { Express } from 'express';
 import request from 'supertest';
 import { prisma } from '../../src/infra/prisma';
-import { componentesBrasilia, criarDataBrasilia, somarMinutos } from '../../src/shared/utils/datas';
+import {
+  componentesBrasilia,
+  criarDataBrasilia,
+  formatarIsoBrasilia,
+  somarMinutos,
+} from '../../src/shared/utils/datas';
 import { autorizado, type UsuarioDeTeste } from './app';
 
 const MS_POR_DIA = 24 * 60 * 60 * 1000;
@@ -56,7 +61,7 @@ export function horario(
   const alvo = componentesBrasilia(new Date(Date.now() + diasAFrente * MS_POR_DIA));
   const inicio = criarDataBrasilia(alvo.ano, alvo.mes, alvo.dia, hora);
   return {
-    inicio: inicio.toISOString(),
-    fim: somarMinutos(inicio, duracaoMinutos).toISOString(),
+    inicio: formatarIsoBrasilia(inicio),
+    fim: formatarIsoBrasilia(somarMinutos(inicio, duracaoMinutos)),
   };
 }
