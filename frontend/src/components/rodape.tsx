@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useSessao } from '../contexts/sessao';
 import { Logo } from './logo';
 
 export function Rodape() {
+  const { usuario } = useSessao();
   return (
     <footer className="border-t border-slate-200/70 bg-white">
       <div className="conteudo flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
@@ -21,9 +23,11 @@ export function Rodape() {
           <a href="/#para-professores" className="foco rounded hover:text-primary">
             Sou professor
           </a>
-          <Link to="/entrar" className="foco rounded hover:text-primary">
-            Entrar
-          </Link>
+          {!usuario && (
+            <Link to="/entrar" className="foco rounded hover:text-primary">
+              Entrar
+            </Link>
+          )}
         </nav>
       </div>
       <div className="border-t border-slate-100">

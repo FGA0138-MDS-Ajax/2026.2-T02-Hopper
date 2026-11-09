@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useSessao } from '../contexts/sessao';
 import { Logo } from './logo';
+import { iniciais } from './professor-info';
 
 const LINKS = [
   { href: '/#como-funciona', rotulo: 'Como funciona' },
@@ -9,8 +11,20 @@ const LINKS = [
   { href: '/#para-professores', rotulo: 'Sou professor' },
 ];
 
+function primeiroNome(nome: string): string {
+  return nome.trim().split(/\s+/)[0] ?? nome;
+}
+
 export function Cabecalho() {
   const [aberto, setAberto] = useState(false);
+  const { usuario, carregando, sair } = useSessao();
+  const navegar = useNavigate();
+
+  function sairDaConta() {
+    setAberto(false);
+    sair();
+    navegar('/');
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/60 bg-surface/85 backdrop-blur">
@@ -31,13 +45,39 @@ export function Cabecalho() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
-          <Link to="/entrar" className="foco rounded-xl px-4 py-2 text-sm font-bold text-primary hover:text-secondary">
-            Entrar
-          </Link>
-          <Link to="/cadastro" className="botao-principal h-11 text-sm">
-            Criar conta
-          </Link>
+        {/* Enquanto confirma a sessão, o espaço fica vazio para não piscar "Entrar" para quem já está logado. */}
+        <div className="hidden min-w-[12rem] items-center justify-end gap-2 md:flex">
+          {usuario ? (
+            <>
+              <span className="flex items-center gap-2 text-sm font-semibold text-tinta">
+                <span
+                  aria-hidden="true"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
+                >
+                  {iniciais(usuario.nome)}
+                </span>
+                Olá, {primeiroNome(usuario.nome)}
+              </span>
+              <button
+                type="button"
+                onClick={sairDaConta}
+                className="foco rounded-xl px-3 py-2 text-sm font-bold text-primary hover:text-secondary"
+              >
+                Sair
+              </button>
+            </>
+          ) : (
+            !carregando && (
+              <>
+                <Link to="/entrar" className="foco rounded-xl px-4 py-2 text-sm font-bold text-primary hover:text-secondary">
+                  Entrar
+                </Link>
+                <Link to="/cadastro" className="botao-principal h-11 text-sm">
+                  Criar conta
+                </Link>
+              </>
+            )
+          )}
         </div>
 
         <button
@@ -64,14 +104,25 @@ export function Cabecalho() {
               {link.rotulo}
             </a>
           ))}
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <Link to="/entrar" className="botao-secundario">
-              Entrar
-            </Link>
-            <Link to="/cadastro" className="botao-principal">
-              Criar conta
-            </Link>
-          </div>
+          {usuario ? (
+            <div className="mt-2 flex items-center justify-between rounded-xl bg-white px-3 py-3">
+              <span className="text-sm font-semibold text-tinta">Olá, {primeiroNome(usuario.nome)}</span>
+              <button type="button" onClick={sairDaConta} className="foco rounded-lg text-sm font-bold text-primary">
+                Sair
+              </button>
+            </div>
+          ) : (
+            !carregando && (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <Link to="/entrar" className="botao-secundario">
+                  Entrar
+                </Link>
+                <Link to="/cadastro" className="botao-principal">
+                  Criar conta
+                </Link>
+              </div>
+            )
+          )}
         </nav>
       )}
     </header>
