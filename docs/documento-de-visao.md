@@ -1,0 +1,599 @@
+# Documento de Visão
+
+AulaCerta – Grupo Hopper
+
+Versão 1.0
+
+**Tabela - Integrantes do Grupo:**
+
+| Matrícula | Nome | Função (responsabilidade) | Pontos de participação na elaboração |
+| --- | --- | --- | --- |
+| **232036401** | Pedro França de Lima | Scrum Master, Product Owner e Developer | 12,5 |
+| **251037617** | Matheus Ferraz de Queiroz | Developer | 12,5 |
+| **251014793** | Pedro Henrique Caldas Alves | Developer | 12,5 |
+| **251037125** | Juliana Pereira de Rocha | Developer | 12,5 |
+| **251016724** | Yasmim Ayres dos Santos Guedes | Developer | 12,5 |
+| **251019780** | Daniel Valle Rodrigues Maia | Developer | 12,5 |
+| **251039513** | Felipe Lima Sant’Ana | Developer | 12,5 |
+| **242005418** | Pedro Henrique Rodrigues Pereira | Developer | 12,5 |
+| **Total de pontos** |  |  | 100 |
+
+**Histórico de Revisões**
+
+| **Data** | **Versão** | **Descrição** | **Autor** |
+| --- | --- | --- | --- |
+| **30/09/2026** | 1.0 | Versão inicial: visão do produto e do projeto, processo, escopo (backlog), métricas e testes. | Equipe |
+
+Este documento registra a visão do produto AulaCerta e do projeto que o desenvolve, no contexto da disciplina FGA0312 – Métodos de Desenvolvimento de Software (UnB/FCTE, 2026/2). Ele reúne o problema tratado, a solução proposta, a organização e o planejamento do projeto, o processo de desenvolvimento, o escopo do produto, as métricas e a estratégia de testes.
+
+## 1 VISÃO GERAL DO PRODUTO
+
+### 1.1 Problema
+
+**Contexto**
+
+O problema proposto pela disciplina trata da coordenação entre clientes e prestadores de serviços em geral. A equipe escolheu as aulas particulares como recorte desse problema para desenvolver uma solução viável no prazo do semestre: alunos e professores precisam coordenar horários, pedidos, confirmações e acompanhamento de aulas, permitindo tratar as quatro etapas em um contexto específico. Esse recorte não pretende abranger todos os tipos de serviço. As aulas particulares, tratadas na literatura acadêmica como parte da chamada "educação-sombra" (BRAY, 2009), são uma atividade muito difundida no Brasil: apenas na categoria de reforço escolar, uma única plataforma lista mais de 158 mil professores no país (SUPERPROF, 2026b). Elas atendem desde alunos do ensino fundamental até universitários e candidatos a vestibulares, ao ENEM e a concursos. Do lado da oferta estão, em sua maioria, professores autônomos: estudantes universitários, professores da rede de ensino que complementam a renda e profissionais que ensinam uma habilidade específica, como idiomas ou música. Quando o aluno é menor de idade, os responsáveis também participam da contratação e do acompanhamento.
+
+Na observação da equipe, é comum que a contratação aconteça por indicação e redes sociais e que a coordenação das aulas seja feita por canais informais: mensagens de WhatsApp, directs do Instagram, ligações e agendas de papel ou planilhas mantidas pelo próprio professor. O WhatsApp, em particular, é o aplicativo mais presente na tela inicial dos smartphones brasileiros, entre todos os aplicativos, aparecendo em 64,8% deles (MOBILE TIME, 2026). Plataformas especializadas, como o Superprof, ajudam a encontrar um professor, mas não resolvem a coordenação do dia a dia das aulas.
+
+**Problema encontrado**
+
+Alunos e professores enfrentam dificuldades para coordenar a disponibilidade, a solicitação, a confirmação e o acompanhamento das aulas particulares, sobretudo porque essas informações ficam espalhadas por canais dispersos. Cada etapa acontece em um lugar diferente e nenhum dos envolvidos tem a visão completa da situação.
+
+Para o aluno (ou responsável), isso significa não saber quais professores atendem a matéria e o nível desejados nem quando eles estão livres, não ter certeza se a aula foi confirmada e perder o controle das aulas já realizadas e das próximas. Para o professor, significa responder repetidamente às mesmas perguntas, administrar a agenda de vários alunos por mensagens, lidar com remarcações e cancelamentos frequentes, correr o risco de marcar dois alunos no mesmo horário e perder pedidos no meio das conversas.
+
+A Figura 1 apresenta o diagrama de Ishikawa (ISHIKAWA, 1986) elaborado pela equipe para organizar as causas desse problema em seis categorias.
+
+**Figura 1 –** Diagrama de Ishikawa (espinha de peixe) do problema
+
+![Diagrama de Ishikawa](assets/documento-de-visao/media/image1.png)
+
+**Fonte:** Elaborado pela equipe (2026).
+
+As três primeiras categorias acompanham as etapas da coordenação. Em Disponibilidade, a agenda do professor não é pública, então o aluno precisa perguntar e esperar uma resposta. Em Solicitação, os pedidos chegam de forma informal e incompleta, sem matéria, nível ou objetivo da aula. Em Confirmação, o acordo costuma ser um "ok, fechado" ambíguo, e o horário não fica bloqueado, o que gera conflitos e remarcações.
+
+Em Acompanhamento, não existe histórico das aulas nem lembretes, o que favorece faltas e esquecimentos. A categoria Canais de comunicação reúne a causa transversal: as conversas se espalham por vários aplicativos e as informações se perdem no histórico. Por fim, em Ferramentas existentes, observa-se que as plataformas do setor focam em encontrar o professor; depois do primeiro contato, a combinação continua fora delas.
+
+**Questão de pesquisa:** como facilitar a coordenação entre alunos e professores de aulas particulares quanto à disponibilidade, à solicitação, à confirmação e ao acompanhamento das aulas?
+
+**Solução de software proposta**
+
+A solução proposta é o AulaCerta, uma aplicação web responsiva de reserva de aulas particulares que centraliza as quatro etapas da coordenação em um único fluxo, com o status de cada aula visível para aluno e professor:
+
+- **Disponibilidade:** o professor publica sua grade de horários livres, as matérias, os níveis e a modalidade de atendimento (online, presencial ou em domicílio), e o aluno vê apenas os horários realmente disponíveis.
+
+- **Solicitação:** o aluno escolhe matéria, nível, modalidade e horário e descreve o objetivo da aula (prova, ENEM, reforço etc.) em um formulário estruturado.
+
+- **Confirmação:** o professor aceita ou recusa o pedido; ao aceitar, o horário é bloqueado automaticamente e o aluno é notificado. Remarcações e cancelamentos também passam pela plataforma, com registro.
+
+- **Acompanhamento:** cada aula tem um status (solicitada, confirmada, remarcada, cancelada, realizada) e fica registrada em um histórico, com lembretes antes do horário marcado.
+
+O foco em experiência do usuário (UX) é um critério de sucesso da solução, e não apenas estético: a equipe pretende tornar a reserva de uma aula simples o suficiente para competir com a troca de mensagens. Se o fluxo exigir esforço excessivo, há risco de os usuários preferirem os canais dispersos. Por isso, o produto prioriza fluxos com poucos passos, status sempre visível e notificações. As medições e inspeções feitas pela própria equipe verificam tempo, passos e falhas do fluxo, mas não comprovam a facilidade de uso percebida por alunos e professores reais; essa percepção permanece uma hipótese, sem avaliação externa prevista neste projeto.
+
+Espera-se, com isso, reduzir o tempo gasto para marcar e confirmar aulas, eliminar conflitos de horário, diminuir faltas e esquecimentos e dar a alunos, responsáveis e professores uma visão única e confiável das aulas. Assim, problema, causas e solução ficam alinhados: cada categoria do diagrama da Figura 1 é tratada por uma das etapas do fluxo proposto.
+
+### 1.2 Declaração de Posição do Produto
+
+O AulaCerta é uma aplicação web responsiva para a reserva e a coordenação de aulas particulares. Seus usuários-alvo são, de um lado, alunos (e seus responsáveis) que buscam aulas particulares, geralmente estudantes da educação básica, vestibulandos e universitários, e, de outro, professores autônomos que oferecem essas aulas e precisam organizar a agenda de vários alunos. Para ambos, o produto é importante porque substitui a troca de mensagens em vários canais por um fluxo único e rastreável.
+
+O principal concorrente pesquisado é o Superprof, plataforma que conecta alunos e professores em mais de mil disciplinas. Nela, porém, o aluno precisa assinar o Passe Aluno para enviar pedidos de aula, e o pagamento das aulas é combinado entre aluno e professor, podendo ocorrer fora da plataforma (SUPERPROF, 2026a). Ou seja, o foco está em encontrar o professor, e boa parte da coordenação continua nos canais informais. O AulaCerta se diferencia por coordenar a aula do início ao fim: agenda, pedido, confirmação, remarcação e histórico no mesmo lugar, sem exigir pagamento prévio para o primeiro contato. O Quadro 1 resume a posição do produto.
+
+**Quadro 1 –** Declaração de posição do produto
+
+| Para: | Alunos (e responsáveis) que buscam aulas particulares e professores autônomos que as oferecem. |
+| --- | --- |
+| Necessidade: | Coordenar disponibilidade, solicitação, confirmação e acompanhamento das aulas em um único canal, sem depender de conversas espalhadas. |
+| O AulaCerta: | é uma aplicação web responsiva de reserva de aulas particulares. |
+| Que: | Centraliza agenda, pedidos, confirmações, remarcações e histórico das aulas, com status visível e notificações para aluno e professor. |
+| Ao contrário: | Da coordenação por WhatsApp, ligações e redes sociais, em que as informações se perdem, e de plataformas como o Superprof, que focam em encontrar o professor e cobram assinatura para o primeiro contato. |
+| Nosso produto: | Coordena a aula do início ao fim, em poucos passos e com foco em UX, sem barreira de pagamento para o primeiro contato. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+Em síntese, o Quadro 1 mostra que o valor do produto não está em ampliar a oferta de professores, mas em tornar a coordenação das aulas simples e confiável. Sem uma solução desse tipo, alunos e professores continuam dependendo de mensagens avulsas, com os conflitos de horário, as faltas e o retrabalho descritos na seção 1.1.
+
+### 1.3 Objetivos do Produto
+
+**Objetivo principal:** desenvolver uma aplicação web responsiva que centralize a coordenação de aulas particulares entre alunos e professores, cobrindo disponibilidade, solicitação, confirmação e acompanhamento das aulas, com foco em usabilidade.
+
+**Objetivos secundários:**
+
+- permitir que o professor mantenha um perfil com matérias, níveis, modalidades e valor da hora-aula, e publique sua disponibilidade semanal;
+
+- permitir que o aluno encontre professores por matéria, nível e modalidade e solicite uma aula informando o objetivo;
+
+- garantir a confirmação ou recusa dos pedidos com bloqueio automático do horário, impedindo conflitos de agenda;
+
+- registrar remarcações e cancelamentos na própria plataforma;
+
+- oferecer acompanhamento por status, histórico de aulas, notificações e lembretes;
+
+- verificar, por meio de cenários internos, que o fluxo de reserva possa ser concluído em até 3 minutos e no máximo 5 passos.
+
+O objetivo principal responde diretamente à questão de pesquisa da seção 1.1. Os objetivos intermediários correspondem às etapas do fluxo de coordenação e, portanto, às categorias do diagrama de Ishikawa. O último objetivo torna mensurável o foco em UX: ele define metas que serão acompanhadas pelas métricas da seção 5.
+
+### 1.4 Tecnologias a Serem Utilizadas
+
+A escolha das tecnologias considerou três critérios: aderência ao problema (uma aplicação web responsiva, acessível pelo celular), familiaridade ou facilidade de aprendizado pela equipe no prazo do semestre e disponibilidade de ferramentas gratuitas. O Quadro 2 apresenta as tecnologias adotadas. O detalhamento de como elas se organizam na solução será tratado no Documento de Arquitetura.
+
+**Quadro 2 –** Tecnologias adotadas no projeto
+
+| **Categoria** | **Tecnologia** | **Justificativa** |
+|----|----|----|
+| Front-end | React com TypeScript (Vite) | Componentização da interface, tipagem que reduz defeitos e ampla documentação. |
+| Estilo e interface | Tailwind CSS | Agiliza a construção de telas responsivas e consistentes. |
+| Back-end | Node.js com Express (TypeScript) | Mesma linguagem no front-end e no back-end, o que facilita a colaboração na equipe. |
+| Banco de dados e acesso | PostgreSQL com Prisma ORM | Banco relacional adequado a agendas e reservas; o ORM simplifica migrações e consultas. |
+| Autenticação e segurança | JWT e bcrypt | Sessões sem estado e armazenamento seguro de senhas. |
+| Notificações | Notificações na aplicação; e-mail apenas para recuperação de senha (Nodemailer) | Avisos de confirmação, recusa, remarcação e lembretes exibidos na aplicação; link de redefinição de senha por e-mail (RF03). |
+| Testes | Jest, React Testing Library, Supertest e Playwright | Cobrem os níveis unitário, de integração e de sistema (ponta a ponta). |
+| UX e usabilidade | Heurísticas de Nielsen e testes internos de fluxo | Avaliação dos fluxos da interface implementada para orientar ajustes de usabilidade. |
+| Versionamento e gestão | Git, GitHub e GitHub Projects | Repositório, revisão por pull requests e quadro Kanban das sprints. |
+| Ambiente e implantação | Docker; hospedagem gratuita (ex.: Vercel e Render) | Ambiente padronizado para a equipe e publicação do incremento de cada sprint. |
+| Métodos e técnicas | Scrum, XP, histórias de usuário, MoSCoW, heurísticas de Nielsen | Base do processo descrito nas seções 2.1 e 3. |
+| Comunicação | Microsoft Teams e WhatsApp | Canais já usados pela turma, pelo professor e pelos monitores. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+## 2 VISÃO GERAL DO PROJETO
+
+### 2.1 Ciclo de vida do projeto de desenvolvimento de software
+
+A Figura 2 instancia, para este projeto, o modelo apresentado em sala, que relaciona metodologia, processo, procedimentos, métodos e ferramentas.
+
+**Figura 2 –** Ciclo de vida do projeto instanciado para o AulaCerta
+
+![Ciclo de vida do projeto](assets/documento-de-visao/media/image2.png)
+
+**Fonte:** Adaptado do material da disciplina pela equipe (2026).
+
+**Metodologia:** ágil. O semestre oferece cerca de sete semanas de desenvolvimento, e o backlog poderá ser refinado conforme a equipe examina os incrementos. Uma abordagem ágil permite entregar valor cedo, verificar internamente os fluxos e ajustar o rumo a cada ciclo (PRESSMAN; MAXIM, 2016).
+
+**Processo:** Scrum combinado com práticas do XP, em um ciclo de vida iterativo e incremental (SCHWABER; SUTHERLAND, 2020; BECK, 2004). As duas primeiras sprints seguem o calendário da disciplina e são dedicadas à concepção (Documentos de Visão e de Arquitetura). Após a reunião de 02/10/2026, que definirá a arquitetura, e a entrega do respectivo documento em 07/10/2026, o desenvolvimento começa em 08/10/2026. As três sprints seguintes duram de uma semana e meia a três semanas e terminam com um incremento funcionando.
+
+**Procedimentos:** planejamento, daily assíncrona, revisão e retrospectiva de cada sprint; toda alteração de código entra por pull request revisado; as histórias só entram na sprint quando atendem à Definição de Preparado (DoR) e só são encerradas quando atendem à Definição de Pronto (DoD), descritas na seção 3.
+
+**Métodos:** histórias de usuário (COHN, 2004), priorização MoSCoW, estimativa por planning poker, desenvolvimento orientado a testes nas regras de agendamento, programação em pares nas tarefas críticas e avaliação da interface pelas heurísticas de Nielsen (NIELSEN, 1994).
+
+**Ferramentas:** GitHub e GitHub Projects para código e gestão, VS Code como ambiente de desenvolvimento e Microsoft Teams para comunicação, conforme o Quadro 2.
+
+### 2.2 Organização do Projeto
+
+O Quadro 3 apresenta a divisão de atribuições e responsabilidades entre os membros do projeto, sem qualquer relação de hierarquia ou grau de importância: todos os integrantes são igualmente responsáveis pelo sucesso do projeto. Seguindo o princípio de propriedade coletiva do código do XP, todos os membros também desenvolvem; o papel indica a responsabilidade principal de cada um. No Quadro 3, os integrantes são identificados por nome e sobrenome; seus nomes completos e matrículas constam na tabela de integrantes do grupo.
+
+**Quadro 3 –** Organização do projeto: papéis e responsabilidades
+
+| **Papel** | **Atribuições** | **Responsável** | **Participantes** |
+|----|----|----|----|
+| Scrum Master | Facilitar as cerimônias, remover impedimentos, manter o quadro do GitHub Projects, as atas e o relatório de situação, acompanhar os riscos. | Pedro França | Toda a equipe |
+| Product Owner (P.O.) | Manter e priorizar o backlog, escrever e refinar histórias e critérios de aceite, validar as entregas nas revisões de sprint. | Pedro França | Toda a equipe |
+| Designer UX/UI | Revisar os fluxos e a consistência visual da interface, planejar e aplicar verificações internas de usabilidade. | Pedro Caldas | Felipe Lima |
+| Desenvolvedor front-end | Implementar as telas responsivas em React, integrá-las à API e escrever testes de componentes. | Pedro Caldas | Felipe Lima |
+| Desenvolvedor back-end | Modelar os dados, implementar a API e as regras de agendamento, escrever testes unitários e de integração, cuidar da implantação. | Matheus Ferraz | Daniel Valle |
+| Desenvolvedor de banco de dados | Modelar o banco relacional, manter migrações, consultas e integridade dos dados de agenda e reservas. | Juliana Pereira | Yasmim Ayres |
+| Analista de Qualidade | Definir a estratégia e o roteiro de testes, revisar pull requests, verificar a DoD, registrar defeitos e coletar as métricas. | Pedro Rodrigues | Yasmim Ayres |
+| Cliente potencial | Os clientes potenciais do AulaCerta são alunos, responsáveis e professores particulares. Neste projeto acadêmico, o P.O. da equipe representa suas necessidades como hipóteses; o professor e os monitores acompanham e avaliam o projeto. | Pedro França (P.O.; representação interna) | Equipe do projeto |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+### 2.3 Planejamento das Fases e/ou Iterações do Projeto
+
+O Quadro 4 registra as fases e iterações do projeto, com datas alinhadas ao cronograma da disciplina e à reunião de definição da arquitetura em 02/10/2026: entrega do Documento de Visão em 30/09/2026, Documento de Arquitetura em 07/10/2026 e início do desenvolvimento em 08/10/2026, ponto de controle da equipe em 09/11/2026, inspeções em 16/11/2026 e apresentação do software rodando em 30/11/2026. A Sprint 5 termina em 26/11/2026; o período de 27 a 29/11/2026 fica reservado para estabilização, ensaio e contingências antes da apresentação, sem previsão de novas funcionalidades. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%, e essa atualização é auditada pelos monitores no repositório da equipe.
+
+**Quadro 4 –** Planejamento das sprints do projeto
+
+| **Sprint** | **Produto (Entrega)** | **Data Início** | **Data Fim** | **Entregável(eis)** | **Responsáveis** | **% conclusão** |
+|----|----|----|----|:--:|----|----|
+| Sprint 1 | Definição do produto | 16/09/2026 | 30/09/2026 | DV, BKL | P.O., Scrum Master, UX e equipe | 100% |
+| Sprint 2 | Definição e documentação da arquitetura | 01/10/2026 | 07/10/2026 | DA | Desenvolvedores, UX e Scrum Master | 0% |
+| Sprint 3 | Preparação do ambiente; cadastro, autenticação, perfil e disponibilidade (C01, C02) | 08/10/2026 | 25/10/2026 | AMB, APR, INC1 | Desenvolvedores, QA e P.O. | 0% |
+| Sprint 4 | Busca, solicitação e confirmação de aulas (C03, C04) | 26/10/2026 | 15/11/2026 | INC2, PC | Desenvolvedores, QA e P.O. | 0% |
+| Sprint 5 | Remarcação, cancelamento, acompanhamento e administração (C05, C06, C07) | 16/11/2026 | 26/11/2026 | INC3, RINSP, RT, RUX | Toda a equipe | 0% |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+**Legenda dos entregáveis (aliases):**
+
+- **DV:** Documento de Visão do Produto e do Projeto (este documento).
+
+- **BKL:** backlog inicial priorizado, registrado no GitHub Projects.
+
+- **DA:** Documento de Arquitetura.
+
+- **AMB:** repositório e ambientes configurados.
+
+- **APR:** apresentações do DV (14/10/2026) e do DA (19/10/2026).
+
+- **INC1, INC2, INC3:** incrementos de software funcionando, integrados em develop e publicados em main ao fim de cada sprint.
+
+- **PC:** apresentação da equipe no ponto de controle de 09/11/2026.
+
+- **RINSP:** correção dos defeitos apontados na inspeção de 16/11/2026.
+
+- **RT:** relatório de testes, com o roteiro de previsto x realizado.
+
+- **RUX: registro dos testes internos de fluxo e da inspeção heurística.**
+
+- **APF:** marco externo às sprints — apresentação da equipe com o software rodando em 30/11/2026.
+
+### 2.4 Matriz de Comunicação
+
+O Quadro 5 descreve a estratégia de comunicação adotada para monitorar o progresso do projeto: as reuniões previstas, sua periodicidade, os envolvidos e os produtos gerados. As atas e os relatórios de situação ficam na pasta de documentação do repositório.
+
+**Quadro 5 –** Matriz de comunicação
+
+| **Descrição** | **Área / Envolvidos** | **Periodicidade** | **Produtos gerados** |
+|----|----|----|----|
+| Daily: andamento das tarefas e impedimentos | Equipe do projeto | Dias úteis (assíncrona, no Teams) | Registro no canal da equipe; quadro atualizado |
+| Planejamento da sprint | Equipe e P.O. | Início de cada sprint | Backlog da sprint no GitHub Projects |
+| Acompanhamento das atividades, riscos, compromissos, ações pendentes e indicadores | Equipe do projeto | Semanal | Ata de reunião; relatório de situação do projeto |
+| Revisão da sprint: demonstração do incremento | Equipe e P.O. | Fim de cada sprint | Incremento validado; ata de revisão |
+| Retrospectiva | Equipe do projeto | Fim de cada sprint | Lista de ações de melhoria |
+| Comunicar a situação do projeto | Equipe, professor e monitor | Semanal e nos marcos avaliativos | Relatório de situação; apresentações |
+| Verificação interna da interface | Equipe, P.O. e responsável por UX | Sprints 3 a 5 | Registro de inspeção heurística e testes internos de fluxo |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+### 2.5 Gerenciamento de Riscos
+
+O Quadro 6 reúne os riscos identificados na concepção do projeto. A exposição combina probabilidade e impacto: riscos de exposição alta recebem plano de mitigação, para evitar que ocorram, e todos têm plano de contingência, acionado caso ocorram[^1]. A lista é revisada semanalmente na reunião de acompanhamento, e os riscos são registrados no quadro do projeto no GitHub.
+
+**Quadro 6 –** Riscos do projeto
+
+| **ID** | **Risco** | **Prob.** | **Impacto** | **Exposição** | **Plano de mitigação** | **Plano de contingência** |
+|----|----|----|----|----|----|----|
+| R01 | Curva de adoção das tecnologias escolhidas (React, Node.js e Prisma) | Alta | Alto | Alta | Estudos dirigidos e provas de conceito na Sprint 3; programação em pares. | Reduzir o escopo às histórias Must; simplificar a arquitetura. |
+| R02 | Indisponibilidade de membros (provas, outras disciplinas) | Alta | Médio | Alta | Tarefas pequenas e visíveis no quadro; conhecimento compartilhado por revisão de código. | Redistribuir tarefas e replanejar a sprint. |
+| R03 | Escopo maior que o tempo de desenvolvimento (cerca de sete semanas) | Alta | Alto | Alta | Priorização MoSCoW; MVP formado apenas pelas histórias Must. | Mover itens Should e Could para versões futuras. |
+| R04 | Falhas na regra de agendamento (reserva dupla, horários sobrepostos) | Média | Alto | Alta | Validação no back-end; TDD e testes de integração dessa regra. | Priorizar a correção; exigir confirmação manual até corrigir. |
+| R05 | Baixa usabilidade leva o usuário a preferir o WhatsApp | Média | Alto | Alta | Heurísticas de Nielsen; testes internos de fluxo nos incrementos funcionais. | Reprojetar o fluxo crítico na sprint seguinte. |
+| R06 | Cobertura insuficiente dos cenários internos de UX | Média | Médio | Média | Definir cenários de aluno e professor e lista de inspeção antes dos testes. | Reservar tempo na sprint para ampliar os testes internos de fluxo. |
+| R07 | Conflitos de merge ou perda de código | Média | Médio | Média | Política de branches e pull requests revisados. | Reverter pelo histórico do Git. |
+| R08 | Interrupções no calendário acadêmico (feriados, eventos, cancelamentos de aula) | Média | Médio | Média | Folga no planejamento das sprints. | Aplicar os critérios de replanejamento (seção 2.6). |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+### 2.6 Critérios de Replanejamento
+
+Os critérios do Quadro 7 indicam quando o planejamento deve ser revisto. Muitos deles derivam dos riscos da seção 2.5 e estão alinhados aos respectivos planos de mitigação e contingência. Os critérios são verificados a cada revisão de sprint, e todo replanejamento gera uma nova versão deste documento, registrada no Histórico de Revisões.
+
+**Quadro 7 –** Critérios de replanejamento
+
+| **Critério** | **Gatilho** | **Ação de replanejamento** |
+|----|----|----|
+| Desempenho da sprint | Menos de 70% dos pontos planejados concluídos | Rever a capacidade e reduzir o escopo da sprint seguinte. |
+| Risco materializado | Ocorrência de risco de exposição alta (R01 a R05) | Acionar a contingência do Quadro 6 e replanejar as sprints afetadas. |
+| Mudança de prioridade | O P.O. reprioriza o backlog ou a inspeção interna ou os testes internos de fluxo reprovam um fluxo crítico | Reordenar o backlog e incluir o reprojeto na próxima sprint. |
+| Qualidade | Defeitos críticos abertos ao fim da sprint ou apontados na inspeção de 16/11/2026 | Reservar capacidade da sprint seguinte para correções antes de novas histórias. |
+| Equipe | Saída ou afastamento prolongado de um integrante | Redistribuir papéis e tarefas e revisar o escopo. |
+| Calendário | Alteração no cronograma da disciplina | Ajustar datas e entregáveis do Quadro 4. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+## 3 PROCESSO DE DESENVOLVIMENTO DE SOFTWARE
+
+O processo adotado é uma adaptação do Scrum com práticas do XP, coerente com o ciclo de vida da seção 2.1. Esta seção não pretende ser prescritiva nem detalhista: ela serve de guia para a equipe. A Figura 3 ilustra o fluxo de trabalho.
+
+**Figura 3 –** Fluxo de trabalho do processo de desenvolvimento
+
+![Processo de desenvolvimento de software](assets/documento-de-visao/media/image3.png)
+
+**Fonte:** Elaborado pela equipe (2026).
+
+A cada sprint, o P.O. traz as histórias priorizadas do backlog do produto, e a equipe seleciona as que cabem na sua capacidade, formando o backlog da sprint. Durante a execução, cada desenvolvedor seleciona uma tarefa, cria uma branch, implementa o código com seus testes, executa os testes localmente e abre um pull request, que é revisado; se houver ajustes, a tarefa volta à codificação. Aprovado, o código é integrado à branch develop. Ao fim da sprint, o incremento é demonstrado na revisão e a equipe faz a retrospectiva, cujas melhorias alimentam a sprint seguinte. O Quadro 8 detalha as atividades, com entradas, saídas e responsáveis.
+
+**Quadro 8 –** Atividades do processo de desenvolvimento
+
+| **Atividade** | **Entrada** | **Saída** | **Responsável (papel)** |
+|----|----|----|----|
+| Refinamento do backlog | Backlog do produto; achados da revisão interna | Histórias com critérios de aceite, estimadas e priorizadas | P.O. (com a equipe) |
+| Planejamento da sprint | Histórias que atendem à DoR; capacidade da equipe | Meta e backlog da sprint | Equipe, P.O. e Scrum Master |
+| Planejamento de UX | Histórias da sprint | Critérios de usabilidade e regras de interação registrados nas histórias. | Designer UX/UI |
+| Desenvolvimento | Tarefa (issue) do backlog da sprint | Código e testes em uma branch `feature/<id>` | Desenvolvedores |
+| Revisão de código e QA | Pull request com os testes executados e aprovados pelo autor | Pull request aprovado ou ajustes solicitados | Analista de Qualidade e um desenvolvedor revisor |
+| Integração | Pull request aprovado | Merge em develop; história atende à DoD | Autor do pull request |
+| Revisão da sprint | Incremento em homologação | Incremento aceito ou itens devolvidos ao backlog; merge em main | Equipe e P.O. |
+| Retrospectiva | Resultados e métricas da sprint | Ações de melhoria para a próxima sprint | Equipe, facilitada pelo Scrum Master |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+**Política de branches e commits**
+
+- **main:** versão estável, atualizada apenas ao fim de cada sprint, a partir de develop.
+
+- **develop:** branch de integração, que recebe os pull requests aprovados.
+
+- **`feature/<id>-<descricao>`:** uma branch por tarefa, criada a partir de develop (correções usam `fix/<id>-<descricao>`).
+
+- **Commits:** mensagens no padrão Conventional Commits (ex.: feat: solicitar aula), sempre referenciando a issue.
+
+**Definição de Preparado (DoR)**
+
+Uma história só entra na sprint quando tem descrição no formato de história de usuário, critérios de aceite, estimativa em pontos e nenhuma dependência bloqueante.
+
+**Definição de Pronto (DoD)**
+
+Uma história só é considerada pronta quando todos os critérios de aceite foram atendidos, o código foi revisado e integrado em develop, os testes automatizados passam, a cobertura das regras de negócio se mantém acima de 70%, a interface funciona em celular e em computador, não há defeitos críticos abertos e o P.O. validou os critérios de aceite da história.
+
+## 4 DECLARAÇÃO DE ESCOPO DO PROJETO
+
+### 4.1 Backlog do produto
+
+O backlog do produto está organizado por perfis (seção 4.2), cenários (seção 4.3) e requisitos associados a histórias de usuário (seção 4.4). A prioridade de cada requisito segue a técnica MoSCoW, e o Quadro 9 define o que cada classe representa para o AulaCerta. Essa classificação é a visão da equipe e será validada pelo P.O.
+
+**Quadro 9 –** Classes de priorização MoSCoW para o AulaCerta
+
+| **Classe** | **Significado para o produto** |
+|----|----|
+| Must (obrigatório) | Sem o requisito, o fluxo de coordenação (disponibilidade, solicitação, confirmação e acompanhamento) não funciona ou não resolve o problema. Compõe o MVP. |
+| Should (importante) | Melhora significativamente a experiência ou reduz esforço, mas existe alternativa manual temporária. Entra se houver capacidade nas sprints. |
+| Could (desejável) | Agrega valor, mas não é essencial para validar a solução. Fica para o fim do projeto ou para versões futuras. |
+| Won't (fora do escopo) | Não será tratado neste semestre: pagamento dentro da plataforma, videochamada integrada e aplicativo móvel nativo. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+Os requisitos foram formulados pela equipe com brainstorming e benchmarking na concepção. O Quadro 10 apresenta essas fontes e a revisão interna planejada para os incrementos. As necessidades atribuídas ao público-alvo são hipóteses da equipe.
+
+**Quadro 10 –** Técnicas de elicitação de requisitos
+
+| **Técnica** | **Finalidade** | **Responsável** |
+|----|----|----|
+| Brainstorming | Levantar ideias iniciais e causas do problema (base do diagrama de Ishikawa) | Equipe |
+| Benchmarking | Analisar concorrentes como o Superprof e agendas genéricas, identificando lacunas | Equipe |
+| Análise de cenários pela equipe | Identificar hipóteses sobre necessidades de alunos e responsáveis sem pesquisa de campo | Equipe e P.O. |
+| Revisão de regras de negócio | Verificar coerência entre agenda, remarcações, cancelamentos e critérios de aceite | Equipe e P.O. |
+| Inspeção interna da interface implementada | Executar cenários internos dos fluxos implementados e orientar ajustes nas sprints seguintes | Equipe e responsável por UX |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+### 4.2 Perfis
+
+O Quadro 11 identifica os perfis de acesso ao AulaCerta, suas características e permissões. As limitações de cada perfil serão tratadas nas regras de autorização descritas no Documento de Arquitetura.
+
+**Quadro 11 –** Perfis de acesso
+
+| **\#** | **Nome do perfil** | **Características do perfil** | **Permissões de acesso** |
+|----|----|----|----|
+| 1 | Visitante | Pessoa não autenticada que conhece a plataforma. | Buscar professores, ver perfis e horários livres, cadastrar-se. |
+| 2 | Aluno | Estudante que busca aulas; inclui o responsável que age em nome de um aluno menor de idade. | Manter o próprio perfil; solicitar, remarcar e cancelar aulas; acompanhar status e histórico; avaliar aulas. |
+| 3 | Professor | Profissional autônomo que oferece aulas particulares. | Manter perfil e disponibilidade; aceitar ou recusar pedidos; remarcar e cancelar aulas; registrar anotações; ver histórico. |
+| 4 | Administrador | Membro da equipe responsável pela operação da plataforma. | Manter usuários (consultar, bloquear e excluir) e moderar perfis. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+Como os perfis têm características distintas, a equipe usa técnicas de elicitação diferentes para cada um, conforme o Quadro 12.
+
+**Quadro 12 –** Técnicas de elicitação por perfil
+
+| **Perfil** | **Técnica(s)** | **Justificativa** |
+|----|----|----|
+| Aluno | Análise interna de cenários e testes de fluxo | A equipe examina cenários de reserva do aluno e registra falhas nos testes internos, sem inferir a experiência de usuários reais. |
+| Professor | Revisão interna das regras de agenda e testes de fluxo | A agenda com vários alunos e remarcações exige cenários e critérios de aceite específicos, revisados pela equipe. |
+| Administrador | Brainstorming da equipe | Perfil interno, cujas necessidades são conhecidas pela própria equipe. |
+| Visitante | Benchmarking e inspeção interna da interface | A equipe compara o fluxo inicial com alternativas disponíveis, sem afirmar avaliação por visitantes reais. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+### 4.3 Cenários
+
+Os cenários funcionais agrupam os requisitos segundo as etapas do fluxo de coordenação. O Quadro 13 lista os cenários e as sprints em que serão desenvolvidos.
+
+**Quadro 13 –** Cenários funcionais
+
+| **Sistema: AulaCerta – Cenários funcionais** |  |  |
+| --- | --- | --- |
+| **Numeração do cenário** | **Nome do cenário** | **Sprints** |
+| C01 | Cadastro e autenticação de usuários | Sprint 3 |
+| C02 | Perfil e disponibilidade do professor | Sprint 3 |
+| C03 | Busca de professores e solicitação de aula | Sprint 4 |
+| C04 | Confirmação ou recusa de aula | Sprint 4 |
+| C05 | Remarcação e cancelamento de aula | Sprint 5 |
+| C06 | Acompanhamento das aulas (status, histórico, notificações e lembretes) | Sprint 5 |
+| C07 | Administração da plataforma | Sprint 5 |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+Os cenários C02 a C06 correspondem diretamente às quatro etapas da questão de pesquisa: disponibilidade (C02), solicitação (C03), confirmação (C04) e acompanhamento (C06); a remarcação e o cancelamento (C05) completam o fluxo. C01 e C07 dão suporte ao fluxo principal.
+
+### 4.4 Tabela de Backlog do produto
+
+O Quadro 14 apresenta o backlog do produto. A numeração associa cada requisito ao seu cenário (Quadro 13); os requisitos não funcionais valem para todas as sprints. Ao todo, são 21 requisitos funcionais (13 Must, 4 Should e 4 Could) e 6 não funcionais. O RF14 foi retirado do escopo; a numeração foi mantida para rastreabilidade.
+
+**Quadro 14 –** Backlog do produto
+
+| **Sistema: AulaCerta – Backlog do produto** |  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Numeração**<br> **(Cenário / requisito)** | **Sprint** | **Nome do requisito** | **Tipo de requisito**<br> **(Funcional / não funcional)** | **Priorização do requisito**<br> **Must, Should, Could** | **Descrição sucinta do requisito** | **Histórias de usuário (U.S.) associadas** |
+| C01-RF01 | Sprint 3 | Cadastrar usuário | Funcional | Must | Cadastro como aluno ou professor, com nome, e-mail, senha e telefone. | US01 – Como visitante, quero me cadastrar como aluno ou professor, para usar a plataforma. |
+| C01-RF02 | Sprint 3 | Autenticar usuário | Funcional | Must | Entrar e sair da plataforma com e-mail e senha. | US02 – Como usuário, quero entrar com meu e-mail e senha, para acessar minhas aulas. |
+| C01-RF03 | Sprint 3 | Recuperar senha | Funcional | Should | Redefinir a senha por link enviado ao e-mail. | US03 – Como usuário, quero recuperar minha senha, para voltar a acessar minha conta. |
+| C02-RF04 | Sprint 3 | Manter perfil do professor | Funcional | Must | Matérias, níveis, modalidades (online, presencial, domicílio), valor da hora-aula e apresentação. | US04 – Como professor, quero descrever o que ensino e como atendo, para receber pedidos adequados. |
+| C02-RF05 | Sprint 3 | Publicar disponibilidade | Funcional | Must | Grade semanal de horários livres. | US05 – Como professor, quero publicar meus horários livres, para não precisar informá-los a cada aluno. |
+| C02-RF06 | Sprint 3 | Bloquear horários pontuais | Funcional | Should | Exceções na grade (feriados, compromissos). | US06 – Como professor, quero bloquear um horário específico, para evitar pedidos quando não posso atender. |
+| C03-RF07 | Sprint 4 | Buscar professores | Funcional | Must | Filtros por matéria, nível e modalidade. | US07 – Como aluno, quero buscar professores por matéria, nível e modalidade, para encontrar quem atende minha necessidade. |
+| C03-RF08 | Sprint 4 | Visualizar perfil e horários livres | Funcional | Must | Perfil do professor com os horários realmente disponíveis. | US08 – Como aluno, quero ver os horários livres do professor, para escolher um sem precisar perguntar. |
+| C03-RF09 | Sprint 4 | Solicitar aula | Funcional | Must | Pedido com matéria, nível, modalidade, horário e objetivo. | US09 – Como aluno, quero solicitar uma aula informando meu objetivo, para que o professor tenha o que precisa para aceitar. |
+| C03-RF10 | Sprint 4 | Solicitar aulas recorrentes | Funcional | Could | Pedido de aula semanal em um mesmo horário. | US10 – Como aluno, quero marcar aulas semanais de uma vez, para não repetir o pedido toda semana. |
+| C04-RF11 | Sprint 4 | Aceitar ou recusar solicitação | Funcional | Must | Decisão do professor sobre cada pedido, com motivo opcional na recusa. | US11 – Como professor, quero aceitar ou recusar pedidos, para controlar minha agenda. |
+| C04-RF12 | Sprint 4 | Bloquear horário e impedir conflito | Funcional | Must | Ao aceitar, o horário é bloqueado; pedidos e aceites sobrepostos são impedidos. | US12 – Como professor, quero que um horário aceito fique bloqueado, para nunca marcar dois alunos juntos. |
+| C04-RF13 | Sprint 4 | Notificar na plataforma | Funcional | Must | Aviso ao aluno e ao professor a cada mudança de status. | US13 – Como aluno, quero ser avisado quando o professor responder, para saber se a aula está confirmada. |
+| C05-RF15 | Sprint 5 | Remarcar aula | Funcional | Must | Proposta de novo horário, que precisa ser aceita pela outra parte. | US15 – Como aluno ou professor, quero propor um novo horário, para remarcar sem trocar mensagens. |
+| C05-RF16 | Sprint 5 | Cancelar aula | Funcional | Must | Cancelamento com registro do motivo e liberação do horário. | US16 – Como aluno ou professor, quero cancelar uma aula informando o motivo, para que o horário seja liberado. |
+| C06-RF17 | Sprint 5 | Acompanhar status da aula | Funcional | Must | Status: solicitada, confirmada, recusada, remarcada, cancelada, realizada. | US17 – Como aluno, quero ver o status das minhas aulas, para saber sempre em que pé estão. |
+| C06-RF18 | Sprint 5 | Consultar histórico de aulas | Funcional | Should | Lista das aulas passadas e futuras, com filtros. | US18 – Como aluno ou responsável, quero consultar o histórico, para acompanhar a frequência das aulas. |
+| C06-RF19 | Sprint 5 | Enviar lembrete | Funcional | Should | Lembrete exibido na aplicação para as aulas confirmadas nas próximas 24 h. | US19 – Como aluno ou professor, quero receber um lembrete, para não esquecer a aula. |
+| C06-RF20 | Sprint 5 | Registrar anotações da aula | Funcional | Could | Conteúdo visto e observações, visíveis ao aluno. | US20 – Como professor, quero registrar o que foi visto, para planejar a próxima aula. |
+| C06-RF21 | Sprint 5 | Avaliar aula realizada | Funcional | Could | Nota e comentário do aluno após a aula. | US21 – Como aluno, quero avaliar a aula, para ajudar outros alunos a escolher. |
+| C07-RF22 | Sprint 5 | Manter usuários | Funcional | Could | Consultar, bloquear e excluir contas; moderar perfis. | US22 – Como administrador, quero gerenciar usuários, para manter a plataforma segura. |
+| RNF01 | Todas | Usabilidade | Não funcional | Must | Fluxo de reserva em no máximo 5 passos e até 3 minutos nos cenários internos; sem falhas críticas na inspeção de usabilidade. | Todas as histórias com interface. |
+| RNF02 | Todas | Responsividade | Não funcional | Must | Funcionar em telas a partir de 360 px de largura e em computadores. | Todas as histórias com interface. |
+| RNF03 | Todas | Segurança | Não funcional | Must | Senhas com hash (bcrypt), autenticação por JWT e HTTPS. | US01, US02, US03 |
+| RNF04 | Todas | Desempenho | Não funcional | Should | Telas principais carregadas em até 2 segundos. | US07, US08, US17 |
+| RNF05 | Todas | Acessibilidade | Não funcional | Should | Critérios básicos da WCAG 2.1 nível AA: contraste, navegação por teclado e rótulos (W3C, 2018). | Todas as histórias com interface. |
+| RNF06 | Todas | Privacidade | Não funcional | Should | Coleta mínima de dados e consentimento, conforme a LGPD (BRASIL, 2018). | US01, US04 |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+## 5 MÉTRICAS E MEDIÇÕES
+
+### 5.1 GQM de medições
+
+A equipe adota a abordagem Goal Question Metric (BASILI; CALDIERA; ROMBACH, 1994) para acompanhar o projeto. Foram definidos dois objetivos de medição: G1, voltado à verificação interna do produto e de seus fluxos, e G2, voltado ao acompanhamento e à qualidade do desenvolvimento. O Quadro 15 estrutura esses objetivos.
+
+**Quadro 15 –** Objetivos de medição (GQM)
+
+| **Elemento** | **G1 – Produto** | **G2 – Processo** |
+|----|----|----|
+| Analisar | o produto AulaCerta | o processo de desenvolvimento |
+| Com o propósito de | avaliar | acompanhar e melhorar |
+| Com respeito à | fluidez do fluxo de reserva nos testes internos e à prevenção de conflitos de horário | previsibilidade das entregas e qualidade do código |
+| Do ponto de vista | da equipe de desenvolvimento, representando cenários de aluno e professor | da equipe de desenvolvimento |
+| No contexto de | testes internos com contas de teste, disciplina MDS 2026/2 | sprints de desenvolvimento, disciplina MDS 2026/2 |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+Cada objetivo se desdobra em questões que as métricas devem responder, conforme o Quadro 16.
+
+**Quadro 16 –** Questões e métricas associadas
+
+| **Objetivo** | **Questão** | **Métricas** |
+|----|----|----|
+| G1 | Q1 – O fluxo de reserva atende às metas de tempo e execução nos cenários internos? | M1 – Tempo médio do fluxo de reserva; M2 – Taxa de conclusão dos cenários de reserva |
+| G1 | Q2 – A interface atende à lista de verificação heurística definida pela equipe? | M3 – Conformidade da inspeção heurística |
+| G1 | Q3 – A plataforma evita conflitos de horário? | M4 – Conflitos de agendamento |
+| G2 | Q4 – A equipe entrega o que planeja em cada sprint? | M5 – Taxa de conclusão da sprint |
+| G2 | Q5 – O código tem qualidade adequada? | M6 – Cobertura de testes; M7 – Densidade de defeitos; M8 – Débito técnico aberto |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+O Quadro 17 detalha cada métrica segundo o 5W1H: definição e forma de cálculo, escala e unidade, valor esperado, quem coleta, quando e onde, e como o resultado será analisado. Os valores medidos serão registrados a cada sprint na pasta de documentação do repositório.
+
+**Quadro 17 –** Detalhamento das métricas
+
+| **Métrica** | **Definição e cálculo** | **Escala / unidade** | **Valor esperado** | **Coleta (quem, quando, onde)** | **Análise** |
+|----|----|----|----|----|----|
+| M1 – Tempo médio do fluxo de reserva | Tempo entre abrir a busca e enviar o pedido em execuções internas. Cálculo: soma dos tempos / nº de execuções. | Minutos (razão) | ≤ 3 min | Responsável por UX, em execuções internas nas Sprints 4 e 5, por cronômetro. | Acima da meta: rever o fluxo de reserva. |
+| M2 – Taxa de conclusão dos cenários de reserva | Cenários internos de reserva concluídos sem falhas. Cálculo: cenários concluídos / cenários executados × 100. | % (razão) | 100% | Responsável por UX, nos cenários internos, mediante registro de execução. | Abaixo da meta: identificar o passo com falhas. |
+| M3 – Conformidade da inspeção heurística | Itens aplicáveis atendidos / total de itens aplicáveis × 100, em lista interna baseada nas heurísticas de Nielsen. | % (razão) | ≥ 90%, sem falhas críticas | Responsável por UX, ao fim de cada sprint de desenvolvimento, por lista de verificação. | Abaixo da meta ou com falha crítica: corrigir a interface. |
+| M4 – Conflitos de agendamento | Reservas sobrepostas aceitas pelo sistema nos testes. Cálculo: contagem. | Nº (absoluta) | 0 | QA, a cada execução dos testes de integração e de sistema. | Qualquer ocorrência é defeito crítico. |
+| M5 – Taxa de conclusão da sprint | Pontos concluídos / pontos planejados × 100. | % (razão) | ≥ 80% | Scrum Master, na revisão de cada sprint, pelo GitHub Projects. | Abaixo de 70%: aplicar critério de replanejamento. |
+| M6 – Cobertura de testes | Linhas das regras de negócio cobertas por testes / total × 100. | % (razão) | ≥ 70% | QA, a cada pull request, pelo relatório de cobertura do Jest anexado pelo autor. | Queda na cobertura bloqueia o merge. |
+| M7 – Densidade de defeitos | Defeitos encontrados / histórias entregues na sprint. | Defeitos por história (razão) | ≤ 0,5 | QA, ao fim da sprint, pelas issues com rótulo "defeito". | Tendência de alta: reforçar revisão e testes. |
+| M8 – Débito técnico aberto | Issues com rótulo "débito técnico" ainda abertas. | Nº (absoluta) | Estável ou em queda | Scrum Master, semanalmente, pelo GitHub. | Crescimento contínuo: reservar capacidade para quitar. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+## 6 TESTES DE SOFTWARE
+
+### 6.1 Estratégia de testes contendo:
+
+**a) Níveis e tipos de testes abordados.** A estratégia combina testes funcionais em quatro níveis (SOMMERVILLE, 2018) com testes não funcionais ligados aos requisitos RNF01 a RNF06, como resume o Quadro 18. A regra de conflito de horários (RF12) recebe atenção especial, por ser o núcleo da confiabilidade do produto.
+
+**Quadro 18 –** Níveis e tipos de teste
+
+| **Nível** | **Tipo** | **Foco** | **Ferramenta** | **Responsável** |
+|----|----|----|----|----|
+| Unitário | Funcional | Regras de negócio isoladas, em especial conflito de horários e transições de status | Jest | Desenvolvedores |
+| Integração | Funcional | API com banco de dados: cadastro, solicitação, confirmação, remarcação | Jest e Supertest | Desenvolvedores back-end |
+| Sistema (ponta a ponta) | Funcional | Fluxos completos pela interface, como aluno e como professor | Playwright | Analista de Qualidade |
+| Sistema | Não funcional: usabilidade | Tempo do fluxo, conclusão dos cenários e inspeção heurística (M1 a M3) | Cenários internos de fluxo e lista de verificação heurística | Designer UX/UI |
+| Sistema | Não funcional: responsividade, desempenho, segurança e acessibilidade | RNF02 a RNF05 | DevTools do navegador, Lighthouse e inspeção | Analista de Qualidade |
+| Aceitação | Funcional | Critérios de aceite de cada história | Demonstração na revisão da sprint | P.O. |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+**b) Ambientes de testes.** Os ambientes acompanham a política de branches e de commits da seção 3, conforme o Quadro 19.
+
+**Quadro 19 –** Ambientes de teste e política de branches
+
+| **Ambiente** | **Branch** | **Uso** | **Testes executados** |
+|----|----|----|----|
+| Local | feature/\* e fix/\* | Desenvolvimento da tarefa | Lint, unitários, integração e cobertura, executados pelo desenvolvedor antes do pull request |
+| Homologação | develop | Versão publicada para verificação interna | Ponta a ponta, aceitação pelo P.O. e inspeção interna de usabilidade |
+| Produção | main | Versão estável ao fim da sprint | Teste de fumaça dos fluxos principais |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+**c) Formas de análise.** Um pull request só é integrado com todos os testes automatizados passando e a cobertura das regras de negócio igual ou superior a 70% (M6). Defeitos são registrados como issues e classificados por severidade (crítico, alto, médio, baixo); defeitos críticos impedem o encerramento da história. As verificações internas de fluxo e interface são analisadas pelas métricas M1 a M3, e os demais testes não funcionais, pelas metas dos requisitos correspondentes. Esses critérios se ligam à Definição de Pronto (DoD) da seção 3: uma história só é encerrada com seus testes aprovados e sem defeitos críticos abertos.
+
+**d) Resultados obtidos (previsto x realizado).** Cada caso de teste tem um resultado previsto. Se o realizado for diferente do previsto, o teste não passou e um defeito foi identificado: ele é corrigido e o teste é repetido até que previsto e realizado coincidam, quando o teste é aprovado. Os resultados são registrados no roteiro da seção 6.2 a cada ciclo de execução.
+
+### 6.2 Roteiro de teste:
+
+O roteiro de testes planeja os casos de teste que serão executados ao longo das sprints. O Quadro 20 identifica cada caso, com objetivo, nível, tipo, pré-condições e o resultado esperado que define sua aceitação. O Quadro 21 reserva o espaço para registrar a execução: resultado realizado, evidência objetiva, reparos e quantidade de ciclos.
+
+**Quadro 20 –** Roteiro de testes: planejamento dos casos de teste
+
+| **ID** | **Nome** | **Objetivo** | **Nível** | **Tipo** | **Pré-condições** | **Resultado esperado (aceite)** |
+|----|----|----|----|----|----|----|
+| CT01 | Cadastro de usuário | Verificar o cadastro com dados válidos (RF01) | Sistema | Funcional | Visitante na tela de cadastro | Conta criada e usuário direcionado ao painel do seu perfil |
+| CT02 | Login inválido | Verificar a recusa de credenciais incorretas (RF02) | Integração | Funcional | Usuário cadastrado | Acesso negado com mensagem clara, sem revelar qual dado está errado |
+| CT03 | Publicar disponibilidade | Verificar a publicação da grade semanal (RF05) | Sistema | Funcional | Professor autenticado com perfil completo | Horários exibidos no perfil público do professor |
+| CT04 | Solicitar aula em horário livre | Verificar o envio do pedido (RF09) | Sistema | Funcional | Aluno autenticado; professor com horário livre | Pedido criado com status "solicitada" e professor notificado |
+| CT05 | Impedir conflito de horário | Verificar o bloqueio de reservas sobrepostas (RF12) | Unitário e integração | Funcional | Horário já confirmado para outro aluno | Pedido ou aceite recusado pelo sistema; nenhuma reserva duplicada (M4 = 0) |
+| CT06 | Aceitar solicitação | Verificar aceite, bloqueio e notificação (RF11 a RF13) | Sistema | Funcional | Pedido pendente | Status "confirmada", horário bloqueado e aluno notificado |
+| CT07 | Recusar solicitação | Verificar a recusa (RF11) | Sistema | Funcional | Pedido pendente | Status "recusada", horário continua livre e aluno notificado |
+| CT08 | Remarcar aula | Verificar a remarcação com aceite da outra parte (RF15) | Sistema | Funcional | Aula confirmada | Novo horário bloqueado, antigo liberado e status "remarcada" |
+| CT09 | Cancelar aula | Verificar o cancelamento com motivo (RF16) | Sistema | Funcional | Aula confirmada | Status "cancelada", motivo registrado e horário liberado |
+| CT10 | Status e histórico | Verificar a exibição do status e do histórico (RF17, RF18) | Sistema | Funcional | Aluno com aulas em vários status | Todas as aulas listadas com o status correto |
+| CT11 | Usabilidade da reserva | Verificar tempo, conclusão dos cenários e heurísticas da reserva (RNF01) | Sistema | Não funcional: usabilidade | Versão em homologação e contas de teste de aluno e professor; equipe executora | Fluxo com até 5 passos, tempo médio ≤ 3 min, 100% dos cenários obrigatórios concluídos e inspeção heurística ≥ 90%, sem falhas críticas |
+| CT12 | Responsividade | Verificar o uso em tela pequena (RNF02) | Sistema | Não funcional: portabilidade | Navegador com largura de 360 px | Fluxos principais utilizáveis, sem rolagem horizontal |
+| CT13 | Armazenamento de senha | Verificar que senhas não ficam legíveis (RNF03) | Integração | Não funcional: segurança | Usuário recém-cadastrado | Senha armazenada apenas como hash bcrypt |
+| CT14 | Tempo de carregamento | Verificar o desempenho das telas principais (RNF04) | Sistema | Não funcional: desempenho | Ambiente de homologação | Busca, perfil e painel carregados em até 2 s |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+**Quadro 21 –** Roteiro de testes: registro da execução
+
+| **ID** | **Resultado realizado** | **Evidência objetiva** | **Reparos executados** | **Ciclos** | **Situação** |
+|----|----|----|----|----|----|
+| CT01 | A executar | — | — | 0 | Pendente |
+| CT02 | A executar | — | — | 0 | Pendente |
+| CT03 | A executar | — | — | 0 | Pendente |
+| CT04 | A executar | — | — | 0 | Pendente |
+| CT05 | A executar | — | — | 0 | Pendente |
+| CT06 | A executar | — | — | 0 | Pendente |
+| CT07 | A executar | — | — | 0 | Pendente |
+| CT08 | A executar | — | — | 0 | Pendente |
+| CT09 | A executar | — | — | 0 | Pendente |
+| CT10 | A executar | — | — | 0 | Pendente |
+| CT11 | A executar | — | — | 0 | Pendente |
+| CT12 | A executar | — | — | 0 | Pendente |
+| CT13 | A executar | — | — | 0 | Pendente |
+| CT14 | A executar | — | — | 0 | Pendente |
+
+**Fonte:** Elaborado pela equipe (2026).
+
+Os testes de software são obrigatórios. O quadro de execução será preenchido a partir da Sprint 3, e cada ciclo de testes atualiza as colunas de resultado, evidência (captura de tela, log de execução ou relatório), reparos e ciclos executados.
+
+## 7 REFERÊNCIAS BIBLIOGRÁFICAS
+
+BASILI, Victor R.; CALDIERA, Gianluigi; ROMBACH, H. Dieter. The goal question metric approach. In: MARCINIAK, John J. (ed.). Encyclopedia of software engineering. New York: Wiley, 1994. p. 528-532.
+
+BECK, Kent. Programação extrema (XP) explicada: acolha as mudanças. Porto Alegre: Bookman, 2004.
+
+BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.
+
+BRAY, Mark. Confronting the shadow education system: what government policies for what private tutoring? Paris: UNESCO International Institute for Educational Planning, 2009. Disponível em: <https://unesdoc.unesco.org/ark:/48223/pf0000185106>. Acesso em: 2 out. 2026.
+
+COHN, Mike. User stories applied: for agile software development. Boston: Addison-Wesley, 2004.
+
+ISHIKAWA, Kaoru. Guide to quality control. 2. ed. Tokyo: Asian Productivity Organization, 1986.
+
+MOBILE TIME. WhatsApp está na tela inicial de 65% dos smartphones brasileiros. Mobile Time, 9 jun. 2026. Disponível em: <https://www.mobiletime.com.br/noticias/09/06/2026/whatsapp-super-panorama/>. Acesso em: 2 out. 2026.
+
+NIELSEN, Jakob. 10 usability heuristics for user interface design. Nielsen Norman Group, 1994. Disponível em: <https://www.nngroup.com/articles/ten-usability-heuristics/>. Acesso em: 28 set. 2026.
+
+PRESSMAN, Roger S.; MAXIM, Bruce R. Engenharia de software: uma abordagem profissional. 8. ed. Porto Alegre: AMGH, 2016.
+
+SCHWABER, Ken; SUTHERLAND, Jeff. O guia do Scrum: o guia definitivo para o Scrum: as regras do jogo. 2020. Disponível em: <https://scrumguides.org>. Acesso em: 28 set. 2026.
+
+SOMMERVILLE, Ian. Engenharia de software. 10. ed. São Paulo: Pearson, 2018.
+
+SUPERPROF. Superprof: aulas particulares. 2026a. Disponível em: <https://www.superprof.com.br>. Acesso em: 28 set. 2026.
+
+SUPERPROF. Reforço escolar no Brasil. 2026b. Disponível em: <https://www.superprof.com.br/aulas/reforco-escolar/brasil/>. Acesso em: 2 out. 2026.
+
+W3C. Web Content Accessibility Guidelines (WCAG) 2.1. 2018. Disponível em: <https://www.w3.org/TR/WCAG21/>. Acesso em: 28 set. 2026.
+
+[^1]: Lembrando: plano de mitigação existe para tentar evitar que um risco ocorra. Plano de contingência é acionado se um risco efetivamente ocorre e deve tratar os efeitos do risco já ocorrido.

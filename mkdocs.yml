@@ -2,8 +2,12 @@ site_name: Documentação
 
 nav:
   - Instruções mkdocs: "index.md"
+  - Documento de Visão: "documento-de-visao.md"
   - Atas de Reunião:
     - Ata 1: "atas-reuniao/ata-reuniao-1.md"
 
 theme:
   name: material
+
+markdown_extensions:
+  - footnotes
