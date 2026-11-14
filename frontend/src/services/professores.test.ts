@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { api } from './api';
-import { buscarProfessores, listarMaterias } from './professores';
+import { buscarProfessor, buscarProfessores, listarMaterias } from './professores';
 
 describe('serviço de professores (formato das respostas da API)', () => {
   const adaptadorOriginal = api.defaults.adapter;
@@ -30,5 +30,17 @@ describe('serviço de professores (formato das respostas da API)', () => {
 
     await expect(buscarProfessores({ materia: 'Física', limite: 6 })).resolves.toEqual(pagina);
     expect(parametros).toEqual({ materia: 'Física', limite: 6 });
+  });
+
+  it('buscarProfessor codifica o id na rota e devolve o perfil com os horários livres', async () => {
+    const professor = { id: 'p/1', nome: 'Ana', horariosLivres: [] };
+    let rota: string | undefined;
+    api.defaults.adapter = async (config) => {
+      rota = config.url;
+      return { data: professor, status: 200, statusText: 'OK', headers: {}, config };
+    };
+
+    await expect(buscarProfessor('p/1')).resolves.toEqual(professor);
+    expect(rota).toBe('/professores/p%2F1');
   });
 });
