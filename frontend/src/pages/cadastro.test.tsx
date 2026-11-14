@@ -106,6 +106,30 @@ describe('PaginaCadastro', () => {
     expect(await screen.findByTestId('local-atual')).toHaveTextContent('/meu-perfil?bem-vindo=1');
   });
 
+  it('aluno novo sem destino vai para a busca de professores (CT01)', async () => {
+    const aluno: Usuario = { ...NOVA, perfil: 'ALUNO' };
+    cadastrarMock.mockResolvedValue(aluno);
+    entrarMock.mockResolvedValue({ token: 't', usuario: aluno });
+    abrir();
+
+    await preencherValido();
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+
+    expect(await screen.findByTestId('local-atual')).toHaveTextContent(/^\/professores$/);
+  });
+
+  it('aluno que veio de outra página volta para ela depois do cadastro', async () => {
+    const aluno: Usuario = { ...NOVA, perfil: 'ALUNO' };
+    cadastrarMock.mockResolvedValue(aluno);
+    entrarMock.mockResolvedValue({ token: 't', usuario: aluno });
+    abrir('/cadastro?voltar=%2Fprofessores%2Fp1%2Fsolicitar');
+
+    await preencherValido();
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+
+    expect(await screen.findByTestId('local-atual')).toHaveTextContent(/^\/professores\/p1\/solicitar$/);
+  });
+
   it('não envia telefone quando o campo fica vazio', async () => {
     cadastrarMock.mockResolvedValue(NOVA);
     entrarMock.mockResolvedValue({ token: 't', usuario: NOVA });
