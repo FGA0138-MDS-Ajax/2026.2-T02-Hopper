@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580" font-family="DejaVu Sans, Verdana, sans-serif" font-size="15" role="img" aria-labelledby="titulo descricao">
+  <title id="titulo">Ciclo de vida Scrum + XP do projeto AulaCerta</title>
+  <desc id="descricao">Fases do projeto (concepção, desenvolvimento iterativo e incremental, estabilização e apresentação) e o ciclo de cada sprint: backlog do produto, planejamento, backlog da sprint, execução com daily assíncrona e práticas do XP, incremento, revisão com validação do P.O. e retrospectiva, que leva à próxima sprint.</desc>
+  <defs>
+    <marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#404040"/>
+    </marker>
+  </defs>
+  <rect width="1100" height="580" fill="#ffffff"/>
+
+  <!-- Fases do projeto -->
+  <g text-anchor="middle" fill="#1f3864">
+    <rect x="20" y="15" width="290" height="62" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="165" y="40" font-weight="bold">Concepção</text>
+    <text x="165" y="63" fill="#262626">Sprints 1 e 2 (16/09 a 07/10)</text>
+
+    <rect x="355" y="15" width="400" height="62" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="555" y="40" font-weight="bold">Desenvolvimento iterativo e incremental</text>
+    <text x="555" y="63" fill="#262626">Sprints 3 a 5 (08/10 a 26/11)</text>
+
+    <rect x="800" y="15" width="280" height="62" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="940" y="40" font-weight="bold">Estabilização</text>
+    <text x="940" y="63" fill="#262626">27 a 29/11; apresentação 30/11</text>
+  </g>
+  <g stroke="#404040" stroke-width="2" fill="none">
+    <path d="M310,46 L352,46" marker-end="url(#seta)"/>
+    <path d="M755,46 L797,46" marker-end="url(#seta)"/>
+  </g>
+
+  <!-- Retorno à próxima sprint -->
+  <text x="560" y="105" text-anchor="middle" font-style="italic" font-size="14" fill="#404040">próxima sprint: retorno ao backlog com prioridades revisadas</text>
+  <path d="M970,455 L1080,455 L1080,115 L95,115 L95,135" stroke="#404040" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+
+  <!-- Backlogs e planejamento -->
+  <g text-anchor="middle" fill="#262626">
+    <rect x="20" y="138" width="150" height="76" rx="4" fill="#fff2cc" stroke="#bf9000" stroke-width="1.5"/>
+    <text x="95" y="166">Backlog do</text>
+    <text x="95" y="186">produto</text>
+    <text x="95" y="206">(P.O., MoSCoW)</text>
+
+    <rect x="205" y="138" width="175" height="76" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="292" y="166">Planejamento</text>
+    <text x="292" y="186">da sprint</text>
+    <text x="292" y="206">(Equipe + P.O.)</text>
+
+    <rect x="415" y="138" width="170" height="76" rx="4" fill="#fff2cc" stroke="#bf9000" stroke-width="1.5"/>
+    <text x="500" y="166">Backlog da</text>
+    <text x="500" y="186">sprint</text>
+    <text x="500" y="206">(GitHub Projects)</text>
+  </g>
+  <g stroke="#404040" stroke-width="2" fill="none">
+    <path d="M170,176 L202,176" marker-end="url(#seta)"/>
+    <path d="M380,176 L412,176" marker-end="url(#seta)"/>
+    <path d="M500,214 L500,243" marker-end="url(#seta)"/>
+  </g>
+
+  <!-- Execução da sprint -->
+  <rect x="150" y="246" width="700" height="318" rx="4" fill="#f2f2f2" stroke="#808080" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="500" y="272" text-anchor="middle" font-style="italic" fill="#404040">Execução da sprint (1,5 a 3 semanas), com daily assíncrona</text>
+  <text x="500" y="294" text-anchor="middle" font-style="italic" font-size="14" fill="#404040">práticas do XP</text>
+
+  <g text-anchor="middle" fill="#262626">
+    <rect x="166" y="306" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="246" y="337">Histórias</text>
+    <text x="246" y="357">pequenas</text>
+    <rect x="336" y="306" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="416" y="337">Pares nas</text>
+    <text x="416" y="357">tarefas críticas</text>
+    <rect x="506" y="306" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="586" y="337">Testes</text>
+    <text x="586" y="357">automatizados</text>
+    <rect x="676" y="306" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="756" y="337">Pull request</text>
+    <text x="756" y="357">revisado</text>
+
+    <rect x="166" y="388" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="246" y="419">Integração</text>
+    <text x="246" y="439">frequente</text>
+    <rect x="336" y="388" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="416" y="429">Refatoração</text>
+    <rect x="506" y="388" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="586" y="419">Padrão de</text>
+    <text x="586" y="439">código</text>
+    <rect x="676" y="388" width="160" height="70" rx="4" fill="#dde8f4" stroke="#2e75b6" stroke-width="1.5"/>
+    <text x="756" y="419">Propriedade</text>
+    <text x="756" y="439">coletiva do código</text>
+
+    <rect x="290" y="494" width="420" height="52" rx="4" fill="#fff2cc" stroke="#bf9000" stroke-width="1.5"/>
+    <text x="500" y="525">Incremento em developer (DoD atendida)</text>
+  </g>
+  <path d="M500,458 L500,491" stroke="#404040" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+
+  <!-- Revisão e retrospectiva -->
+  <g text-anchor="middle" fill="#262626">
+    <rect x="880" y="250" width="180" height="90" rx="4" fill="#e2efda" stroke="#538135" stroke-width="1.5"/>
+    <text x="970" y="279">Revisão da sprint</text>
+    <text x="970" y="301">(P.O. valida os</text>
+    <text x="970" y="321">critérios de aceite)</text>
+
+    <rect x="880" y="415" width="180" height="80" rx="4" fill="#e2efda" stroke="#538135" stroke-width="1.5"/>
+    <text x="970" y="449">Retrospectiva</text>
+    <text x="970" y="471">(melhorias)</text>
+  </g>
+  <g stroke="#404040" stroke-width="2" fill="none">
+    <path d="M710,520 L865,520 L865,300 L877,300" marker-end="url(#seta)"/>
+    <path d="M970,340 L970,412" marker-end="url(#seta)"/>
+  </g>
+</svg>

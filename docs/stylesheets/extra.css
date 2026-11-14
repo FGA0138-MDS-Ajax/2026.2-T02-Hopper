@@ -277,3 +277,8 @@ a:focus-visible, button:focus-visible, input:focus-visible,
   .md-typeset .ac-hero, .md-typeset .ac-card { background: white; color: black; }
   .md-typeset .ac-card { break-inside: avoid; }
 }
+
+/* Rotas, métodos HTTP e identificadores em tabelas não são partidos no meio. */
+.md-typeset table:not([class]) code {
+  white-space: nowrap;
+}

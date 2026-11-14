@@ -4,9 +4,12 @@ site_url: https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/
 
 nav:
   - Início: "index.md"
-  - Documentos:
-    - Documento de Visão: "documento-de-visao.md"
-    - Documento de Arquitetura: "documento-de-arquitetura.md"
+  - Documento de Visão:
+    - Versão 1.1 (atual): documento-de-visao/v1-1.md
+    - Versão 1.0: documento-de-visao/v1-0.md
+  - Documento de Arquitetura:
+    - Versão 1.1 (atual): documento-de-arquitetura/v1-1.md
+    - Versão 1.0: documento-de-arquitetura/v1-0.md
   - Qualidade:
     - Visão Geral: qualidade/index.md
     - C01 — Cadastro e Autenticação: qualidade/c01-cadastro-e-autenticacao.md
