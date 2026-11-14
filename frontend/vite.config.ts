@@ -16,6 +16,8 @@ export default defineConfig({
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/main.tsx', 'src/vite-env.d.ts', 'src/test/**', 'src/**/*.test.{ts,tsx}'],
       reporter: ['text', 'html'],
+      // Meta M6 do Documento de Visão: abaixo de 70%, o comando de cobertura falha.
+      thresholds: { statements: 70, branches: 70, functions: 70, lines: 70 },
     },
   },
 });

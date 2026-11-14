@@ -28,7 +28,10 @@ export function LayoutAutenticacao({
 
       <main className="w-full max-w-[26rem]">
         {aviso && (
-          <p role="status" className="mb-4 rounded-xl border border-secondary/20 bg-secondary/5 px-4 py-3 text-sm text-primary">
+          <p
+            role="status"
+            className="mb-4 rounded-xl border border-secondary/20 bg-secondary/5 px-4 py-3 text-sm text-primary"
+          >
             {aviso}
           </p>
         )}
@@ -53,11 +56,26 @@ export function LayoutAutenticacao({
 }
 
 /** Botão de envio com indicador de carregamento. */
-export function BotaoEnviar({ enviando, rotulo, rotuloEnviando }: { enviando: boolean; rotulo: string; rotuloEnviando: string }) {
+export function BotaoEnviar({
+  enviando,
+  rotulo,
+  rotuloEnviando,
+}: {
+  enviando: boolean;
+  rotulo: string;
+  rotuloEnviando: string;
+}) {
   return (
-    <button type="submit" disabled={enviando} className="botao-principal w-full disabled:cursor-wait disabled:opacity-70">
+    <button
+      type="submit"
+      disabled={enviando}
+      className="botao-principal w-full disabled:cursor-wait disabled:opacity-70"
+    >
       {enviando && (
-        <span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+        <span
+          aria-hidden="true"
+          className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+        />
       )}
       {enviando ? rotuloEnviando : rotulo}
     </button>

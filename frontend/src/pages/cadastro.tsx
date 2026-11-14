@@ -11,17 +11,14 @@ import { useTitulo } from '../hooks/use-titulo';
 import { mensagemDeErro } from '../services/api';
 import { codigoDeErro, errosPorCampo } from '../services/auth';
 import { comVoltar, destinoSeguro } from '../utils/redirecionamento';
-import { DICA_SENHA, esquemaEmail, esquemaSenhaNova } from '../utils/validacoes';
+import { DICA_SENHA, esquemaEmail, esquemaNome, esquemaSenhaNova, esquemaTelefoneOpcional } from '../utils/validacoes';
 
 // Mesmas regras da API (backend/src/modules/auth/auth.schemas.ts).
 const esquemaCadastro = z.object({
   perfil: z.enum(['ALUNO', 'PROFESSOR']),
-  nome: z.string().trim().min(2, 'Informe seu nome completo.').max(100, 'Use no máximo 100 caracteres.'),
+  nome: esquemaNome,
   email: esquemaEmail,
-  telefone: z
-    .string()
-    .transform((valor) => valor.replace(/\D/g, ''))
-    .refine((valor) => valor === '' || /^\d{10,11}$/.test(valor), 'Informe o DDD e o número (10 ou 11 dígitos).'),
+  telefone: esquemaTelefoneOpcional,
   senha: esquemaSenhaNova,
   consentimentoLgpd: z.boolean().refine((aceito) => aceito, 'Para criar a conta, aceite a Política de privacidade.'),
 });
@@ -85,7 +82,11 @@ export function PaginaCadastro() {
       navegar(proximo, { replace: true });
     } catch (erro) {
       if (codigoDeErro(erro) === 'EMAIL_JA_CADASTRADO') {
-        setError('email', { message: 'Este e-mail já tem uma conta. Entre ou use outro e-mail.' }, { shouldFocus: true });
+        setError(
+          'email',
+          { message: 'Este e-mail já tem uma conta. Entre ou use outro e-mail.' },
+          { shouldFocus: true },
+        );
         return;
       }
       const porCampo = errosPorCampo(erro);

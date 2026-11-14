@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import { exigirUsuario } from '../../shared/types/requisicao';
-import type { EntradaListarAulas } from './aulas.schemas';
+import { lerConsulta } from '../../shared/middlewares/validar';
+import { esquemaListarAulas } from './aulas.schemas';
 import type { AulasService } from './aulas.service';
 
 export class AulasController {
@@ -14,7 +15,7 @@ export class AulasController {
   listar = async (req: Request, res: Response): Promise<void> => {
     const pagina = await this.servico.listar(
       exigirUsuario(req),
-      req.query as unknown as EntradaListarAulas,
+      lerConsulta(req, esquemaListarAulas),
     );
     res.status(200).json(pagina);
   };

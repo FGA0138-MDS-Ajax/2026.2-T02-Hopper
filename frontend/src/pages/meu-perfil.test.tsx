@@ -1,9 +1,7 @@
 import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { validarGrade } from '../components/area-professor/editor-grade';
-import { lerValorEmReais } from '../components/area-professor/formulario-perfil';
-import { periodoDoBloqueio } from '../components/area-professor/gerenciar-bloqueios';
+import { lerValorEmReais, periodoDoBloqueio, validarGrade } from '../components/area-professor/regras';
 import { removerToken, salvarToken } from '../services/api';
 import {
   criarBloqueio,

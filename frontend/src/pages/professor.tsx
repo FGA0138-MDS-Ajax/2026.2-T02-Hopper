@@ -4,14 +4,14 @@ import { AxiosError } from 'axios';
 import { ArrowRight, Clock, RefreshCw } from 'lucide-react';
 import { Cabecalho } from '../components/cabecalho';
 import { CartaoProfessor } from '../components/cartao-professor';
-import { AvatarProfessor, ICONE_MODALIDADE, ListaModalidades, formatarReais } from '../components/professor-info';
+import { AvatarProfessor, ListaModalidades } from '../components/professor-info';
+import { formatarReais } from '../utils/formatacao';
+import { ICONE_MODALIDADE } from '../utils/modalidades';
 import { Rodape } from '../components/rodape';
 import { SeletorHorarios } from '../components/seletor-horarios';
 import { useProfessor, useProfessores } from '../hooks/use-professores';
 import { useTitulo } from '../hooks/use-titulo';
 import { ROTULO_MODALIDADE, type Modalidade, type ProfessorDetalhe } from '../services/professores';
-
-export { linkParaSolicitar } from '../components/seletor-horarios';
 
 const OUTROS_PROFESSORES = 3;
 

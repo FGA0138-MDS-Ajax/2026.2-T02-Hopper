@@ -8,20 +8,14 @@ import { mensagemDeErro } from '../../services/api';
 import type { MeuPerfil } from '../../services/area-professor';
 import { ROTULO_MODALIDADE, type Materia, type Modalidade } from '../../services/professores';
 import { AlertaErro, BotaoEnviar } from '../layout-autenticacao';
-import { ICONE_MODALIDADE } from '../professor-info';
+import { ICONE_MODALIDADE } from '../../utils/modalidades';
+import { lerValorEmReais } from './regras';
 
 // Mesmos limites da API (backend/src/modules/usuarios/usuarios.schemas.ts).
 const TAMANHO_MAXIMO_APRESENTACAO = 1000;
 const MAXIMO_DE_MATERIAS = 20;
 const VALOR_HORA_MAXIMO = 10_000;
 const MODALIDADES = Object.keys(ROTULO_MODALIDADE) as Modalidade[];
-
-/** "90", "90,50", "R$ 1.200,00" → número; texto inválido → NaN. */
-export function lerValorEmReais(texto: string): number {
-  let limpo = texto.replace(/R\$|\s/g, '');
-  if (limpo.includes(',')) limpo = limpo.replace(/\./g, '').replace(',', '.');
-  return limpo === '' ? Number.NaN : Number(limpo);
-}
 
 const esquemaPerfil = z.object({
   apresentacao: z
@@ -140,7 +134,10 @@ export function FormularioPerfil({ perfil, aoSalvar }: { perfil: MeuPerfil; aoSa
           className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-tinta placeholder:text-slate-400 focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30"
           {...register('apresentacao')}
         />
-        <p id="dica-apresentacao" className={`mt-1.5 text-sm ${errors.apresentacao ? 'font-medium text-error' : 'text-suave'}`}>
+        <p
+          id="dica-apresentacao"
+          className={`mt-1.5 text-sm ${errors.apresentacao ? 'font-medium text-error' : 'text-suave'}`}
+        >
           {errors.apresentacao?.message ?? 'Aparece no seu perfil público, em "Sobre o professor".'}
         </p>
       </div>
@@ -153,7 +150,10 @@ export function FormularioPerfil({ perfil, aoSalvar }: { perfil: MeuPerfil; aoSa
         ) : (
           <ul className="mt-3 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
             {agruparPorNome(materias ?? []).map((grupo) => (
-              <li key={grupo.nome} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <li
+                key={grupo.nome}
+                className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+              >
                 <span className="font-semibold text-tinta">{grupo.nome}</span>
                 <div className="flex flex-wrap gap-2">
                   {grupo.opcoes.map((opcao) => {
@@ -225,7 +225,9 @@ export function FormularioPerfil({ perfil, aoSalvar }: { perfil: MeuPerfil; aoSa
           Valor da hora-aula
         </label>
         <div className="relative mt-2 max-w-xs">
-          <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center font-semibold text-suave">R$</span>
+          <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center font-semibold text-suave">
+            R$
+          </span>
           <input
             id="valor-hora"
             type="text"

@@ -2,17 +2,18 @@ import { z } from 'zod';
 import '../../config/zod-ptbr';
 import { criarProximo, criarReq, criarRes } from '../../../tests/helpers/http';
 import { ErroValidacao } from '../errors';
-import { validar } from './validar';
+import { lerConsulta, validar } from './validar';
 
 describe('validar', () => {
-  it('substitui body e query pelos dados convertidos', () => {
-    const req = criarReq({ body: { nome: 'Ana' }, query: { pagina: '2' } as never });
+  it('substitui params e body pelos dados convertidos', () => {
+    const req = criarReq({ params: { id: '7' }, body: { nome: ' Ana ' } });
     const proximo = criarProximo();
     validar({
-      body: z.object({ nome: z.string() }),
-      query: z.object({ pagina: z.coerce.number() }),
+      params: z.object({ id: z.coerce.number() }),
+      body: z.object({ nome: z.string().trim() }),
     })(req, criarRes(), proximo);
-    expect(req.query).toEqual({ pagina: 2 });
+    expect(req.params).toEqual({ id: 7 });
+    expect(req.body).toEqual({ nome: 'Ana' });
     expect(proximo).toHaveBeenCalled();
   });
 
@@ -27,5 +28,34 @@ describe('validar', () => {
     expect(erro).toBeInstanceOf(ErroValidacao);
     expect(erro?.status).toBe(422);
     expect(erro?.detalhes).toEqual([{ campo: 'body.nome', mensagem: 'Campo obrigatório' }]);
+  });
+});
+
+describe('lerConsulta', () => {
+  const esquema = z.object({
+    pagina: z.coerce.number().int().min(1),
+    ativo: z.enum(['sim', 'nao']),
+  });
+
+  it('devolve a query convertida e tipada pelo esquema', () => {
+    const req = criarReq({ query: { pagina: '2', ativo: 'sim' } });
+    const consulta = lerConsulta(req, esquema);
+    expect(consulta).toEqual({ pagina: 2, ativo: 'sim' });
+  });
+
+  it('lanca ErroValidacao com o campo prefixado por query', () => {
+    const req = criarReq({ query: { pagina: '0', ativo: 'talvez' } });
+    let erro: ErroValidacao | undefined;
+    try {
+      lerConsulta(req, esquema);
+    } catch (e) {
+      erro = e as ErroValidacao;
+    }
+    expect(erro).toBeInstanceOf(ErroValidacao);
+    expect(erro?.status).toBe(422);
+    expect(erro?.detalhes).toEqual([
+      { campo: 'query.pagina', mensagem: 'Deve ser maior ou igual a 1' },
+      { campo: 'query.ativo', mensagem: 'Valor inválido. Opções: sim, nao' },
+    ]);
   });
 });

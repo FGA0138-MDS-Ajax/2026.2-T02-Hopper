@@ -1,15 +1,14 @@
 import type { Request, Response } from 'express';
+import { lerConsulta } from '../../shared/middlewares/validar';
 import { exigirUsuario } from '../../shared/types/requisicao';
-import type { EntradaBuscaProfessores } from './usuarios.schemas';
+import { esquemaBuscaProfessores } from './usuarios.schemas';
 import type { UsuariosService } from './usuarios.service';
 
 export class UsuariosController {
   constructor(private readonly servico: UsuariosService) {}
 
   buscarProfessores = async (req: Request, res: Response): Promise<void> => {
-    const pagina = await this.servico.buscarProfessores(
-      req.query as unknown as EntradaBuscaProfessores,
-    );
+    const pagina = await this.servico.buscarProfessores(lerConsulta(req, esquemaBuscaProfessores));
     res.status(200).json(pagina);
   };
 

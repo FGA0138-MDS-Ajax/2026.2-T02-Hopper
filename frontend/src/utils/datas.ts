@@ -95,3 +95,9 @@ export function agruparPorDia<T extends { inicio: string }>(intervalos: T[]): Ma
   }
   return grupos;
 }
+
+/** Dia da última aula de uma série semanal que começa em "inicio" (RF10). */
+export function diaDaUltimaAula(inicio: string, semanas: number): string {
+  const ultima = new Date(comoData(inicio).getTime() + (semanas - 1) * 7 * MS_POR_DIA);
+  return diaPorExtenso(chaveDoDia(ultima));
+}

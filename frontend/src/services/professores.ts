@@ -8,6 +8,9 @@ export const ROTULO_MODALIDADE: Record<Modalidade, string> = {
   DOMICILIO: 'Em domicílio',
 };
 
+/** Níveis usados no filtro enquanto a lista de matérias não chega da API (ou se ela falhar). */
+export const NIVEIS_PADRAO = ['Ensino Fundamental', 'Ensino Médio', 'Pré-vestibular / ENEM', 'Ensino Superior'];
+
 export interface Materia {
   id: string;
   nome: string;

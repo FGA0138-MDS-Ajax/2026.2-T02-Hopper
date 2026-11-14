@@ -2,12 +2,9 @@ import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Search } from 'lucide-react';
 import { useMaterias } from '../hooks/use-professores';
-import { ROTULO_MODALIDADE, type Modalidade } from '../services/professores';
+import { NIVEIS_PADRAO, ROTULO_MODALIDADE, type Modalidade } from '../services/professores';
 
 const MODALIDADES = Object.entries(ROTULO_MODALIDADE) as [Modalidade, string][];
-
-/** Usado enquanto a lista de matérias não chega da API (ou se ela falhar). */
-export const NIVEIS_PADRAO = ['Ensino Fundamental', 'Ensino Médio', 'Pré-vestibular / ENEM', 'Ensino Superior'];
 
 /** Os níveis vêm das matérias cadastradas, para o filtro bater com o banco. */
 function useNiveis(): string[] {

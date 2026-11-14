@@ -5,20 +5,13 @@ import { mensagemDeErro } from '../services/api';
 import { ROTULO_STATUS, type Aula } from '../services/aulas';
 import { ROTULO_MODALIDADE } from '../services/professores';
 import { chaveDoDia, dataHoraCurta, diaDaSemanaCurto, horaCurta, mesCurto } from '../utils/datas';
-import { ICONE_MODALIDADE } from './professor-info';
+import { formatarTelefone } from '../utils/formatacao';
+import { ICONE_MODALIDADE } from '../utils/modalidades';
 import { SeloStatus } from './selo-status';
 
 export type Papel = 'ALUNO' | 'PROFESSOR';
 
 const TAMANHO_MAXIMO_MOTIVO = 300;
-
-/** "(61) 99111-0001" a partir de "61991110001". */
-export function formatarTelefone(telefone: string): string {
-  const numeros = telefone.replace(/\D/g, '');
-  if (numeros.length === 11) return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
-  if (numeros.length === 10) return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6)}`;
-  return telefone;
-}
 
 function BlocoDeData({ inicio }: { inicio: string }) {
   const chave = chaveDoDia(inicio);
@@ -104,13 +97,7 @@ function Detalhes({ aula, papel }: { aula: Aula; papel: Papel }) {
   );
 }
 
-function AcoesDoProfessor({
-  aula,
-  aoConcluir,
-}: {
-  aula: Aula;
-  aoConcluir: (mensagem: string) => void;
-}) {
+function AcoesDoProfessor({ aula, aoConcluir }: { aula: Aula; aoConcluir: (mensagem: string) => void }) {
   const aceitar = useAceitarAula();
   const recusar = useRecusarAula();
   const [recusando, setRecusando] = useState(false);
@@ -181,7 +168,12 @@ function AcoesDoProfessor({
         </div>
       ) : (
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={confirmarAula} disabled={ocupado} className="botao-principal h-11 px-5 text-sm disabled:opacity-60">
+          <button
+            type="button"
+            onClick={confirmarAula}
+            disabled={ocupado}
+            className="botao-principal h-11 px-5 text-sm disabled:opacity-60"
+          >
             {aceitar.isPending ? 'Confirmando…' : 'Aceitar'}
           </button>
           <button
@@ -209,10 +201,12 @@ export function CartaoAula({
   aoConcluirAcao: (mensagem: string) => void;
 }) {
   const [detalhesAbertos, setDetalhesAbertos] = useState(false);
+  // Instante lido uma vez, ao montar o cartão (a renderização precisa ser pura).
+  const [agora] = useState(() => Date.now());
   const idDetalhes = useId();
   const IconeModalidade = ICONE_MODALIDADE[aula.modalidade];
   const outro = papel === 'ALUNO' ? `com ${aula.professor.nome}` : `Aluno: ${aula.aluno.nome}`;
-  const aguardandoResposta = aula.status === 'SOLICITADA' && new Date(aula.inicio).getTime() > Date.now();
+  const aguardandoResposta = aula.status === 'SOLICITADA' && new Date(aula.inicio).getTime() > agora;
 
   return (
     <article className="cartao p-4 sm:p-5" aria-label={`Aula de ${aula.materia.nome}, ${outro}`}>

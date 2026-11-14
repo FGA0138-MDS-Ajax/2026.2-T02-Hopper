@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AxiosError, AxiosHeaders, type InternalAxiosRequestConfig } from 'axios';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { formatarTelefone } from '../components/cartao-aula';
+import { formatarTelefone } from '../utils/formatacao';
 import { removerToken, salvarToken } from '../services/api';
 import { obterUsuarioAtual, type Usuario } from '../services/auth';
 import {
@@ -39,7 +39,13 @@ const recusarMock = vi.mocked(recusarAula);
 const AGORA = new Date('2026-11-09T09:00:00.000-03:00');
 
 const CAIO: Usuario = { id: 'u1', nome: 'Caio Alves', email: 'caio@email.com', telefone: null, perfil: 'ALUNO' };
-const ANA_USUARIO: Usuario = { id: 'up1', nome: 'Ana Souza', email: 'ana@email.com', telefone: null, perfil: 'PROFESSOR' };
+const ANA_USUARIO: Usuario = {
+  id: 'up1',
+  nome: 'Ana Souza',
+  email: 'ana@email.com',
+  telefone: null,
+  perfil: 'PROFESSOR',
+};
 
 function aula(campos: Partial<Aula> = {}): Aula {
   return {
@@ -160,7 +166,10 @@ describe('PaginaMinhasAulas', () => {
 
       expect(await screen.findByText(/Nenhuma aula confirmada por enquanto/)).toBeInTheDocument();
       const painel = screen.getByRole('tabpanel');
-      expect(within(painel).getByRole('link', { name: 'Encontrar professores' })).toHaveAttribute('href', '/professores');
+      expect(within(painel).getByRole('link', { name: 'Encontrar professores' })).toHaveAttribute(
+        'href',
+        '/professores',
+      );
     });
 
     it('nos detalhes de uma aula confirmada, mostra o contato do professor e o histórico', async () => {
@@ -179,7 +188,10 @@ describe('PaginaMinhasAulas', () => {
 
       await userEvent.click(await screen.findByRole('button', { name: 'Ver detalhes' }));
 
-      expect(await screen.findByRole('link', { name: 'ana@email.com' })).toHaveAttribute('href', 'mailto:ana@email.com');
+      expect(await screen.findByRole('link', { name: 'ana@email.com' })).toHaveAttribute(
+        'href',
+        'mailto:ana@email.com',
+      );
       expect(screen.getByRole('link', { name: '(61) 99111-0001' })).toHaveAttribute('href', 'tel:+5561991110001');
       const historico = screen.getByRole('region', { name: 'Histórico da aula' });
       expect(within(historico).getByText('em 09/11 às 8h30')).toBeInTheDocument();

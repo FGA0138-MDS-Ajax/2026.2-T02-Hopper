@@ -245,8 +245,7 @@ function ParaProfessores() {
             Mais tempo para ensinar. Menos trabalho para organizar.
           </h2>
           <p className="mt-4 max-w-lg text-blue-100">
-            Mantenha seus horários atualizados, receba solicitações de alunos e organize suas aulas em um único
-            lugar.
+            Mantenha seus horários atualizados, receba solicitações de alunos e organize suas aulas em um único lugar.
           </p>
           <Link
             to="/cadastro?perfil=PROFESSOR"
