@@ -57,7 +57,7 @@ As definições estão no Quadro 17 do Documento de Visão.
 | M4 – Conflitos de agendamento | 0 | 0 |
 | M5 – Taxa de conclusão da sprint | ≥ 80% | Calculada pelo Scrum Master no GitHub Projects |
 | M6 – Cobertura de testes | ≥ 70% | 98,7% (back-end) e 96,3% (front-end), em linhas |
-| M7 – Densidade de defeitos | ≤ 0,5 por história | 2 defeitos nas Sprints 3 e 4 |
+| M7 – Densidade de defeitos | ≤ 0,5 por história | 0,15 por história: 2 defeitos ([DEF-C01-01](c01-cadastro-e-autenticacao.md#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro) e [DEF-C04-01](c04-confirmacao-ou-recusa.md#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500)) em 13 histórias entregues nas Sprints 3 e 4 (US01 a US13); dentro da meta |
 | M8 – Débito técnico aberto | Estável ou em queda | Acompanhado pelo Scrum Master no GitHub |
 | MN1 – Taxa de confirmação dos pedidos | ≥ 50% (hipótese) | Medida com dados de teste ao fim da Sprint 5 |
 | MN2 – Tempo até a confirmação | ≤ 24 h (hipótese) | Medida com dados de teste ao fim da Sprint 5 |
