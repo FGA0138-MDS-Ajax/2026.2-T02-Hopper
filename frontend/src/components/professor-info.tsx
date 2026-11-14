@@ -1,11 +1,6 @@
-import { House, MapPin, Monitor } from 'lucide-react';
 import { ROTULO_MODALIDADE, type Modalidade } from '../services/professores';
-
-export const ICONE_MODALIDADE: Record<Modalidade, typeof Monitor> = {
-  ONLINE: Monitor,
-  PRESENCIAL: MapPin,
-  DOMICILIO: House,
-};
+import { iniciais } from '../utils/formatacao';
+import { ICONE_MODALIDADE } from '../utils/modalidades';
 
 const CORES_AVATAR = [
   'bg-blue-50 text-secondary',
@@ -13,19 +8,6 @@ const CORES_AVATAR = [
   'bg-sky-50 text-sky-800',
   'bg-slate-100 text-primary',
 ];
-
-export const formatarReais = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-  maximumFractionDigits: 0,
-});
-
-export function iniciais(nome: string): string {
-  const partes = nome.trim().split(/\s+/);
-  const primeira = partes[0]?.[0] ?? '';
-  const ultima = partes.length > 1 ? partes[partes.length - 1][0] : '';
-  return (primeira + ultima).toUpperCase();
-}
 
 function corDoAvatar(id: string): string {
   let soma = 0;

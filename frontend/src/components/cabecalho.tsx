@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useSessao } from '../contexts/sessao';
 import { Logo } from './logo';
-import { iniciais } from './professor-info';
+import { iniciais } from '../utils/formatacao';
 
 const LINKS = [
   { href: '/#como-funciona', rotulo: 'Como funciona' },
@@ -93,7 +93,10 @@ export function Cabecalho() {
           ) : (
             !carregando && (
               <>
-                <Link to="/entrar" className="foco rounded-xl px-4 py-2 text-sm font-bold text-primary hover:text-secondary">
+                <Link
+                  to="/entrar"
+                  className="foco rounded-xl px-4 py-2 text-sm font-bold text-primary hover:text-secondary"
+                >
                   Entrar
                 </Link>
                 <Link to="/cadastro" className="botao-principal h-11 text-sm">

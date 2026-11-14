@@ -1,7 +1,8 @@
 import { useSearchParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, RefreshCw, SearchX, X } from 'lucide-react';
+import { RefreshCw, SearchX, X } from 'lucide-react';
 import { BarraBusca } from '../components/barra-busca';
 import { Cabecalho } from '../components/cabecalho';
+import { Paginacao } from '../components/paginacao';
 import { CartaoProfessor, CartaoProfessorEsqueleto } from '../components/cartao-professor';
 import { Rodape } from '../components/rodape';
 import { useProfessores } from '../hooks/use-professores';
@@ -193,30 +194,13 @@ export function PaginaProfessores() {
             )}
           </div>
 
-          {data && totalDePaginas > 1 && (
-            <nav aria-label="Paginação" className="mt-10 flex items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => irParaPagina(filtros.pagina - 1)}
-                disabled={filtros.pagina <= 1}
-                className="botao-secundario h-11 px-4 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <ChevronLeft size={18} aria-hidden="true" />
-                Anterior
-              </button>
-              <p className="min-w-28 text-center text-sm font-semibold tabular-nums text-suave">
-                Página {Math.min(filtros.pagina, totalDePaginas)} de {totalDePaginas}
-              </p>
-              <button
-                type="button"
-                onClick={() => irParaPagina(filtros.pagina + 1)}
-                disabled={filtros.pagina >= totalDePaginas}
-                className="botao-secundario h-11 px-4 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Próxima
-                <ChevronRight size={18} aria-hidden="true" />
-              </button>
-            </nav>
+          {data && (
+            <Paginacao
+              pagina={filtros.pagina}
+              totalDePaginas={totalDePaginas}
+              aoMudar={irParaPagina}
+              className="mt-10"
+            />
           )}
         </section>
       </main>

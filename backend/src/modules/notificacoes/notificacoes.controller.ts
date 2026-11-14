@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
+import { lerConsulta } from '../../shared/middlewares/validar';
 import { exigirUsuario } from '../../shared/types/requisicao';
-import type { EntradaListarNotificacoes } from './notificacoes.schemas';
+import { esquemaListarNotificacoes } from './notificacoes.schemas';
 import type { NotificacoesService } from './notificacoes.service';
 
 export class NotificacoesController {
@@ -9,7 +10,7 @@ export class NotificacoesController {
   listar = async (req: Request, res: Response): Promise<void> => {
     const listagem = await this.servico.listar(
       exigirUsuario(req).id,
-      req.query as unknown as EntradaListarNotificacoes,
+      lerConsulta(req, esquemaListarNotificacoes),
     );
     res.status(200).json(listagem);
   };

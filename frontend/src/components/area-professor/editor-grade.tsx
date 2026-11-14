@@ -4,17 +4,7 @@ import { useSalvarGrade } from '../../hooks/use-area-professor';
 import { mensagemDeErro } from '../../services/api';
 import type { FaixaHoraria } from '../../services/area-professor';
 import { AlertaErro, BotaoEnviar } from '../layout-autenticacao';
-
-/** Segunda a domingo (na API, 0 = domingo). */
-const DIAS = [
-  { valor: 1, nome: 'Segunda-feira' },
-  { valor: 2, nome: 'Terça-feira' },
-  { valor: 3, nome: 'Quarta-feira' },
-  { valor: 4, nome: 'Quinta-feira' },
-  { valor: 5, nome: 'Sexta-feira' },
-  { valor: 6, nome: 'Sábado' },
-  { valor: 0, nome: 'Domingo' },
-];
+import { DIAS, minutos, validarGrade } from './regras';
 
 const DIAS_UTEIS = [1, 2, 3, 4, 5];
 const MAXIMO_DE_FAIXAS = 50;
@@ -30,11 +20,6 @@ function novaChave(): string {
   return `faixa-${contador}`;
 }
 
-function minutos(hora: string): number {
-  const [h, m] = hora.split(':').map(Number);
-  return h * 60 + m;
-}
-
 function paraHora(totalMinutos: number): string {
   const limitado = Math.min(totalMinutos, 23 * 60 + 59);
   return `${String(Math.floor(limitado / 60)).padStart(2, '0')}:${String(limitado % 60).padStart(2, '0')}`;
@@ -43,24 +28,6 @@ function paraHora(totalMinutos: number): string {
 /** Quantas aulas de 1 hora cabem na faixa (a API divide as faixas em blocos de 1 hora). */
 function aulasNaFaixa(faixa: FaixaHoraria): number {
   return Math.max(0, Math.floor((minutos(faixa.horaFim) - minutos(faixa.horaInicio)) / DURACAO_DA_AULA_MINUTOS));
-}
-
-/** Erros por dia: hora vazia, início depois do fim ou faixas sobrepostas. */
-export function validarGrade(faixas: FaixaHoraria[]): Map<number, string> {
-  const erros = new Map<number, string>();
-  for (const dia of DIAS) {
-    const doDia = faixas
-      .filter((faixa) => faixa.diaSemana === dia.valor)
-      .sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
-    if (doDia.some((faixa) => !faixa.horaInicio || !faixa.horaFim)) {
-      erros.set(dia.valor, 'Preencha o início e o fim de cada horário.');
-    } else if (doDia.some((faixa) => minutos(faixa.horaInicio) >= minutos(faixa.horaFim))) {
-      erros.set(dia.valor, 'O início precisa ser antes do fim.');
-    } else if (doDia.some((faixa, i) => i > 0 && minutos(faixa.horaInicio) < minutos(doDia[i - 1].horaFim))) {
-      erros.set(dia.valor, 'Os horários deste dia se sobrepõem.');
-    }
-  }
-  return erros;
 }
 
 function comChave(faixas: FaixaHoraria[]): FaixaEditavel[] {
@@ -142,8 +109,8 @@ export function EditorGrade({ grade, aoSalvar }: { grade: FaixaHoraria[]; aoSalv
     <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <p id={idDica} className="max-w-xl text-sm text-suave">
-          Informe os períodos em que você dá aula, no horário de Brasília. As aulas têm 1 hora: um período das 8h às
-          12h gera 4 horários para os alunos escolherem.
+          Informe os períodos em que você dá aula, no horário de Brasília. As aulas têm 1 hora: um período das 8h às 12h
+          gera 4 horários para os alunos escolherem.
         </p>
         <button
           type="button"

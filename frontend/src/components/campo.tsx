@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  useId,
-  useState,
-  type InputHTMLAttributes,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react';
+import { forwardRef, useId, useState, type InputHTMLAttributes, type KeyboardEvent, type ReactNode } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface CampoProps extends InputHTMLAttributes<HTMLInputElement> {

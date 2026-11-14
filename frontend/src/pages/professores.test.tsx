@@ -102,7 +102,9 @@ describe('PaginaProfessores', () => {
 
     await userEvent.click(within(paginacao).getByRole('button', { name: 'Próxima' }));
     expect(urlAtual().searchParams.get('pagina')).toBe('2');
-    await waitFor(() => expect(buscarProfessoresMock).toHaveBeenLastCalledWith({ pagina: 2, limite: PROFESSORES_POR_PAGINA }));
+    await waitFor(() =>
+      expect(buscarProfessoresMock).toHaveBeenLastCalledWith({ pagina: 2, limite: PROFESSORES_POR_PAGINA }),
+    );
   });
 
   it('não mostra paginação quando cabe tudo em uma página', async () => {

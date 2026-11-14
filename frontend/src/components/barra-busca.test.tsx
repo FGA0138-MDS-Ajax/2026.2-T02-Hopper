@@ -3,7 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { listarMaterias } from '../services/professores';
 import { renderizar } from '../test/renderizar';
-import { BarraBusca, NIVEIS_PADRAO } from './barra-busca';
+import { NIVEIS_PADRAO } from '../services/professores';
+import { BarraBusca } from './barra-busca';
 
 vi.mock('../services/professores', async (importarOriginal) => ({
   ...(await importarOriginal<typeof import('../services/professores')>()),

@@ -10,7 +10,12 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 30, // 30 segundos
       retry: (failureCount, error) => {
-        if (error instanceof AxiosError && error.response && error.response.status >= 400 && error.response.status < 500) {
+        if (
+          error instanceof AxiosError &&
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status < 500
+        ) {
           return false;
         }
         return failureCount < 2;
@@ -24,5 +29,5 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

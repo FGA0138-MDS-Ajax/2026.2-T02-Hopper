@@ -4,21 +4,13 @@ import { autorizar } from '../../shared/middlewares/autorizar';
 import { validar } from '../../shared/middlewares/validar';
 import { esquemaParametroId } from '../../shared/utils/validacoes';
 import type { UsuariosController } from './usuarios.controller';
-import {
-  esquemaAtualizarPerfilProfessor,
-  esquemaAtualizarUsuario,
-  esquemaBuscaProfessores,
-} from './usuarios.schemas';
+import { esquemaAtualizarPerfilProfessor, esquemaAtualizarUsuario } from './usuarios.schemas';
 
 const apenasProfessor = [autenticar, autorizar('PROFESSOR')];
 
 export function criarRotasUsuarios(controlador: UsuariosController): Router {
   const rotas = Router();
-  rotas.get(
-    '/professores',
-    validar({ query: esquemaBuscaProfessores }),
-    controlador.buscarProfessores,
-  );
+  rotas.get('/professores', controlador.buscarProfessores);
   rotas.get('/professores/me', ...apenasProfessor, controlador.obterPerfilProprio);
   rotas.put(
     '/professores/me',

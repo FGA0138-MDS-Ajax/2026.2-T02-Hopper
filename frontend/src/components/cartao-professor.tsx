@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import type { ProfessorPublico } from '../services/professores';
-import { AvatarProfessor, ListaModalidades, formatarReais } from './professor-info';
+import { formatarReais } from '../utils/formatacao';
+import { AvatarProfessor, ListaModalidades } from './professor-info';
 
 const MAXIMO_MATERIAS = 3;
 

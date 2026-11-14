@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { Abas, PainelDeAba } from '../components/abas';
 import { AvisoSucesso } from '../components/aviso-sucesso';
 import { Cabecalho } from '../components/cabecalho';
+import { Paginacao } from '../components/paginacao';
 import { CartaoAula, type Papel } from '../components/cartao-aula';
 import { Rodape } from '../components/rodape';
 import { useSessao } from '../contexts/sessao';
@@ -139,31 +140,7 @@ function ListaDaAba({
           </li>
         ))}
       </ul>
-      {totalDePaginas > 1 && (
-        <nav aria-label="Paginação" className="mt-8 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setPagina((atual) => atual - 1)}
-            disabled={pagina <= 1}
-            className="botao-secundario h-11 px-4 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            <ChevronLeft size={18} aria-hidden="true" />
-            Anterior
-          </button>
-          <p className="text-sm font-semibold tabular-nums text-suave">
-            Página {pagina} de {totalDePaginas}
-          </p>
-          <button
-            type="button"
-            onClick={() => setPagina((atual) => atual + 1)}
-            disabled={pagina >= totalDePaginas}
-            className="botao-secundario h-11 px-4 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Próxima
-            <ChevronRight size={18} aria-hidden="true" />
-          </button>
-        </nav>
-      )}
+      <Paginacao pagina={pagina} totalDePaginas={totalDePaginas} aoMudar={setPagina} />
     </>
   );
 }

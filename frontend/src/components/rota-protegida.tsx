@@ -12,7 +12,10 @@ export function RotaProtegida({ children }: { children: ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center" role="status">
         <span className="sr-only">Carregando…</span>
-        <span aria-hidden="true" className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-secondary" />
+        <span
+          aria-hidden="true"
+          className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-secondary"
+        />
       </div>
     );
   }

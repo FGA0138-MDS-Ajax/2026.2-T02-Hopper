@@ -16,7 +16,10 @@ type DadosRecuperar = z.infer<typeof esquemaRecuperar>;
 
 const VoltarParaEntrar = (
   <p className="text-center text-sm">
-    <Link to="/entrar" className="foco inline-flex items-center gap-1.5 rounded font-bold text-secondary hover:underline">
+    <Link
+      to="/entrar"
+      className="foco inline-flex items-center gap-1.5 rounded font-bold text-secondary hover:underline"
+    >
       <ArrowLeft size={16} aria-hidden="true" />
       Voltar para entrar
     </Link>

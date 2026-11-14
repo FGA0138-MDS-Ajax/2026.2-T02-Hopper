@@ -23,8 +23,8 @@ export function PaginaPrivacidade() {
           <header className="space-y-3">
             <h1 className="text-3xl font-extrabold tracking-tight text-tinta sm:text-5xl">Política de privacidade</h1>
             <p className="text-suave">
-              Esta política explica quais dados o AulaCerta coleta, por que coleta e como você pode exercer seus direitos
-              previstos na Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
+              Esta política explica quais dados o AulaCerta coleta, por que coleta e como você pode exercer seus
+              direitos previstos na Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
             </p>
           </header>
 
@@ -43,8 +43,8 @@ export function PaginaPrivacidade() {
                 guardada apenas em formato cifrado e ninguém da equipe consegue lê-la.
               </li>
               <li>
-                <strong className="text-tinta">Perfil de professor:</strong> apresentação, matérias, níveis, modalidades,
-                valor da hora-aula e horários disponíveis.
+                <strong className="text-tinta">Perfil de professor:</strong> apresentação, matérias, níveis,
+                modalidades, valor da hora-aula e horários disponíveis.
               </li>
               <li>
                 <strong className="text-tinta">Aulas:</strong> solicitações, horários, objetivo informado, mudanças de
@@ -67,16 +67,16 @@ export function PaginaPrivacidade() {
 
           <Secao titulo="Quem vê seus dados">
             <p>
-              O perfil público do professor (nome, apresentação, matérias, modalidades, valor e horários livres) pode ser
-              visto por qualquer visitante. O telefone e o e-mail de aluno e professor só ficam visíveis para a outra parte
-              depois que a aula é confirmada.
+              O perfil público do professor (nome, apresentação, matérias, modalidades, valor e horários livres) pode
+              ser visto por qualquer visitante. O telefone e o e-mail de aluno e professor só ficam visíveis para a
+              outra parte depois que a aula é confirmada.
             </p>
           </Secao>
 
           <Secao titulo="Armazenamento e segurança">
             <p>
-              Os dados ficam em um banco de dados com conexão protegida, e toda a comunicação com a plataforma usa HTTPS. O
-              navegador guarda apenas o token da sua sessão, que é apagado quando você sai da conta.
+              Os dados ficam em um banco de dados com conexão protegida, e toda a comunicação com a plataforma usa
+              HTTPS. O navegador guarda apenas o token da sua sessão, que é apagado quando você sai da conta.
             </p>
           </Secao>
 

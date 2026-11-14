@@ -17,11 +17,23 @@ vi.mock('../services/auth', async (importarOriginal) => ({
 const cadastrarMock = vi.mocked(cadastrar);
 const entrarMock = vi.mocked(entrar);
 
-const NOVA: Usuario = { id: 'u9', nome: 'Rita Lopes', email: 'rita@email.com', telefone: '61988887777', perfil: 'PROFESSOR' };
+const NOVA: Usuario = {
+  id: 'u9',
+  nome: 'Rita Lopes',
+  email: 'rita@email.com',
+  telefone: '61988887777',
+  perfil: 'PROFESSOR',
+};
 
 function erroApi(status: number, corpo: object): AxiosError {
   const config = { headers: new AxiosHeaders() } as InternalAxiosRequestConfig;
-  return new AxiosError('falha', 'ERR', config, undefined, { status, statusText: '', headers: {}, config, data: corpo });
+  return new AxiosError('falha', 'ERR', config, undefined, {
+    status,
+    statusText: '',
+    headers: {},
+    config,
+    data: corpo,
+  });
 }
 
 function abrir(url = '/cadastro') {

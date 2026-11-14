@@ -6,31 +6,14 @@ import { CalendarOff, RefreshCw } from 'lucide-react';
 import { useBloqueios, useCriarBloqueio, useRemoverBloqueio } from '../../hooks/use-area-professor';
 import { mensagemDeErro } from '../../services/api';
 import type { Bloqueio } from '../../services/area-professor';
-import { chaveDoDia, diaDaSemanaCurto, diaMes, diasConsecutivos, horaCurta, instanteEmBrasilia } from '../../utils/datas';
+import { chaveDoDia, diaDaSemanaCurto, diaMes, horaCurta } from '../../utils/datas';
 import { AlertaErro, BotaoEnviar } from '../layout-autenticacao';
+import { periodoDoBloqueio } from './regras';
 
 const TAMANHO_MAXIMO_MOTIVO = 200;
 
 const classeCampo =
   'h-11 w-full rounded-xl border border-slate-300 bg-white px-3 text-tinta focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30';
-
-/** Período do bloqueio a partir do formulário, no horário de Brasília. Dia inteiro vai até a meia-noite seguinte. */
-export function periodoDoBloqueio(dados: {
-  dataInicio: string;
-  dataFim: string;
-  diaInteiro: boolean;
-  horaInicio: string;
-  horaFim: string;
-}): { inicio: string; fim: string } {
-  if (dados.diaInteiro) {
-    const diaSeguinte = diasConsecutivos(dados.dataFim, 2)[1];
-    return { inicio: instanteEmBrasilia(dados.dataInicio, '00:00'), fim: instanteEmBrasilia(diaSeguinte, '00:00') };
-  }
-  return {
-    inicio: instanteEmBrasilia(dados.dataInicio, dados.horaInicio),
-    fim: instanteEmBrasilia(dados.dataFim, dados.horaFim),
-  };
-}
 
 const esquemaBloqueio = z
   .object({
@@ -43,7 +26,8 @@ const esquemaBloqueio = z
   })
   .superRefine((dados, contexto) => {
     if (!dados.diaInteiro) {
-      if (!dados.horaInicio) contexto.addIssue({ code: 'custom', path: ['horaInicio'], message: 'Informe a hora de início.' });
+      if (!dados.horaInicio)
+        contexto.addIssue({ code: 'custom', path: ['horaInicio'], message: 'Informe a hora de início.' });
       if (!dados.horaFim) contexto.addIssue({ code: 'custom', path: ['horaFim'], message: 'Informe a hora de fim.' });
       if (!dados.horaInicio || !dados.horaFim) return;
     }
@@ -73,9 +57,12 @@ function textoDoPeriodo(bloqueio: Bloqueio): string {
   const diaInteiro = horaCurta(bloqueio.inicio) === '0h' && fimEhMeiaNoite;
 
   if (diaInteiro) {
-    return diaInicio === diaFim ? `${rotuloDia(diaInicio)} · dia inteiro` : `${rotuloDia(diaInicio)} a ${rotuloDia(diaFim)} · dias inteiros`;
+    return diaInicio === diaFim
+      ? `${rotuloDia(diaInicio)} · dia inteiro`
+      : `${rotuloDia(diaInicio)} a ${rotuloDia(diaFim)} · dias inteiros`;
   }
-  if (diaInicio === diaFim) return `${rotuloDia(diaInicio)} · ${horaCurta(bloqueio.inicio)} às ${horaCurta(bloqueio.fim)}`;
+  if (diaInicio === diaFim)
+    return `${rotuloDia(diaInicio)} · ${horaCurta(bloqueio.inicio)} às ${horaCurta(bloqueio.fim)}`;
   return `${rotuloDia(diaInicio)} ${horaCurta(bloqueio.inicio)} a ${rotuloDia(diaFim)} ${horaCurta(bloqueio.fim)}`;
 }
 
@@ -199,7 +186,9 @@ export function GerenciarBloqueios({ aoAlterar }: { aoAlterar: (mensagem: string
                   },
                 })}
               />
-              {errors.dataInicio && <p className="mt-1.5 text-sm font-medium text-error">{errors.dataInicio.message}</p>}
+              {errors.dataInicio && (
+                <p className="mt-1.5 text-sm font-medium text-error">{errors.dataInicio.message}</p>
+              )}
             </div>
             <div>
               <label htmlFor="bloqueio-fim" className="text-sm font-semibold text-tinta">
@@ -228,14 +217,26 @@ export function GerenciarBloqueios({ aoAlterar }: { aoAlterar: (mensagem: string
                 <label htmlFor="bloqueio-hora-inicio" className="text-sm font-semibold text-tinta">
                   A partir de
                 </label>
-                <input id="bloqueio-hora-inicio" type="time" className={`${classeCampo} mt-1.5`} {...register('horaInicio')} />
-                {errors.horaInicio && <p className="mt-1.5 text-sm font-medium text-error">{errors.horaInicio.message}</p>}
+                <input
+                  id="bloqueio-hora-inicio"
+                  type="time"
+                  className={`${classeCampo} mt-1.5`}
+                  {...register('horaInicio')}
+                />
+                {errors.horaInicio && (
+                  <p className="mt-1.5 text-sm font-medium text-error">{errors.horaInicio.message}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="bloqueio-hora-fim" className="text-sm font-semibold text-tinta">
                   Até as
                 </label>
-                <input id="bloqueio-hora-fim" type="time" className={`${classeCampo} mt-1.5`} {...register('horaFim')} />
+                <input
+                  id="bloqueio-hora-fim"
+                  type="time"
+                  className={`${classeCampo} mt-1.5`}
+                  {...register('horaFim')}
+                />
                 {errors.horaFim && <p className="mt-1.5 text-sm font-medium text-error">{errors.horaFim.message}</p>}
               </div>
             </div>

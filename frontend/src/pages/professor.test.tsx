@@ -2,9 +2,15 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AxiosError, AxiosHeaders, type InternalAxiosRequestConfig } from 'axios';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { buscarProfessor, buscarProfessores, type ProfessorDetalhe, type ProfessorPublico } from '../services/professores';
+import {
+  buscarProfessor,
+  buscarProfessores,
+  type ProfessorDetalhe,
+  type ProfessorPublico,
+} from '../services/professores';
 import { renderizar } from '../test/renderizar';
-import { PaginaProfessor, linkParaSolicitar } from './professor';
+import { linkParaSolicitar } from '../utils/links';
+import { PaginaProfessor } from './professor';
 
 vi.mock('../services/professores', async (importarOriginal) => ({
   ...(await importarOriginal<typeof import('../services/professores')>()),
@@ -104,10 +110,11 @@ describe('PaginaProfessor', () => {
     await screen.findByRole('heading', { level: 1, name: 'Ana Souza' });
 
     const niveis = screen.getByRole('list', { name: 'Níveis de Matemática' });
-    expect(within(niveis).getAllByRole('listitem').map((item) => item.textContent)).toEqual([
-      'Ensino Médio',
-      'Ensino Fundamental',
-    ]);
+    expect(
+      within(niveis)
+        .getAllByRole('listitem')
+        .map((item) => item.textContent),
+    ).toEqual(['Ensino Médio', 'Ensino Fundamental']);
   });
 
   it('explica as modalidades que o professor atende', async () => {
