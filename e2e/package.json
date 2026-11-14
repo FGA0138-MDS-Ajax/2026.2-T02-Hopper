@@ -1,0 +1,23 @@
+{
+  "name": "aulacerta-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes de sistema (ponta a ponta) do AulaCerta com Playwright",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "instalar-navegador": "playwright install chromium",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "dotenv": "^18.0.10",
+    "pg": "^8.23.1",
+    "typescript": "5.9"
+  }
+}
