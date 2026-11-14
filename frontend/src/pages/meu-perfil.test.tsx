@@ -13,7 +13,7 @@ import {
   salvarMeuPerfil,
   type MeuPerfil,
 } from '../services/area-professor';
-import { obterUsuarioAtual, type Usuario } from '../services/auth';
+import { atualizarConta, obterUsuarioAtual, type Usuario } from '../services/auth';
 import { listarMaterias } from '../services/professores';
 import { renderizar } from '../test/renderizar';
 import { PaginaMeuPerfil } from './meu-perfil';
@@ -21,6 +21,7 @@ import { PaginaMeuPerfil } from './meu-perfil';
 vi.mock('../services/auth', async (importarOriginal) => ({
   ...(await importarOriginal<typeof import('../services/auth')>()),
   obterUsuarioAtual: vi.fn(),
+  atualizarConta: vi.fn(),
 }));
 vi.mock('../services/professores', async (importarOriginal) => ({
   ...(await importarOriginal<typeof import('../services/professores')>()),
@@ -86,11 +87,76 @@ describe('PaginaMeuPerfil', () => {
     removerToken();
   });
 
-  it('só professores usam a área', async () => {
-    vi.mocked(obterUsuarioAtual).mockResolvedValue({ ...RITA, perfil: 'ALUNO' });
-    abrir();
-    expect(await screen.findByText('Esta área é para contas de professor.')).toBeInTheDocument();
-    expect(obterMeuPerfil).not.toHaveBeenCalled();
+  describe('dados da conta', () => {
+    const ALUNO: Usuario = {
+      ...RITA,
+      nome: 'Caio Alves',
+      email: 'caio@email.com',
+      telefone: '61991110001',
+      perfil: 'ALUNO',
+    };
+
+    it('aluno vê só os dados da conta, sem a área do professor', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      abrir();
+
+      expect(await screen.findByRole('heading', { name: 'Dados da conta' })).toBeInTheDocument();
+      expect(screen.getByLabelText('Nome completo')).toHaveValue('Caio Alves');
+      expect(screen.getByLabelText('E-mail')).toHaveValue('caio@email.com');
+      expect(screen.getByLabelText('E-mail')).toHaveAttribute('readonly');
+      expect(screen.getByLabelText('Telefone (opcional)')).toHaveValue('(61) 99111-0001');
+      expect(screen.queryByRole('tab', { name: 'Grade semanal' })).not.toBeInTheDocument();
+      expect(obterMeuPerfil).not.toHaveBeenCalled();
+    });
+
+    it('salva nome e telefone só com números e atualiza o nome na tela', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      vi.mocked(atualizarConta).mockResolvedValue({ ...ALUNO, nome: 'Caio Mendes', telefone: '61988887777' });
+      abrir();
+
+      const nome = await screen.findByLabelText('Nome completo');
+      fireEvent.change(nome, { target: { value: '  Caio Mendes ' } });
+      fireEvent.change(screen.getByLabelText('Telefone (opcional)'), { target: { value: '(61) 98888-7777' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Salvar dados' }));
+
+      expect(await screen.findByText('Dados da conta salvos.')).toBeInTheDocument();
+      expect(atualizarConta).toHaveBeenCalledWith({ nome: 'Caio Mendes', telefone: '61988887777' });
+      expect(screen.getByLabelText('Nome completo')).toHaveValue('Caio Mendes');
+    });
+
+    it('telefone em branco remove o telefone da conta', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      vi.mocked(atualizarConta).mockResolvedValue({ ...ALUNO, telefone: null });
+      abrir();
+
+      fireEvent.change(await screen.findByLabelText('Telefone (opcional)'), { target: { value: '' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Salvar dados' }));
+
+      expect(await screen.findByText('Dados da conta salvos.')).toBeInTheDocument();
+      expect(atualizarConta).toHaveBeenCalledWith({ nome: 'Caio Alves', telefone: null });
+    });
+
+    it('recusa nome curto e telefone sem DDD antes de chamar a API', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      abrir();
+
+      fireEvent.change(await screen.findByLabelText('Nome completo'), { target: { value: 'C' } });
+      fireEvent.change(screen.getByLabelText('Telefone (opcional)'), { target: { value: '9999' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Salvar dados' }));
+
+      expect(await screen.findByText('Informe seu nome completo.')).toBeInTheDocument();
+      expect(screen.getByText('Informe o DDD e o número (10 ou 11 dígitos).')).toBeInTheDocument();
+      expect(atualizarConta).not.toHaveBeenCalled();
+    });
+
+    it('professor edita os dados da conta na aba própria', async () => {
+      vi.mocked(obterMeuPerfil).mockResolvedValue(PERFIL_COMPLETO);
+      abrir('/meu-perfil?aba=conta');
+
+      expect(await screen.findByRole('tab', { name: 'Dados da conta' })).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByLabelText('Nome completo')).toHaveValue('Rita Lopes');
+      expect(screen.getByLabelText('Telefone (opcional)')).toHaveValue('');
+    });
   });
 
   it('professor novo vê as boas-vindas e o que falta para aparecer na busca', async () => {

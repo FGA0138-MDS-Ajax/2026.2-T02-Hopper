@@ -44,6 +44,18 @@ export async function obterUsuarioAtual(): Promise<Usuario> {
   return data;
 }
 
+export interface DadosConta {
+  nome: string;
+  /** null apaga o telefone. */
+  telefone: string | null;
+}
+
+/** Atualiza nome e telefone da própria conta (o e-mail não muda por aqui). */
+export async function atualizarConta(dados: DadosConta): Promise<Usuario> {
+  const { data } = await api.put<Usuario>('/usuarios/me', dados);
+  return data;
+}
+
 interface CorpoDeErro {
   erro?: { codigo?: string; detalhes?: { campo: string; mensagem: string }[] | null };
 }

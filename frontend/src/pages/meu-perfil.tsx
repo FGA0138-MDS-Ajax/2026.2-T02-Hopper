@@ -7,22 +7,24 @@ import { FormularioPerfil } from '../components/area-professor/formulario-perfil
 import { GerenciarBloqueios } from '../components/area-professor/gerenciar-bloqueios';
 import { AvisoSucesso } from '../components/aviso-sucesso';
 import { Cabecalho } from '../components/cabecalho';
+import { FormularioConta } from '../components/formulario-conta';
 import { Rodape } from '../components/rodape';
 import { useSessao } from '../contexts/sessao';
 import { useGrade, useMeuPerfil } from '../hooks/use-area-professor';
 import { useTitulo } from '../hooks/use-titulo';
 import type { FaixaHoraria, MeuPerfil } from '../services/area-professor';
 
-type IdAba = 'perfil' | 'grade' | 'bloqueios';
+type IdAba = 'perfil' | 'grade' | 'bloqueios' | 'conta';
 
 const ABAS: { id: IdAba; rotulo: string }[] = [
   { id: 'perfil', rotulo: 'Perfil' },
   { id: 'grade', rotulo: 'Grade semanal' },
   { id: 'bloqueios', rotulo: 'Bloqueios' },
+  { id: 'conta', rotulo: 'Dados da conta' },
 ];
 
 function ehAba(valor: string | null): valor is IdAba {
-  return valor === 'perfil' || valor === 'grade' || valor === 'bloqueios';
+  return valor === 'perfil' || valor === 'grade' || valor === 'bloqueios' || valor === 'conta';
 }
 
 /** O que falta para o professor aparecer na busca e receber pedidos. */
@@ -97,7 +99,10 @@ function Moldura({ children }: { children: ReactNode }) {
   );
 }
 
-/** Área do professor: perfil (RF04), grade semanal (RF05) e bloqueios (RF06). */
+/**
+ * Meu perfil. Professor: perfil (RF04), grade semanal (RF05), bloqueios (RF06) e dados da conta.
+ * Aluno e administrador: só os dados da conta (nome e telefone).
+ */
 export function PaginaMeuPerfil() {
   useTitulo('Meu perfil');
   const { usuario } = useSessao();
@@ -106,7 +111,9 @@ export function PaginaMeuPerfil() {
   const perfil = useMeuPerfil(ehProfessor);
   const grade = useGrade(ehProfessor);
   const [mensagem, setMensagem] = useState<string | null>(
-    parametros.get('bem-vindo') ? 'Conta criada! Complete seu perfil e sua grade para começar a receber pedidos.' : null,
+    parametros.get('bem-vindo')
+      ? 'Conta criada! Complete seu perfil e sua grade para começar a receber pedidos.'
+      : null,
   );
 
   if (!usuario) return null; // A rota é protegida; isto só acontece durante o redirecionamento.
@@ -114,13 +121,21 @@ export function PaginaMeuPerfil() {
   if (!ehProfessor) {
     return (
       <Moldura>
-        <div className="cartao p-10 text-center">
-          <h1 className="text-2xl font-extrabold tracking-tight text-tinta">Área do professor</h1>
-          <p className="mt-2 text-suave">Esta área é para contas de professor.</p>
-          <Link to="/" className="botao-secundario mt-6">
-            Voltar ao início
-          </Link>
-        </div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-tinta sm:text-4xl">Meu perfil</h1>
+        <p className="mt-2 text-suave">Seus dados no AulaCerta.</p>
+        {mensagem && (
+          <div className="mt-6">
+            <AvisoSucesso aoFechar={() => setMensagem(null)}>{mensagem}</AvisoSucesso>
+          </div>
+        )}
+        <section aria-labelledby="titulo-conta" className="cartao mt-8 p-6 sm:p-8">
+          <h2 id="titulo-conta" className="text-lg font-bold text-tinta">
+            Dados da conta
+          </h2>
+          <div className="mt-6">
+            <FormularioConta usuario={usuario} aoSalvar={setMensagem} />
+          </div>
+        </section>
       </Moldura>
     );
   }
@@ -182,6 +197,7 @@ export function PaginaMeuPerfil() {
             {idAba === 'perfil' && <FormularioPerfil perfil={perfil.data} aoSalvar={avisar} />}
             {idAba === 'grade' && <EditorGrade grade={grade.data} aoSalvar={avisar} />}
             {idAba === 'bloqueios' && <GerenciarBloqueios aoAlterar={avisar} />}
+            {idAba === 'conta' && <FormularioConta usuario={usuario} aoSalvar={avisar} />}
           </PainelDeAba>
         </>
       )}
