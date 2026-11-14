@@ -71,6 +71,8 @@ function criarServico(detalhe: AulaDetalhe | null = criarDetalhe()) {
     listarIntervalosOcupados: vi.fn().mockResolvedValue([]),
     existeConflito: vi.fn().mockResolvedValue(false),
     transicionar: vi.fn().mockResolvedValue(undefined),
+    listarPedidosSobrepostos: vi.fn().mockResolvedValue([]),
+    listarPedidosDaSerie: vi.fn().mockResolvedValue([]),
   };
   const usuarios: Mocked<ServicoDeUsuariosParaAulas> = {
     obterProfessorParaAula: vi.fn().mockResolvedValue(professorParaAula),
@@ -85,19 +87,22 @@ function criarServico(detalhe: AulaDetalhe | null = criarDetalhe()) {
   const notificacoes: Mocked<ServicoDeNotificacoesParaAulas> = {
     notificar: vi.fn().mockResolvedValue(undefined),
   };
-  const transacao = vi.fn(async (operacao: (cliente: Transacao) => Promise<unknown>) =>
-    operacao(tx),
-  );
+  // Espião que conta as transações; executar é a função de verdade, com o tipo genérico do serviço.
+  const transacao = vi.fn();
+  const executar: ExecutarEmTransacao = (operacao) => {
+    transacao();
+    return operacao(tx);
+  };
   const servico = new AulasService({
     repositorio,
     usuarios,
     agenda,
     notificacoes,
-    transacao: transacao as unknown as ExecutarEmTransacao,
+    transacao: executar,
     agora: () => AGORA,
     gerarId: () => 'serie-1',
   });
-  return { servico, repositorio, usuarios, agenda, notificacoes, transacao };
+  return { servico, repositorio, usuarios, agenda, notificacoes, transacao, executar };
 }
 
 describe('AulasService', () => {
@@ -226,13 +231,13 @@ describe('AulasService', () => {
     });
 
     it('usa um identificador aleatorio para a serie quando nenhum gerador e informado', async () => {
-      const { repositorio, usuarios, agenda, notificacoes, transacao } = criarServico();
+      const { repositorio, usuarios, agenda, notificacoes, executar } = criarServico();
       const servico = new AulasService({
         repositorio,
         usuarios,
         agenda,
         notificacoes,
-        transacao: transacao as unknown as ExecutarEmTransacao,
+        transacao: executar,
         agora: () => AGORA,
       });
       await servico.solicitar(aluno, { ...entradaPadrao, recorrencia: { semanas: 2 } });
@@ -347,6 +352,103 @@ describe('AulasService', () => {
         tipo: 'CONFIRMACAO',
         mensagem: 'Ana confirmou a sua aula de Matemática em 09/11/2026 às 09:00.',
       });
+    });
+
+    it('recusa automaticamente os outros pedidos no mesmo horario e avisa os alunos (RF12)', async () => {
+      const { servico, repositorio, notificacoes } = criarServico();
+      const concorrente: AulaResumo = {
+        ...resumo,
+        id: 'a2',
+        aluno: { id: 'u-bia', nome: 'Bia' },
+      };
+      repositorio.listarPedidosSobrepostos.mockResolvedValue([concorrente]);
+
+      await servico.aceitar(professorUsuario, 'a1');
+
+      expect(repositorio.listarPedidosSobrepostos).toHaveBeenCalledWith(
+        tx,
+        'p1',
+        { inicio: INICIO, fim: FIM },
+        ['a1'],
+      );
+      expect(repositorio.transicionar).toHaveBeenCalledWith(tx, {
+        aulaId: 'a2',
+        de: 'SOLICITADA',
+        para: 'RECUSADA',
+        autorId: 'u-prof',
+        motivo: 'O horário foi preenchido por outra aula',
+      });
+      expect(notificacoes.notificar).toHaveBeenCalledWith(tx, {
+        usuarioId: 'u-bia',
+        aulaId: 'a2',
+        tipo: 'RECUSA',
+        mensagem:
+          'Ana recusou a sua aula de Matemática em 09/11/2026 às 09:00. Motivo: o horário foi preenchido por outra aula.',
+      });
+    });
+
+    it('aceita todas as aulas pendentes da serie de uma vez, com um unico aviso (RF10)', async () => {
+      const proxima: AulaResumo = {
+        ...resumo,
+        id: 'a2',
+        serieId: 's1',
+        inicio: criarDataBrasilia(2026, 11, 16, 9),
+        fim: criarDataBrasilia(2026, 11, 16, 10),
+      };
+      const { servico, repositorio, notificacoes } = criarServico(criarDetalhe({ serieId: 's1' }));
+      repositorio.listarPedidosDaSerie.mockResolvedValue([{ ...resumo, serieId: 's1' }, proxima]);
+
+      await servico.aceitar(professorUsuario, 'a1', { serie: true });
+
+      expect(repositorio.listarPedidosDaSerie).toHaveBeenCalledWith('s1', AGORA);
+      expect(repositorio.existeConflito).toHaveBeenCalledTimes(2);
+      expect(repositorio.transicionar).toHaveBeenCalledWith(
+        tx,
+        expect.objectContaining({ aulaId: 'a1', para: 'CONFIRMADA' }),
+      );
+      expect(repositorio.transicionar).toHaveBeenCalledWith(
+        tx,
+        expect.objectContaining({ aulaId: 'a2', para: 'CONFIRMADA' }),
+      );
+      expect(notificacoes.notificar).toHaveBeenCalledTimes(1);
+      expect(notificacoes.notificar).toHaveBeenCalledWith(tx, {
+        usuarioId: 'u-aluno',
+        aulaId: 'a1',
+        tipo: 'CONFIRMACAO',
+        mensagem: 'Ana confirmou 2 aulas semanais de Matemática a partir de 09/11/2026 às 09:00.',
+      });
+    });
+
+    it('nao confirma nenhuma aula da serie se uma semana estiver ocupada', async () => {
+      const proxima: AulaResumo = {
+        ...resumo,
+        id: 'a2',
+        serieId: 's1',
+        inicio: criarDataBrasilia(2026, 11, 16, 9),
+        fim: criarDataBrasilia(2026, 11, 16, 10),
+      };
+      const { servico, repositorio, notificacoes } = criarServico(criarDetalhe({ serieId: 's1' }));
+      repositorio.listarPedidosDaSerie.mockResolvedValue([{ ...resumo, serieId: 's1' }, proxima]);
+      repositorio.existeConflito.mockImplementation(
+        async (_tx, _professor, intervalo) =>
+          intervalo.inicio.getTime() === proxima.inicio.getTime(),
+      );
+
+      const erro = await capturarErro(servico.aceitar(professorUsuario, 'a1', { serie: true }));
+
+      expect(erro).toBeInstanceOf(ErroConflito);
+      expect(erro.message).toBe('Já existe uma aula confirmada em 16/11/2026 às 09:00');
+      expect(repositorio.transicionar).not.toHaveBeenCalled();
+      expect(notificacoes.notificar).not.toHaveBeenCalled();
+    });
+
+    it('com serie: true numa aula avulsa, confirma so ela', async () => {
+      const { servico, repositorio } = criarServico();
+
+      await servico.aceitar(professorUsuario, 'a1', { serie: true });
+
+      expect(repositorio.listarPedidosDaSerie).not.toHaveBeenCalled();
+      expect(repositorio.transicionar).toHaveBeenCalledTimes(1);
     });
 
     it('responde 409 quando ja existe aula confirmada no horario (CT05)', async () => {
