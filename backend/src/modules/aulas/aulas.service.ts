@@ -177,6 +177,9 @@ export class AulasService {
     const idsConfirmados = aulas.map((item) => item.id);
 
     await this.deps.transacao(async (tx) => {
+      // Aceites simultâneos do mesmo professor entram em fila: cada um confirma a sua aula e recusa
+      // os pedidos sobrepostos; sem a fila, dois aceites travariam um esperando o outro (deadlock).
+      await this.deps.repositorio.bloquearAgendaDoProfessor(tx, aula.professor.id);
       // Confere todas antes de confirmar qualquer uma: numa série, ou entram todas ou nenhuma.
       for (const item of aulas) {
         const intervalo = { inicio: item.inicio, fim: item.fim };

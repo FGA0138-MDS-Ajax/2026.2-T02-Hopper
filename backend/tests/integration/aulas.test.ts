@@ -347,21 +347,24 @@ describe('PATCH /aulas/:id/aceitar', () => {
 });
 
 describe('conflito de horario (CT05, RF12)', () => {
-  it('responde 409 ao confirmar uma segunda aula no mesmo horario e mantem a solicitacao', async () => {
+  it('ao confirmar uma aula, recusa o outro pedido do mesmo horario e avisa o aluno', async () => {
     const primeira = await solicitarEObterId(aluno);
     const segunda = await solicitarEObterId(outroAluno);
 
     expect((await aceitar(professor, primeira)).status).toBe(200);
-    const conflito = await aceitar(professor, segunda);
 
-    expect(conflito.status).toBe(409);
-    expect(conflito.body.erro.codigo).toBe('CONFLITO_DE_HORARIO');
     const estado = await prisma.aula.findUniqueOrThrow({ where: { id: segunda } });
-    expect(estado.status).toBe('SOLICITADA');
-    const notificacoes = await prisma.notificacao.count({
-      where: { usuarioId: outroAluno.id, tipo: 'CONFIRMACAO' },
+    expect(estado.status).toBe('RECUSADA');
+    const historico = await prisma.historicoStatus.findFirstOrThrow({
+      where: { aulaId: segunda, status: 'RECUSADA' },
     });
-    expect(notificacoes).toBe(0);
+    expect(historico.motivo).toBe('O horário foi preenchido por outra aula');
+    const avisos = await prisma.notificacao.findMany({ where: { usuarioId: outroAluno.id } });
+    expect(avisos.map((aviso) => aviso.tipo)).toEqual(['RECUSA']);
+    // O pedido recusado não pode mais ser confirmado.
+    const tentativa = await aceitar(professor, segunda);
+    expect(tentativa.status).toBe(400);
+    expect(tentativa.body.erro.codigo).toBe('TRANSICAO_INVALIDA');
   });
 
   it('aceita apenas uma de duas confirmacoes simultaneas do mesmo horario', async () => {
@@ -379,8 +382,9 @@ describe('conflito de horario (CT05, RF12)', () => {
       where: { professorId, status: 'CONFIRMADA' },
     });
     expect(confirmadas).toBe(1);
-    const pendentes = await prisma.aula.count({ where: { professorId, status: 'SOLICITADA' } });
-    expect(pendentes).toBe(1);
+    // O pedido que perdeu a disputa foi recusado pelo aceite vencedor.
+    const recusadas = await prisma.aula.count({ where: { professorId, status: 'RECUSADA' } });
+    expect(recusadas).toBe(1);
   });
 
   it('o banco recusa duas aulas confirmadas sobrepostas mesmo fora da API', async () => {

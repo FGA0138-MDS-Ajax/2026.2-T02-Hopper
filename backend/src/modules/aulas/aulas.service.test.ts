@@ -70,6 +70,7 @@ function criarServico(detalhe: AulaDetalhe | null = criarDetalhe()) {
     listar: vi.fn().mockResolvedValue({ itens: [resumo], total: 1 }),
     listarIntervalosOcupados: vi.fn().mockResolvedValue([]),
     existeConflito: vi.fn().mockResolvedValue(false),
+    bloquearAgendaDoProfessor: vi.fn().mockResolvedValue(undefined),
     transicionar: vi.fn().mockResolvedValue(undefined),
     listarPedidosSobrepostos: vi.fn().mockResolvedValue([]),
     listarPedidosDaSerie: vi.fn().mockResolvedValue([]),
@@ -334,6 +335,11 @@ describe('AulasService', () => {
       await servico.aceitar(professorUsuario, 'a1');
 
       expect(transacao).toHaveBeenCalledTimes(1);
+      // Aceites simultâneos do mesmo professor entram em fila (evita deadlock entre transações).
+      expect(repositorio.bloquearAgendaDoProfessor).toHaveBeenCalledWith(tx, 'p1');
+      expect(repositorio.bloquearAgendaDoProfessor.mock.invocationCallOrder[0]).toBeLessThan(
+        repositorio.existeConflito.mock.invocationCallOrder[0],
+      );
       expect(repositorio.existeConflito).toHaveBeenCalledWith(
         tx,
         'p1',

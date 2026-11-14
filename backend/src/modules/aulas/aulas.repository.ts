@@ -86,6 +86,11 @@ export interface AulasRepositorio {
     ignorarAulaId: string,
   ): Promise<boolean>;
   transicionar(tx: Transacao, dados: DadosTransicao): Promise<void>;
+  /**
+   * Reserva a agenda do professor até o fim da transação: outra transação que tente reservá-la
+   * espera esta terminar. Assim, aceites simultâneos do mesmo professor entram em fila.
+   */
+  bloquearAgendaDoProfessor(tx: Transacao, professorId: string): Promise<void>;
   /** Pedidos ainda pendentes (SOLICITADA) do professor que se sobrepõem ao intervalo. */
   listarPedidosSobrepostos(
     tx: Transacao,
@@ -261,6 +266,10 @@ export class AulasRepositorioPrisma implements AulasRepositorio {
       orderBy: [{ inicio: 'asc' }, { id: 'asc' }],
     });
     return registros.map(paraResumo);
+  }
+
+  async bloquearAgendaDoProfessor(tx: Transacao, professorId: string): Promise<void> {
+    await tx.$queryRaw`SELECT 1 FROM "PerfilProfessor" WHERE id = ${professorId} FOR UPDATE`;
   }
 
   async transicionar(tx: Transacao, dados: DadosTransicao): Promise<void> {
