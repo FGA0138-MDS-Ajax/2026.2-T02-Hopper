@@ -119,6 +119,15 @@ describe('PaginaMinhasAulas', () => {
       expect(within(cartao).getByText('Confirmada')).toBeInTheDocument();
       expect(within(cartao).getByText('14h às 15h')).toBeInTheDocument();
       expect(within(cartao).getByText('“Revisar funções”')).toBeInTheDocument();
+      expect(within(cartao).queryByText('Aula semanal')).not.toBeInTheDocument();
+    });
+
+    it('identifica as aulas que fazem parte de uma série semanal (RF10)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ serieId: 's1' })] });
+      abrir();
+
+      const cartao = await screen.findByRole('article', { name: /Aula de Matemática/ });
+      expect(within(cartao).getByText('Aula semanal')).toBeInTheDocument();
     });
 
     it('mostra as próximas aulas na ordem do calendário', async () => {
@@ -229,9 +238,22 @@ describe('PaginaMinhasAulas', () => {
       await userEvent.click(await screen.findByRole('button', { name: 'Aceitar' }));
 
       expect(aceitarMock).toHaveBeenCalledWith('a1');
+      expect(screen.queryByRole('button', { name: 'Aceitar a série inteira' })).not.toBeInTheDocument();
       expect(await screen.findByRole('status')).toHaveTextContent(
         'Aula com Caio Alves confirmada. O horário ficou reservado e o aluno foi avisado.',
       );
+    });
+
+    it('numa aula semanal, aceita a série inteira de uma vez (RF10)', async () => {
+      listarPorStatus({ SOLICITADA: [aula({ status: 'SOLICITADA', serieId: 's1' })] });
+      aceitarMock.mockResolvedValue({ ...aula(), anotacoes: null, contato: null, historico: [] });
+      abrir();
+
+      expect(await screen.findByRole('button', { name: 'Aceitar esta aula' })).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('button', { name: 'Aceitar a série inteira' }));
+
+      expect(aceitarMock).toHaveBeenCalledWith('a1', { serie: true });
+      expect(await screen.findByRole('status')).toHaveTextContent('Aulas semanais com Caio Alves confirmadas.');
     });
 
     it('recusa um pedido informando o motivo', async () => {

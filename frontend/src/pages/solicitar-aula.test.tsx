@@ -7,6 +7,7 @@ import { obterUsuarioAtual, type Usuario } from '../services/auth';
 import { solicitarAula, type Aula } from '../services/aulas';
 import { buscarProfessor, type ProfessorDetalhe } from '../services/professores';
 import { renderizar } from '../test/renderizar';
+import { diaDaUltimaAula } from '../utils/datas';
 import { PaginaSolicitarAula } from './solicitar-aula';
 
 vi.mock('../services/auth', async (importarOriginal) => ({
@@ -101,7 +102,10 @@ describe('PaginaSolicitarAula', () => {
     expect(within(resumo).getByText('Ana Souza')).toBeInTheDocument();
     expect(within(resumo).getByText('quinta-feira, 12 de novembro')).toBeInTheDocument();
     expect(within(resumo).getByText(/14h às 15h/)).toBeInTheDocument();
-    expect(within(resumo).getByRole('link', { name: 'Trocar horário' })).toHaveAttribute('href', '/professores/p1#horarios');
+    expect(within(resumo).getByRole('link', { name: 'Trocar horário' })).toHaveAttribute(
+      'href',
+      '/professores/p1#horarios',
+    );
   });
 
   it('exige matéria e modalidade quando há mais de uma opção', async () => {
@@ -156,6 +160,74 @@ describe('PaginaSolicitarAula', () => {
       'href',
       '/professores/p1#horarios',
     );
+  });
+
+  describe('aulas semanais (RF10)', () => {
+    /** As aulas que a API devolve para uma série de "semanas" semanas. */
+    function serie(semanas: number): Aula[] {
+      return Array.from({ length: semanas }, (_, indice) => {
+        const deslocamento = indice * 7 * 24 * 60 * 60 * 1000;
+        return {
+          ...AULA,
+          id: `a${indice + 1}`,
+          serieId: 's1',
+          inicio: new Date(new Date(INICIO).getTime() + deslocamento).toISOString(),
+          fim: new Date(new Date(FIM).getTime() + deslocamento).toISOString(),
+        };
+      });
+    }
+
+    it('por padrão pede uma só aula, sem recorrência', async () => {
+      solicitarMock.mockResolvedValue([AULA]);
+      abrir();
+
+      expect(await screen.findByRole('radio', { name: 'Só esta aula' })).toBeChecked();
+      expect(screen.queryByLabelText('Por quantas semanas?')).not.toBeInTheDocument();
+      await escolherEEnviar();
+      expect(solicitarMock.mock.calls[0][0]).not.toHaveProperty('recorrencia');
+    });
+
+    it('envia a série com o número de semanas e mostra até quando vai', async () => {
+      solicitarMock.mockResolvedValue(serie(6));
+      abrir();
+
+      await userEvent.click(await screen.findByRole('radio', { name: /Matemática/ }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Online' }));
+      await userEvent.click(screen.getByRole('radio', { name: /Toda semana/ }));
+      const semanas = screen.getByLabelText('Por quantas semanas?');
+      expect(semanas).toHaveValue('4');
+      expect(screen.getByText(/4 aulas, até quinta-feira, 3 de dezembro/)).toBeInTheDocument();
+
+      await userEvent.selectOptions(semanas, '6');
+      expect(screen.getByText(/6 aulas, até quinta-feira, 17 de dezembro/)).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('button', { name: 'Solicitar 6 aulas' }));
+
+      expect(solicitarMock).toHaveBeenCalledWith(expect.objectContaining({ recorrencia: { semanas: 6 } }));
+      expect(await screen.findByRole('heading', { name: 'Solicitação enviada' })).toBeInTheDocument();
+      expect(screen.getByText(/vai aceitar ou recusar cada uma das 6 aulas/)).toBeInTheDocument();
+      expect(screen.getByText('6 aulas semanais, até quinta-feira, 17 de dezembro')).toBeInTheDocument();
+    });
+
+    it('se uma das semanas estiver ocupada, sugere menos semanas ou outro horário', async () => {
+      solicitarMock.mockRejectedValue(
+        erroApi(409, 'HORARIO_INDISPONIVEL', 'O horário de 26/11/2026 às 14:00 não está disponível'),
+      );
+      abrir();
+
+      await userEvent.click(await screen.findByRole('radio', { name: /Matemática/ }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Online' }));
+      await userEvent.click(screen.getByRole('radio', { name: /Toda semana/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Solicitar 4 aulas' }));
+
+      const alerta = await screen.findByRole('alert');
+      expect(alerta).toHaveTextContent('O horário de 26/11/2026 às 14:00 não está disponível');
+      expect(alerta).toHaveTextContent('Escolha menos semanas ou outro horário.');
+    });
+
+    it('calcula o dia da última aula da série', () => {
+      expect(diaDaUltimaAula(INICIO, 2)).toBe('quinta-feira, 19 de novembro');
+      expect(diaDaUltimaAula(INICIO, 12)).toBe('quinta-feira, 28 de janeiro');
+    });
   });
 
   it('professor logado não pode solicitar', async () => {

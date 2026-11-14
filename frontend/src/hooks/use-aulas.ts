@@ -30,8 +30,9 @@ function useAtualizarAulas() {
 export function useAceitarAula() {
   const atualizar = useAtualizarAulas();
   return useMutation({
-    mutationFn: (id: string) => aceitarAula(id),
-    onSuccess: (_aula, id) => atualizar(id),
+    mutationFn: ({ id, serie }: { id: string; serie?: boolean }) =>
+      serie ? aceitarAula(id, { serie: true }) : aceitarAula(id),
+    onSuccess: (_aula, { id }) => atualizar(id),
   });
 }
 
