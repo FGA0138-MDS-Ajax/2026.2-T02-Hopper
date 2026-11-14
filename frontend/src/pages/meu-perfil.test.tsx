@@ -212,6 +212,31 @@ describe('PaginaMeuPerfil', () => {
       });
       expect(await screen.findByRole('status')).toHaveTextContent('Perfil salvo.');
     });
+
+    it('desmarca matéria e modalidade e mostra o erro quando a API não salva', async () => {
+      vi.mocked(obterMeuPerfil).mockResolvedValue({
+        ...PERFIL_COMPLETO,
+        modalidades: ['ONLINE', 'PRESENCIAL'],
+        materias: [
+          { id: 'm1', nome: 'Matemática', nivel: 'Ensino Médio' },
+          { id: 'm3', nome: 'Física', nivel: 'Ensino Médio' },
+        ],
+      });
+      vi.mocked(salvarMeuPerfil).mockRejectedValue(new Error('falha'));
+      abrir();
+
+      await userEvent.click(await screen.findByRole('checkbox', { name: 'Física, Ensino Médio' }));
+      await userEvent.click(screen.getByRole('checkbox', { name: /Presencial/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar perfil' }));
+
+      expect(salvarMeuPerfil).toHaveBeenCalledWith({
+        apresentacao: 'Professora de matemática.',
+        materiaIds: ['m1'],
+        modalidades: ['ONLINE'],
+        valorHora: 80,
+      });
+      expect(await screen.findByText('Não foi possível salvar o perfil. Tente novamente.')).toBeInTheDocument();
+    });
   });
 
   describe('aba Grade semanal', () => {
@@ -245,6 +270,63 @@ describe('PaginaMeuPerfil', () => {
       await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
 
       expect(await screen.findByText('Os horários deste dia se sobrepõem.')).toBeInTheDocument();
+      expect(salvarGrade).not.toHaveBeenCalled();
+    });
+
+    it('altera o fim de uma faixa e salva o novo horário', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+      vi.mocked(salvarGrade).mockImplementation(async (faixas) => faixas);
+      abrir('/meu-perfil?aba=grade');
+
+      fireEvent.change(await screen.findByLabelText('Segunda-feira: fim'), { target: { value: '10:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(salvarGrade).toHaveBeenCalledWith([{ diaSemana: 1, horaInicio: '08:00', horaFim: '10:00' }]);
+    });
+
+    it('remove a última faixa e avisa que os alunos não conseguem pedir aulas', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+      vi.mocked(salvarGrade).mockResolvedValue([]);
+      abrir('/meu-perfil?aba=grade');
+
+      await userEvent.click(
+        await screen.findByRole('button', { name: 'Remover horário de Segunda-feira das 08:00 às 12:00' }),
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(salvarGrade).toHaveBeenCalledWith([]);
+      expect(await screen.findByRole('status')).toHaveTextContent('Grade salva sem horários.');
+    });
+
+    it('mostra o erro quando a API não salva a grade', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+      vi.mocked(salvarGrade).mockRejectedValue(new Error('falha'));
+      abrir('/meu-perfil?aba=grade');
+
+      fireEvent.change(await screen.findByLabelText('Segunda-feira: fim'), { target: { value: '11:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(await screen.findByText('Não foi possível salvar a grade. Tente novamente.')).toBeInTheDocument();
+    });
+
+    it('não salva mais de 50 faixas de horário', async () => {
+      // 8 faixas de 1 hora por dia nos 7 dias (56), sem sobreposição; ficam 51.
+      const faixas = [0, 1, 2, 3, 4, 5, 6]
+        .flatMap((dia) =>
+          [8, 9, 10, 11, 12, 13, 14, 15].map((hora) => ({
+            diaSemana: dia,
+            horaInicio: `${String(hora).padStart(2, '0')}:00`,
+            horaFim: `${String(hora + 1).padStart(2, '0')}:00`,
+          })),
+        )
+        .slice(0, 51);
+      vi.mocked(obterGrade).mockResolvedValue(faixas);
+      abrir('/meu-perfil?aba=grade');
+
+      fireEvent.change((await screen.findAllByLabelText('Segunda-feira: fim'))[0], { target: { value: '08:30' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(await screen.findByText('Use no máximo 50 faixas de horário.')).toBeInTheDocument();
       expect(salvarGrade).not.toHaveBeenCalled();
     });
   });
@@ -294,6 +376,86 @@ describe('PaginaMeuPerfil', () => {
 
       expect(await screen.findByText(/O bloqueio precisa começar no futuro/)).toBeInTheDocument();
       expect(criarBloqueio).not.toHaveBeenCalled();
+    });
+
+    it('cria um bloqueio com horário e exige as duas horas', async () => {
+      vi.mocked(criarBloqueio).mockResolvedValue({
+        id: 'b2',
+        inicio: '2026-11-20T14:00:00.000-03:00',
+        fim: '2026-11-21T10:00:00.000-03:00',
+        motivo: null,
+      });
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      await userEvent.click(screen.getByLabelText('Dia inteiro'));
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+      expect(await screen.findByText('Informe a hora de início.')).toBeInTheDocument();
+      expect(screen.getByText('Informe a hora de fim.')).toBeInTheDocument();
+
+      fireEvent.change(screen.getByLabelText('Até'), { target: { value: '2026-11-21' } });
+      fireEvent.change(screen.getByLabelText('A partir de'), { target: { value: '14:00' } });
+      fireEvent.change(screen.getByLabelText('Até as'), { target: { value: '10:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(criarBloqueio).toHaveBeenCalledWith({
+        inicio: '2026-11-20T17:00:00.000Z',
+        fim: '2026-11-21T13:00:00.000Z',
+        motivo: undefined,
+      });
+      expect(await screen.findByRole('status')).toHaveTextContent(
+        'Bloqueio de Sex, 20/11 14h a Sáb, 21/11 10h criado.',
+      );
+    });
+
+    it('não aceita fim antes do início', async () => {
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      fireEvent.change(screen.getByLabelText('Até'), { target: { value: '2026-11-19' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(await screen.findByText('O fim precisa ser depois do início.')).toBeInTheDocument();
+      expect(criarBloqueio).not.toHaveBeenCalled();
+    });
+
+    it('mostra o erro quando a API não cria o bloqueio', async () => {
+      vi.mocked(criarBloqueio).mockRejectedValue(new Error('falha'));
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(await screen.findByText('Não foi possível criar o bloqueio. Tente novamente.')).toBeInTheDocument();
+    });
+
+    it('mostra bloqueios de vários dias, desiste da remoção e avisa quando a remoção falha', async () => {
+      vi.mocked(listarBloqueios).mockResolvedValue([
+        { id: 'b3', inicio: '2026-11-20T00:00:00.000-03:00', fim: '2026-11-23T00:00:00.000-03:00', motivo: null },
+      ]);
+      vi.mocked(removerBloqueio).mockRejectedValue(new Error('falha'));
+      abrir('/meu-perfil?aba=bloqueios');
+
+      const periodo = 'Sex, 20/11 a Dom, 22/11 · dias inteiros';
+      expect(await screen.findByText(periodo)).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: `Remover bloqueio de ${periodo}` }));
+      await userEvent.click(screen.getByRole('button', { name: 'Não' }));
+      expect(removerBloqueio).not.toHaveBeenCalled();
+
+      await userEvent.click(screen.getByRole('button', { name: `Remover bloqueio de ${periodo}` }));
+      await userEvent.click(screen.getByRole('button', { name: 'Sim, remover' }));
+      expect(await screen.findByText('Não foi possível remover o bloqueio.')).toBeInTheDocument();
+    });
+
+    it('oferece tentar de novo quando a lista de bloqueios não carrega', async () => {
+      vi.mocked(listarBloqueios).mockRejectedValueOnce(new Error('falha')).mockResolvedValue([]);
+      abrir('/meu-perfil?aba=bloqueios');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Tentar novamente' }));
+
+      expect(await screen.findByText('Nenhum bloqueio marcado.')).toBeInTheDocument();
+      expect(listarBloqueios).toHaveBeenCalledTimes(2);
     });
   });
 });
