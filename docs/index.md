@@ -13,8 +13,9 @@ hide:
 
 Visão do produto, decisões de arquitetura e registros do projeto em um só lugar.
 
-[Conhecer o projeto](documento-de-visao.md){ .md-button .md-button--primary }
-[Explorar a arquitetura](documento-de-arquitetura.md){ .md-button }
+[Conhecer o projeto](documento-de-visao/v1-1.md){ .md-button .md-button--primary }
+[Explorar a arquitetura](documento-de-arquitetura/v1-1.md){ .md-button }
+[Qualidade e testes](qualidade/index.md){ .md-button }
 
 </div>
 
@@ -36,7 +37,7 @@ O projeto é desenvolvido pelo Grupo Hopper na disciplina Métodos de Desenvolvi
 
 O problema, os objetivos do produto, o escopo, o planejamento e os critérios de qualidade do projeto.
 
-[Ler documento de visão →](documento-de-visao.md){ .ac-card-link }
+[Ler documento de visão →](documento-de-visao/v1-1.md){ .ac-card-link }
 
 </section>
 
@@ -46,7 +47,19 @@ O problema, os objetivos do produto, o escopo, o planejamento e os critérios de
 
 As tecnologias, os componentes, as interfaces e as decisões que orientam a construção do sistema.
 
-[Ler documento de arquitetura →](documento-de-arquitetura.md){ .ac-card-link }
+[Ler documento de arquitetura →](documento-de-arquitetura/v1-1.md){ .ac-card-link }
+
+</section>
+
+<section class="ac-card" markdown="1">
+
+### Qualidade e Testes
+
+O roteiro de testes por cenário, os defeitos corrigidos e o relatório da última execução dos testes automatizados.
+
+[Ver qualidade e testes →](qualidade/index.md){ .ac-card-link }
+
+[Acessar o relatório de testes →](assets/qualidade/relatorio-de-testes/index.html){ .ac-card-link }
 
 </section>
 

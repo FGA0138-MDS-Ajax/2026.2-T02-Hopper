@@ -1,0 +1,34 @@
+AulaCerta — registro de execução de testes
+------------------------------------------------------------------------------
+Tipo:      Sistema — Playwright (ponta a ponta)
+Início:    14/11/2026 13:50:04 (horário de Brasília)
+Branch:    test/casos-pendentes-do-roteiro | commit a6b0102 (com alterações não commitadas)
+Node:      v22.22.3
+Pasta:     e2e/
+Comando:   playwright test
+------------------------------------------------------------------------------
+
+Running 9 tests using 1 worker
+
+(node:9516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [chromium] › testes\c01-cadastro-e-autenticacao.spec.ts:7:3 › C01 — Cadastro e autenticação › CT01 — aluno se cadastra e vai para a busca de professores (4.3s)
+  ok 2 [chromium] › testes\c01-cadastro-e-autenticacao.spec.ts:24:3 › C01 — Cadastro e autenticação › CT01 — professor se cadastra e vai completar o perfil (2.1s)
+  ok 3 [chromium] › testes\c01-cadastro-e-autenticacao.spec.ts:39:3 › C01 — Cadastro e autenticação › CT02 — login com senha errada é recusado sem dizer qual dado está errado (1.3s)
+  ok 4 [chromium] › testes\c01-cadastro-e-autenticacao.spec.ts:51:3 › C01 — Cadastro e autenticação › CT02.2 — usuário entra, sai e perde o acesso às telas protegidas (1.8s)
+  ok 5 [chromium] › testes\c02-perfil-e-disponibilidade.spec.ts:7:3 › C02 — Perfil e disponibilidade › CT03 — professor publica a grade semanal e os horários aparecem no perfil público (2.9s)
+[API] (node:7004) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+[API] (Use `node --trace-deprecation ...` to show where the warning was created)
+  ok 6 [chromium] › testes\c03-busca-e-solicitacao.spec.ts:7:3 › C03 — Busca e solicitação › CT04 — aluno solicita aula em horário livre e o professor é avisado (4.6s)
+  ok 7 [chromium] › testes\c04-confirmacao-ou-recusa.spec.ts:20:3 › C04 — Confirmação ou recusa › CT06 — professor aceita: aula confirmada, horário bloqueado e aluno avisado (5.1s)
+  ok 8 [chromium] › testes\c04-confirmacao-ou-recusa.spec.ts:46:3 › C04 — Confirmação ou recusa › CT07 — professor recusa: aula recusada, horário continua livre e aluno avisado (4.7s)
+  ok 9 [chromium] › testes\rnf02-responsividade.spec.ts:13:1 › CT12 — telas principais em 360 px, sem rolagem horizontal (4.9s)
+
+  9 passed (39.6s)
+
+------------------------------------------------------------------------------
+Resultado: APROVADO (código de saída 0)
+Testes:    9 aprovados (de 9)
+Duração:   40,6 s
+Relatórios: html/index.html
+------------------------------------------------------------------------------

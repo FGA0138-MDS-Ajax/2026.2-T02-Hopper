@@ -1,0 +1,29 @@
+{
+  "tipo": "backend-unitarios",
+  "titulo": "Back-end — testes unitários (com cobertura)",
+  "carimbo": "2026-11-14_13-46-54",
+  "inicio": "14/11/2026 13:46:54",
+  "duracao": 4.157,
+  "situacao": "APROVADO",
+  "codigo": 0,
+  "totais": {
+    "total": 133,
+    "aprovados": 133,
+    "falharam": 0,
+    "ignorados": 0
+  },
+  "cobertura": {
+    "linhas": 98.65,
+    "instrucoes": 98.75,
+    "funcoes": 98.48,
+    "ramificacoes": 96.5
+  },
+  "branch": "test/casos-pendentes-do-roteiro",
+  "commit": "a6b0102",
+  "alterado": true,
+  "comando": "vitest run --project unit --reporter=default --reporter=json --outputFile.json=../relatorios/backend-unitarios/2026-11-14_13-46-54/resultado.json --includeTaskLocation --coverage --coverage.reportsDirectory=../relatorios/backend-unitarios/2026-11-14_13-46-54/cobertura --coverage.reporter=text --coverage.reporter=html --coverage.reporter=json-summary",
+  "relatorios": [
+    "html/index.html",
+    "cobertura/index.html"
+  ]
+}

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatórios de testes — AulaCerta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+  :root { color-scheme:light; --primary:#00236f; --secondary:#0051d5; --ceu:#24a8d8; --menta:#1fc58e; --menta-escuro:#047857; --menta-fundo:#e8faf3; --ambar:#f59e0b; --ambar-escuro:#b45309; --ambar-fundo:#fef6e4; --erro:#ba1a1a; --erro-fundo:#fdeceb; --surface:#f6f8fd; --tinta:#0f172a; --suave:#475569; --borda:#e2e8f0; --neutro:#94a3b8; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--surface); color:var(--tinta); line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a { color:var(--secondary); }
+  code, pre { font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace; }
+  :focus-visible { outline:none; box-shadow:0 0 0 3px rgba(0,81,213,.3); border-radius:4px; }
+  .conteudo { width:100%; max-width:72rem; margin:0 auto; padding:0 16px; }
+  @media (min-width:640px) { .conteudo { padding:0 24px; } }
+  .topo { position:sticky; top:0; z-index:20; background:rgba(246,248,253,.85); backdrop-filter:blur(8px); border-bottom:1px solid rgba(226,232,240,.6); }
+  .topo .conteudo { display:flex; align-items:center; justify-content:space-between; gap:8px 24px; min-height:64px; flex-wrap:wrap; padding-top:8px; padding-bottom:8px; }
+  .marca { display:inline-flex; align-items:center; gap:10px; text-decoration:none; }
+  .marca .logo { height:32px; width:auto; flex-shrink:0; }
+  .marca .nome { font-size:1.25rem; font-weight:800; letter-spacing:-.025em; color:var(--primary); }
+  .marca .nome b { color:var(--secondary); font-weight:800; }
+  .marca small { font-size:.75rem; font-weight:600; color:var(--suave); border-left:1px solid var(--borda); padding-left:10px; }
+  .topo nav { display:flex; gap:6px 20px; flex-wrap:wrap; }
+  .topo nav a { font-size:.875rem; font-weight:600; color:var(--suave); text-decoration:none; }
+  .topo nav a:hover { color:var(--primary); }
+  .painel { position:relative; overflow:hidden; margin:24px 0; padding:24px; border-radius:8px; color:#fff; background:var(--primary); }
+  .painel h1 { font-size:1.75rem; font-weight:800; letter-spacing:-.025em; line-height:1.2; margin:6px 0 10px; }
+  .painel p { color:#cbd5e1; margin:12px 0 0; max-width:46rem; }
+  .painel .meta { display:flex; flex-wrap:wrap; gap:4px 20px; margin-top:16px; font-size:.85rem; color:#cbd5e1; }
+  .painel .meta code { color:#fff; font-size:.8rem; }
+  .numeros { display:flex; flex-wrap:wrap; gap:12px 36px; margin:18px 0 14px; }
+  .numero strong { display:block; font-size:2rem; font-weight:800; line-height:1.1; }
+  .numero span { font-size:.8rem; color:#cbd5e1; }
+  .numero.ok strong { color:var(--menta); }
+  .numero.falha strong { color:#ff8a80; }
+  .barra { display:flex; height:8px; border-radius:2px; overflow:hidden; background:var(--borda); }
+  .barra i { display:block; height:100%; }
+  .barra .ok, .barra .alta { background:var(--menta); }
+  .barra .falhou, .barra .baixa { background:var(--erro); }
+  .barra .media { background:var(--ambar); }
+  .barra .ignorado { background:var(--neutro); }
+  .painel .barra { height:12px; background:rgba(255,255,255,.15); }
+  .selo { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:4px; font-weight:600; font-size:.8rem; background:var(--menta-fundo); color:var(--menta-escuro); white-space:nowrap; }
+  .selo.falha { background:var(--erro-fundo); color:var(--erro); }
+  .cartao { background:#fff; border:1px solid var(--borda); border-radius:8px; }
+  h2 { font-size:1.15rem; font-weight:800; letter-spacing:-.01em; color:var(--primary); margin:36px 0 4px; }
+  .botao { display:inline-flex; align-items:center; justify-content:center; gap:8px; height:40px; padding:0 16px; border-radius:6px; font:inherit; font-weight:600; font-size:.875rem; text-decoration:none; border:1px solid transparent; cursor:pointer; transition:background-color .15s, border-color .15s, color .15s; }
+  .botao.principal { background:var(--secondary); color:#fff; }
+  .botao.principal:hover { background:var(--primary); }
+  .botao.secundario { background:#fff; color:var(--primary); border-color:#cbd5e1; }
+  .botao.secundario:hover { border-color:var(--secondary); color:var(--secondary); }
+  .painel .botao.secundario { background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.3); }
+  .painel .botao.secundario:hover { background:rgba(255,255,255,.16); }
+  .botao.pequeno { height:32px; padding:0 12px; font-size:.8rem; border-radius:6px; }
+  .acoes { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+  .metricas { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  .metrica { display:block; padding:16px; text-decoration:none; color:inherit; }
+  a.metrica:hover { border-color:var(--secondary); }
+  .metrica .rotulo { font-size:.8rem; font-weight:700; color:var(--suave); }
+  .metrica strong { display:block; font-size:1.6rem; font-weight:800; margin:2px 0 8px; }
+  .metrica small { display:block; margin-top:6px; font-size:.75rem; color:var(--suave); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } * { transition:none !important; } }
+
+  .cartoes { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+  .tipo { display:flex; flex-direction:column; gap:8px; padding:18px; }
+  .tipo .cabeca { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .tipo .titulo { margin:0; font-weight:700; color:var(--primary); line-height:1.35; }
+  .tipo .cabeca { align-items:flex-start; margin-bottom:4px; }
+  .linha-metrica { display:flex; justify-content:space-between; align-items:baseline; font-size:.8rem; color:var(--suave); margin-top:4px; }
+  .linha-metrica strong { color:var(--tinta); font-size:1rem; }
+  .sem { color:var(--neutro) !important; font-weight:600; font-size:.8rem !important; }
+  .tipo .data { margin:4px 0 0; font-size:.8rem; color:var(--suave); }
+  .tipo .botoes { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px; }
+  .tipo .botoes .botao { padding:0 10px; }
+  .tabela { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:.85rem; }
+  th, td { text-align:left; padding:12px 14px; border-bottom:1px solid var(--borda); vertical-align:middle; }
+  th { background:#f8fafc; font-weight:700; color:var(--tinta); white-space:nowrap; }
+  tr:last-child td { border-bottom:none; }
+  tbody tr:hover td { background:#fafbff; }
+  td.quando { white-space:nowrap; }
+  td.com-barra { min-width:110px; }
+  td.com-barra span { display:block; font-weight:700; margin-bottom:4px; }
+  td.com-barra .barra { height:6px; }
+  td.links { white-space:nowrap; }
+  td code { font-size:.75rem; color:var(--suave); }
+  .nota { color:var(--suave); font-size:.8rem; margin-top:8px; }
+</style>
+</head>
+<body>
+<header class="topo"><div class="conteudo">
+  <a class="marca" href="index.html" aria-label="Todas as execuções"><svg viewBox="0 0 64 44" class="logo" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9v29c9-1.5 17 .5 23 5V13C22 8.5 13.5 7 5 9Z" stroke="#1b3a64" stroke-width="3.4"/><path d="M10 16c4.5 0 8.5 1 12.5 3M10 22c4.5 0 8.5 1 12.5 3M10 28c4.5 0 8.5 1 12.5 3" stroke="#1b3a64" stroke-width="2.6"/><circle cx="42" cy="20" r="12.5" stroke="#1fc58e" stroke-width="3.4"/><path d="M42 13.5v7.5h5.5M39 4h6" stroke="#1fc58e" stroke-width="3.2"/><path d="M34 29l7 7 19-21" stroke="#24a8d8" stroke-width="5.2"/></svg><span class="nome">Aula<b>Certa</b></span><small>Relatórios de testes</small></a>
+  <nav aria-label="Navegação dos relatórios"><a href="#ultimas">Última de cada tipo</a><a href="#todas">Todas as execuções</a></nav>
+</div></header>
+<main class="conteudo">
+  <section class="painel">
+    <h1>Relatórios de testes</h1>
+    <span class="selo ">Tudo aprovado</span>
+    <p>Atualizado em 14/11/2026 13:52:31 (horário de Brasília).</p>
+    <div class="numeros">
+      <div class="numero ok"><strong>409</strong><span>testes aprovados</span></div>
+      <div class="numero "><strong>0</strong><span>falharam</span></div>
+      <div class="numero"><strong>4</strong><span>execuções registradas</span></div>
+    </div>
+    <div class="barra " role="img" aria-label="409 aprovados (de 409)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div>
+  </section>
+  <h2 id="ultimas">Última execução de cada tipo</h2>
+  <div class="cartoes">
+      <article class="tipo cartao ">
+        <div class="cabeca"><p class="titulo">Back-end — testes unitários (com cobertura)</p><span class="selo ">Aprovado</span></div>
+        <div class="linha-metrica"><span>Testes</span><strong>133/133</strong></div>
+        <div class="barra " role="img" aria-label="133 aprovados (de 133)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div>
+        <div class="linha-metrica"><span>Cobertura de linhas</span><strong>98,7%</strong></div><div class="barra " role="img" aria-label="98,7%"><i class="alta" style="width:98.65%"></i></div>
+        <p class="data">14/11/2026 13:46:54 · 4,2 s</p>
+        <div class="botoes">
+          <a class="botao principal pequeno" href="backend-unitarios/2026-11-14_13-46-54/html/index.html">Relatório</a>
+          <a class="botao secundario pequeno" href="backend-unitarios/2026-11-14_13-46-54/execucao.log">Log</a>
+          <a class="botao secundario pequeno" href="backend-unitarios/2026-11-14_13-46-54/cobertura/index.html">Cobertura</a>
+        </div>
+      </article>
+      <article class="tipo cartao ">
+        <div class="cabeca"><p class="titulo">Back-end — testes de integração (banco de teste)</p><span class="selo ">Aprovado</span></div>
+        <div class="linha-metrica"><span>Testes</span><strong>73/73</strong></div>
+        <div class="barra " role="img" aria-label="73 aprovados (de 73)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div>
+        <div class="linha-metrica"><span>Cobertura</span><strong class="sem">não medida</strong></div>
+        <p class="data">14/11/2026 13:46:59 · 142,9 s</p>
+        <div class="botoes">
+          <a class="botao principal pequeno" href="backend-integracao/2026-11-14_13-46-59/html/index.html">Relatório</a>
+          <a class="botao secundario pequeno" href="backend-integracao/2026-11-14_13-46-59/execucao.log">Log</a>
+          
+        </div>
+      </article>
+      <article class="tipo cartao ">
+        <div class="cabeca"><p class="titulo">Front-end — testes de componentes (com cobertura)</p><span class="selo ">Aprovado</span></div>
+        <div class="linha-metrica"><span>Testes</span><strong>194/194</strong></div>
+        <div class="barra " role="img" aria-label="194 aprovados (de 194)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div>
+        <div class="linha-metrica"><span>Cobertura de linhas</span><strong>96,3%</strong></div><div class="barra " role="img" aria-label="96,3%"><i class="alta" style="width:96.26%"></i></div>
+        <p class="data">14/11/2026 13:51:49 · 41 s</p>
+        <div class="botoes">
+          <a class="botao principal pequeno" href="frontend/2026-11-14_13-51-49/html/index.html">Relatório</a>
+          <a class="botao secundario pequeno" href="frontend/2026-11-14_13-51-49/execucao.log">Log</a>
+          <a class="botao secundario pequeno" href="frontend/2026-11-14_13-51-49/cobertura/index.html">Cobertura</a>
+        </div>
+      </article>
+      <article class="tipo cartao ">
+        <div class="cabeca"><p class="titulo">Sistema — Playwright (ponta a ponta)</p><span class="selo ">Aprovado</span></div>
+        <div class="linha-metrica"><span>Testes</span><strong>9/9</strong></div>
+        <div class="barra " role="img" aria-label="9 aprovados (de 9)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div>
+        <div class="linha-metrica"><span>Cobertura</span><strong class="sem">não medida</strong></div>
+        <p class="data">14/11/2026 13:50:04 · 40,6 s</p>
+        <div class="botoes">
+          <a class="botao principal pequeno" href="e2e/2026-11-14_13-50-04/html/index.html">Relatório</a>
+          <a class="botao secundario pequeno" href="e2e/2026-11-14_13-50-04/execucao.log">Log</a>
+          
+        </div>
+      </article>
+  </div>
+  <h2 id="todas">Todas as execuções</h2>
+  <div class="tabela cartao">
+    <table>
+      <thead><tr><th>Início</th><th>Tipo</th><th>Situação</th><th>Testes</th><th>Cobertura</th><th>Duração</th><th>Branch · commit</th><th>Arquivos</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="quando">14/11/2026 13:51:49</td>
+          <td>Front-end · componentes</td>
+          <td><span class="selo ">Aprovado</span></td>
+          <td class="com-barra"><span>194/194</span><div class="barra " role="img" aria-label="194 aprovados (de 194)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div></td>
+          <td class="com-barra"><span>96,3%</span><div class="barra " role="img" aria-label="96,3%"><i class="alta" style="width:96.26%"></i></div></td>
+          <td>41 s</td>
+          <td><code>test/casos-pendentes-do-roteiro</code><br><code>a6b0102</code> *</td>
+          <td class="links"><a href="frontend/2026-11-14_13-51-49/execucao.log">log</a> · <a href="frontend/2026-11-14_13-51-49/html/index.html">relatório</a> · <a href="frontend/2026-11-14_13-51-49/cobertura/index.html">cobertura</a></td>
+        </tr>
+        <tr>
+          <td class="quando">14/11/2026 13:50:04</td>
+          <td>Sistema · Playwright</td>
+          <td><span class="selo ">Aprovado</span></td>
+          <td class="com-barra"><span>9/9</span><div class="barra " role="img" aria-label="9 aprovados (de 9)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div></td>
+          <td class="com-barra"><span class="sem">—</span></td>
+          <td>40,6 s</td>
+          <td><code>test/casos-pendentes-do-roteiro</code><br><code>a6b0102</code> *</td>
+          <td class="links"><a href="e2e/2026-11-14_13-50-04/execucao.log">log</a> · <a href="e2e/2026-11-14_13-50-04/html/index.html">relatório</a></td>
+        </tr>
+        <tr>
+          <td class="quando">14/11/2026 13:46:59</td>
+          <td>Back-end · integração</td>
+          <td><span class="selo ">Aprovado</span></td>
+          <td class="com-barra"><span>73/73</span><div class="barra " role="img" aria-label="73 aprovados (de 73)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div></td>
+          <td class="com-barra"><span class="sem">—</span></td>
+          <td>142,9 s</td>
+          <td><code>test/casos-pendentes-do-roteiro</code><br><code>a6b0102</code> *</td>
+          <td class="links"><a href="backend-integracao/2026-11-14_13-46-59/execucao.log">log</a> · <a href="backend-integracao/2026-11-14_13-46-59/html/index.html">relatório</a></td>
+        </tr>
+        <tr>
+          <td class="quando">14/11/2026 13:46:54</td>
+          <td>Back-end · unitários</td>
+          <td><span class="selo ">Aprovado</span></td>
+          <td class="com-barra"><span>133/133</span><div class="barra " role="img" aria-label="133 aprovados (de 133)"><i class="ok" style="width:100.00%"></i><i class="falhou" style="width:0.00%"></i><i class="ignorado" style="width:0.00%"></i></div></td>
+          <td class="com-barra"><span>98,7%</span><div class="barra " role="img" aria-label="98,7%"><i class="alta" style="width:98.65%"></i></div></td>
+          <td>4,2 s</td>
+          <td><code>test/casos-pendentes-do-roteiro</code><br><code>a6b0102</code> *</td>
+          <td class="links"><a href="backend-unitarios/2026-11-14_13-46-54/execucao.log">log</a> · <a href="backend-unitarios/2026-11-14_13-46-54/html/index.html">relatório</a> · <a href="backend-unitarios/2026-11-14_13-46-54/cobertura/index.html">cobertura</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota">* executado com alterações ainda não commitadas.</p>
+</main>
+</body>
+</html>

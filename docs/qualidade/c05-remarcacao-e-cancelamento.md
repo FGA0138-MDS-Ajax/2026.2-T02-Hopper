@@ -1,13 +1,15 @@
 # C05 — Remarcação e cancelamento de aula
 
+!!! abstract "Relatório de testes"
+    Resultado da última execução dos testes automatizados (14/11/2026): log, resultado de cada teste, cobertura do código e capturas de tela do Playwright.
+
+    [Acessar o relatório de testes](../assets/qualidade/relatorio-de-testes/index.html){ .md-button .md-button--primary }
+
 !!! info "Como atualizar esta página"
-    1. **Ao testar:** registre a execução na seção 4 e atualize o status dos casos na seção 3.
-    2. **Se um caso falhar:** marque ❌ na seção 3, abra uma issue no GitHub com o rótulo `defeito`
-       e registre o defeito na seção 5, com a situação **Aberto**.
-    3. **Ao corrigir:** preencha o bloco de correção do defeito na seção 5 (branch, PR e causa)
-       e mude a situação para **Em reteste**.
-    4. **Ao retestar:** registre uma nova execução na seção 4, volte o caso para ✅ na seção 3
-       e mude o defeito para **Corrigido**.
+    1. **Ao testar:** rode `npm run testes` na raiz do repositório, registre a execução na seção 4 e atualize o status dos casos na seção 3.
+    2. **Se um caso falhar:** marque ❌ na seção 3 e registre o defeito na seção 5, com a situação **Aberto**.
+    3. **Ao corrigir:** preencha o bloco de correção do defeito na seção 5 (branch, PR e causa) e mude a situação para **Em reteste**.
+    4. **Ao retestar:** registre uma nova execução na seção 4, volte o caso para ✅ na seção 3 e mude o defeito para **Corrigido**.
 
     Registre apenas resultados de testes efetivamente executados.
 
@@ -22,9 +24,9 @@
 | Sprint | 5 |
 | Responsáveis (QA) | Pedro Rodrigues / Yasmim Ayres |
 
-**RF15 e RF16 — Funcionalidade ainda não implementada.** No snapshot da `developer`, `aulas.routes.ts` expõe solicitar, listar, detalhar, aceitar e recusar; não há rotas nem operações de serviço para propor/responder remarcação ou cancelar. Os tipos, a tabela `Remarcacao`, o campo `motivoCancelamento` e a tabela de transições de status são estruturas de suporte, não evidência de um fluxo implementado. Todos os casos desta página permanecem ⛔ Bloqueado, com 0 ciclos, até existir implementação executável.
+**RF15 e RF16 — Funcionalidade ainda não implementada (Sprint 5, de 16 a 26/11/2026).** Na `developer` (commit `a6b0102`), o módulo aulas expõe solicitar, listar, detalhar, aceitar e recusar; as rotas de remarcação e cancelamento estão previstas no Quadro 2 do Documento de Arquitetura. Os tipos, a tabela `Remarcacao`, o campo `motivoCancelamento` e a tabela de transições de status são estruturas de suporte, não evidência de um fluxo implementado. Todos os casos desta página permanecem ⛔ Bloqueado, com 0 ciclos, até existir implementação executável.
 
-Fontes: [Documento de Visão](../documento-de-visao.md), Quadros 3, 13, 14, 18, 20 e 21; [Documento de Arquitetura](../documento-de-arquitetura.md).
+Fontes: [Documento de Visão](../documento-de-visao/v1-1.md), Quadros 3, 13, 14, 18, 20 e 21; [Documento de Arquitetura](../documento-de-arquitetura/v1-1.md).
 
 ## 2. Critérios de aceitação testáveis
 
@@ -61,30 +63,7 @@ A coluna **Ciclos** conta quantas vezes o caso foi executado até ser aprovado.
 
 Registre cada execução abaixo, da mais recente para a mais antiga.
 
-<!-- Copie este bloco para cada nova execução. -->
-
-### Execução 1 — dd/mm/2026
-
-| Campo | Valor |
-|---|---|
-| Responsável | A preencher |
-| Branch / commit | A preencher |
-| Motivo | Primeira execução do cenário |
-| Casos executados | A preencher |
-
-| Caso | Observado | Status |
-|---|---|---|
-| A preencher | | |
-
-Saída dos testes automatizados (`cd backend; npm test -- --verbose`):
-
-```text
-A preencher: colar a saída real do terminal.
-```
-
-Evidências dos testes pela interface: A preencher (capturas em `docs/assets/qualidade/c05/`).
-
-**Resultado:** A preencher (ex.: 11 executados, 10 aprovados, 1 falhou).
+Nenhuma execução até 14/11/2026: os casos dependem de RF15 e RF16, previstos para a Sprint 5. Na execução completa de 14/11/2026, os demais cenários foram testados ([relatórios](../assets/qualidade/relatorio-de-testes/index.html)).
 
 ## 5. Defeitos e correções
 
@@ -121,19 +100,13 @@ Evidências dos testes pela interface: A preencher (capturas em `docs/assets/qua
 
 ## 6. Cobertura
 
-Meta da métrica **M6**: cobertura das regras de negócio igual ou superior a **70%**.
-Comando: `cd backend; npm test -- --coverage`
-
-| Módulo | Cobertura de linhas | Observação |
-|---|---|---|
-| A preencher | | |
+Meta da métrica **M6**: no mínimo **70%** em instruções, ramificações, funções e linhas, medidos pelo Vitest. A cobertura deste cenário será medida quando RF15 e RF16 forem implementados.
 
 ## 7. Parecer final
 
-**Situação:** ⚪ Pendente
+**Situação:** ⛔ Bloqueado
 
-A preencher após a execução: critérios de aceitação atendidos, cobertura em relação à meta M6
-e defeitos que ainda impedem a aprovação sem ressalvas.
+Os requisitos RF15 e RF16 ainda não foram implementados. Os casos serão executados na Sprint 5, quando a funcionalidade existir.
 
 ## 8. Contribuições
 
