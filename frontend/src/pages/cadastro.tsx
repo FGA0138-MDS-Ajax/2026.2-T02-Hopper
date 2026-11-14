@@ -77,9 +77,11 @@ export function PaginaCadastro() {
     setErroGeral(null);
     try {
       await cadastrar({ ...dados, telefone: dados.telefone || undefined });
-      // Professor novo vai direto completar o perfil: sem ele, não aparece na busca.
-      const proximo = dados.perfil === 'PROFESSOR' && !voltar ? '/meu-perfil?bem-vindo=1' : destino;
-      navegar(proximo, { replace: true });
+      // Quem veio de outra página (ex.: no meio de uma solicitação) volta para ela. Sem destino,
+      // cada perfil vai para o seu ponto de partida (CT01): o professor completa o perfil (sem ele,
+      // não aparece na busca) e o aluno vai encontrar um professor.
+      const inicioDoPerfil = dados.perfil === 'PROFESSOR' ? '/meu-perfil?bem-vindo=1' : '/professores';
+      navegar(voltar ? destino : inicioDoPerfil, { replace: true });
     } catch (erro) {
       if (codigoDeErro(erro) === 'EMAIL_JA_CADASTRADO') {
         setError(
