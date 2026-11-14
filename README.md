@@ -5,6 +5,19 @@
 
 O **AulaCerta** é uma aplicação web responsiva que organiza o agendamento de aulas particulares. O professor publica as matérias, os níveis, o valor da hora-aula e a grade semanal de horários; o aluno encontra um professor e solicita a aula, avulsa ou semanal; o professor confirma ou recusa, e o sistema impede dois agendamentos no mesmo horário. Os dois acompanham o status de cada aula e recebem notificações pela própria plataforma, sem depender de conversas soltas no WhatsApp.
 
+## Aplicação no ar
+
+**Acesse em: <https://aulacerta-p50c.onrender.com>**
+
+| Parte | Endereço |
+|---|---|
+| Site | <https://aulacerta-p50c.onrender.com> |
+| API | <https://aulacerta-api.onrender.com/api/v1> (verificação: [`/saude`](https://aulacerta-api.onrender.com/api/v1/saude)) |
+
+Para testar, entre com uma das [contas de demonstração](#contas-de-demonstração) ou crie uma conta nova.
+
+> A API está no plano gratuito do Render, que desliga o serviço depois de 15 minutos sem uso. O primeiro acesso depois disso pode levar cerca de um minuto; em seguida, tudo responde normalmente. O site em si fica sempre disponível.
+
 ## Documentação
 
 **Acesse em: <https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/>**
@@ -71,7 +84,8 @@ Previstos para a Sprint 5 (16/11 a 26/11/2026): remarcação, cancelamento, filt
 
 | Tecnologia | Uso |
 |---|---|
-| Vercel, Render (Docker) e Neon | Front-end, API e banco de dados em produção. |
+| [Render](https://render.com/) | Produção: o front-end como site estático e a API como serviço web em Docker, publicados a cada merge na `developer`. |
+| [Neon](https://neon.tech/) | Banco PostgreSQL de produção. |
 | [MkDocs](https://www.mkdocs.org/) com Material for MkDocs | Site da documentação, publicado no GitHub Pages a partir da branch `docs`. |
 
 ---
