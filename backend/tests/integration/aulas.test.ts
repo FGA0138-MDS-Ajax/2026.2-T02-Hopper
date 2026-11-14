@@ -473,3 +473,67 @@ describe('aulas recorrentes (RF10)', () => {
     expect((await solicitar(aluno, { recorrencia: { semanas: 13 } })).status).toBe(422);
   });
 });
+
+describe('casos complementares do C03 e do C04', () => {
+  it('recusa pedido sem professor, matéria, modalidade ou horário e não cria aula (CT04.5)', async () => {
+    for (const campo of ['professorId', 'materiaId', 'modalidade', 'inicio', 'fim']) {
+      const resposta = await solicitar(aluno, { [campo]: undefined });
+      expect(resposta.status, campo).toBe(422);
+    }
+    expect(await prisma.aula.count()).toBe(0);
+  });
+
+  it('recusa aula com menos de 30 minutos e aceita exatamente 30 (CT04.6)', async () => {
+    expect((await solicitar(aluno, horario(2, 9, 20))).status).toBe(422);
+    expect(await prisma.aula.count()).toBe(0);
+    expect((await solicitar(aluno, horario(2, 9, 30))).status).toBe(201);
+  });
+
+  it('confirma aulas no mesmo horário com professores diferentes (CT05.3)', async () => {
+    const outro = await prisma.perfilProfessor.findUniqueOrThrow({
+      where: { usuarioId: outroProfessor.id },
+      select: { id: true },
+    });
+    const primeira = await solicitarEObterId(aluno);
+    const segunda = await solicitarEObterId(outroAluno, { professorId: outro.id });
+
+    expect((await aceitar(professor, primeira)).status).toBe(200);
+    expect((await aceitar(outroProfessor, segunda)).status).toBe(200);
+
+    const aulas = await prisma.aula.findMany({ select: { status: true } });
+    expect(aulas.map((aula) => aula.status)).toEqual(['CONFIRMADA', 'CONFIRMADA']);
+  });
+
+  it('desfaz o aceite inteiro quando a gravação da notificação falha (CT06.4)', async () => {
+    const aulaId = await solicitarEObterId(aluno);
+    const notificacoesAntes = await prisma.notificacao.count();
+
+    // Falha induzida: um gatilho temporário no banco de teste recusa qualquer nova notificação.
+    await prisma.$executeRawUnsafe(
+      `CREATE OR REPLACE FUNCTION falha_induzida_no_teste() RETURNS trigger AS $$ BEGIN RAISE EXCEPTION 'falha induzida pelo teste'; END $$ LANGUAGE plpgsql`,
+    );
+    await prisma.$executeRawUnsafe(
+      'CREATE TRIGGER falha_na_notificacao BEFORE INSERT ON "Notificacao" FOR EACH ROW EXECUTE FUNCTION falha_induzida_no_teste()',
+    );
+    try {
+      const resposta = await aceitar(professor, aulaId);
+      expect(resposta.status).toBe(500);
+    } finally {
+      await prisma.$executeRawUnsafe(
+        'DROP TRIGGER IF EXISTS falha_na_notificacao ON "Notificacao"',
+      );
+      await prisma.$executeRawUnsafe('DROP FUNCTION IF EXISTS falha_induzida_no_teste()');
+    }
+
+    const aula = await prisma.aula.findUniqueOrThrow({
+      where: { id: aulaId },
+      select: { status: true, historico: { select: { status: true } } },
+    });
+    expect(aula.status).toBe('SOLICITADA');
+    expect(aula.historico.map((item) => item.status)).toEqual(['SOLICITADA']);
+    expect(await prisma.notificacao.count()).toBe(notificacoesAntes);
+
+    // Sem a falha, o mesmo aceite funciona: nada ficou gravado pela metade.
+    expect((await aceitar(professor, aulaId)).status).toBe(200);
+  });
+});
