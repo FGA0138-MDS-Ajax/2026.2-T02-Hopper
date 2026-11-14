@@ -1,0 +1,12 @@
+{
+  "name": "aulacerta",
+  "private": true,
+  "description": "Atalhos para rodar os testes do AulaCerta e registrar cada execução (log e HTML) em relatorios/",
+  "scripts": {
+    "testes": "node scripts/registrar-testes.mjs todos",
+    "testes:backend": "node scripts/registrar-testes.mjs backend-unitarios",
+    "testes:integracao": "node scripts/registrar-testes.mjs backend-integracao",
+    "testes:frontend": "node scripts/registrar-testes.mjs frontend",
+    "testes:sistema": "node scripts/registrar-testes.mjs e2e"
+  }
+}
