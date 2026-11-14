@@ -167,7 +167,11 @@ async function executar(nomeDoTipo) {
     return { tipo: nomeDoTipo, situacao: 'ERRO', codigo: 1 };
   }
   const argumentos = tipo.argumentos(saidaRelativa);
-  const ambiente = { ...process.env, CARIMBO_DA_EXECUCAO: carimbo, FORCE_COLOR: '0' };
+  const ambiente = {
+    ...process.env,
+    CARIMBO_DA_EXECUCAO: carimbo,
+    FORCE_COLOR: '0',
+  };
   // Node 25+ tem um localStorage próprio que atrapalha o jsdom dos testes do front-end.
   if (Number(process.versions.node.split('.')[0]) >= 25) {
     ambiente.NODE_OPTIONS = `${ambiente.NODE_OPTIONS ?? ''} --no-experimental-webstorage`.trim();
@@ -177,7 +181,9 @@ async function executar(nomeDoTipo) {
   const commit = git('rev-parse', '--short', 'HEAD');
   const alterado = git('status', '--porcelain') !== '';
   const comando = `${tipo.ferramenta} ${argumentos.join(' ')}`;
-  const log = createWriteStream(join(pastaDaExecucao, 'execucao.log'), { encoding: 'utf8' });
+  const log = createWriteStream(join(pastaDaExecucao, 'execucao.log'), {
+    encoding: 'utf8',
+  });
   const separador = '-'.repeat(78);
   log.write(
     [
@@ -198,7 +204,10 @@ async function executar(nomeDoTipo) {
   const inicio = Date.now();
   let saida = '';
   const codigo = await new Promise((resolver) => {
-    const filho = spawn(process.execPath, [executavel, ...argumentos], { cwd, env: ambiente });
+    const filho = spawn(process.execPath, [executavel, ...argumentos], {
+      cwd,
+      env: ambiente,
+    });
     const repassar = (destino) => (pedaco) => {
       const texto = pedaco.toString();
       destino.write(texto);
@@ -445,7 +454,13 @@ const ROTULO_DO_STATUS = {
   pending: 'ignorado',
   todo: 'a fazer',
 };
-const ICONE_DO_STATUS = { passed: '✓', failed: '✕', skipped: '–', pending: '–', todo: '–' };
+const ICONE_DO_STATUS = {
+  passed: '✓',
+  failed: '✕',
+  skipped: '–',
+  pending: '–',
+  todo: '–',
+};
 
 const PALAVRAS = new Set(
   (
@@ -586,7 +601,12 @@ function gerarHtmlDoVitest(pastaDaExecucao, resultado, cobertura, dados) {
     : '';
 
   const aprovado = dados.situacao === 'APROVADO';
-  const t = dados.totais ?? { total: 0, aprovados: 0, falharam: 0, ignorados: 0 };
+  const t = dados.totais ?? {
+    total: 0,
+    aprovados: 0,
+    falharam: 0,
+    ignorados: 0,
+  };
   const links = [
     ['../../../index.html', 'Todas as execuções'],
     ['../execucao.log', 'Log completo'],
@@ -746,7 +766,7 @@ const CSS_COBERTURA = `/* Visual do AulaCerta sobre o relatório de cobertura do
 }
 :root:not([data-theme="legacy"]) body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
 .ac-topo { position: sticky; top: 0; z-index: 20; background: rgba(246, 248, 253, .9); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(226, 232, 240, .6); }
-.ac-topo .ac-conteudo { max-width: 72rem; margin: 0 auto; padding: 8px 16px; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; }
+.ac-topo .ac-conteudo { max-width: 80rem; margin: 0 auto; padding: 8px 16px; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; }
 .ac-marca { display: inline-flex; align-items: center; gap: 10px; text-decoration: none !important; }
 .ac-marca .logo { height: 32px; width: auto; }
 .ac-marca .nome { font-size: 1.25rem; font-weight: 800; letter-spacing: -.025em; color: #00236f; }
@@ -755,7 +775,7 @@ const CSS_COBERTURA = `/* Visual do AulaCerta sobre o relatório de cobertura do
 .ac-topo nav { display: flex; gap: 6px 20px; flex-wrap: wrap; }
 .ac-topo nav a { font-size: .875rem; font-weight: 600; color: #475569; }
 .ac-topo nav a:hover { color: #00236f; text-decoration: none; }
-.wrapper { max-width: 72rem; padding: 0 16px; min-height: calc(100% - 65px); }
+.wrapper { max-width: 80rem; padding: 0 16px; min-height: calc(100% - 65px); }
 .wrapper > .pad1:first-child { padding: 24px 0 8px; }
 .wrapper > .pad1:not(:first-child) { padding: 16px 0; }
 :root:not([data-theme="legacy"]) h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; color: #00236f; margin: 0 0 12px; }
@@ -769,11 +789,11 @@ p.quiet { clear: both; font-size: .85rem; }
 .status-line { height: 6px; border-radius: 2px; }
 :root:not([data-theme="legacy"]) .coverage-summary { width: 100%; border-radius: 8px; background: #fff; }
 :root:not([data-theme="legacy"]) .coverage-summary th { background: #f8fafc; color: #0f172a; font-weight: 700; }
-.coverage-summary td, .coverage-summary th { padding: 10px 12px; }
+.coverage-summary td, .coverage-summary th { padding: 9px 10px; white-space: nowrap; }
 .coverage-summary td.file a { font-weight: 600; }
-.coverage-summary td.pic { min-width: 130px; }
+.coverage-summary td.pic { min-width: 110px; }
 .wrapper > .pad1:not(:first-child) { overflow-x: auto; }
-.chart, .high .chart, .medium .chart, .low .chart { display: flex; width: 110px; height: 8px; border: 0; border-radius: 2px; overflow: hidden; background: #e2e8f0; }
+.chart, .high .chart, .medium .chart, .low .chart { display: flex; width: 96px; height: 8px; border: 0; border-radius: 2px; overflow: hidden; background: #e2e8f0; }
 .cover-fill, .cover-empty { height: 8px; }
 .cover-empty { background: transparent; }
 pre:has(> table.coverage) { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 0; overflow-x: auto; margin-top: 8px; }
