@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "playwright test",
+    "test:relatorio": "node ../scripts/registrar-testes.mjs e2e",
     "test:ui": "playwright test --ui",
     "instalar-navegador": "playwright install chromium",
     "typecheck": "tsc --noEmit"

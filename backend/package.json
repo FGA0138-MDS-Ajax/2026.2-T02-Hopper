@@ -17,6 +17,8 @@
     "test:watch": "vitest --project unit",
     "test:integration": "vitest run --project integration",
     "test:coverage": "vitest run --project unit --coverage",
+    "test:relatorio": "node ../scripts/registrar-testes.mjs backend-unitarios",
+    "test:integration:relatorio": "node ../scripts/registrar-testes.mjs backend-integracao",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts"
   },

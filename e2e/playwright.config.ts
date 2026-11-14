@@ -3,6 +3,25 @@ import { config as carregarEnv } from 'dotenv';
 import { join } from 'node:path';
 import { PORTA_API, PORTA_SITE, URL_API, URL_SITE } from './apoio/ambiente';
 
+/** "2026-11-14_14-30-05" no horário de Brasília (o mesmo formato do scripts/registrar-testes.mjs). */
+function carimboEmBrasilia(): string {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    })
+      .formatToParts(new Date())
+      .map((parte) => [parte.type, parte.value]),
+  );
+  return `${p.year}-${p.month}-${p.day}_${p.hour}-${p.minute}-${p.second}`;
+}
+
 /**
  * Testes de sistema (ponta a ponta) do AulaCerta: o Playwright sobe a API e o site em portas
  * próprias, apontando para o BANCO DE TESTE (DATABASE_URL_TESTE do backend/.env), e usa a
@@ -20,7 +39,8 @@ if (!BANCO_DE_TESTE) {
 // Cada execução guarda o relatório numa pasta própria, com data e hora (fora do Git).
 // O Playwright relê este arquivo em cada processo de teste: a data e hora é calculada uma vez só
 // e passada aos demais pela variável de ambiente, para tudo da execução cair na mesma pasta.
-process.env.CARIMBO_DA_EXECUCAO ??= new Date().toISOString().slice(0, 19).replace('T', '_').replace(/:/g, '-');
+// Quando vem do scripts/registrar-testes.mjs, o carimbo já chega pronto (mesma pasta do log).
+process.env.CARIMBO_DA_EXECUCAO ??= carimboEmBrasilia();
 const carimbo = process.env.CARIMBO_DA_EXECUCAO;
 const PASTA_DA_EXECUCAO = join(__dirname, '..', 'relatorios', 'e2e', carimbo);
 
