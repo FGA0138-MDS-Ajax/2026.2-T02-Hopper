@@ -4,7 +4,7 @@ import { criarSeguranca } from '../utils/seguranca';
 
 const SEGREDO = 'segredo-de-teste-com-mais-de-trinta-e-dois-caracteres';
 
-jest.mock('../../config/env', () => ({
+vi.mock('../../config/env', () => ({
   env: { JWT_SECRET: 'segredo-de-teste-com-mais-de-trinta-e-dois-caracteres' },
 }));
 

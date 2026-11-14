@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { RotaProtegida } from './components/rota-protegida';
-import { SessaoProvider } from './contexts/sessao';
-import { PaginaCadastro } from './pages/cadastro';
-import { PaginaEmConstrucao } from './pages/em-construcao';
-import { PaginaEntrar } from './pages/entrar';
-import { PaginaInicio } from './pages/inicio';
-import { PaginaMeuPerfil } from './pages/meu-perfil';
-import { PaginaMinhasAulas } from './pages/minhas-aulas';
-import { PaginaPrivacidade } from './pages/privacidade';
-import { PaginaProfessor } from './pages/professor';
-import { PaginaProfessores } from './pages/professores';
-import { PaginaRecuperarSenha } from './pages/recuperar-senha';
-import { PaginaRedefinirSenha } from './pages/redefinir-senha';
-import { PaginaSolicitarAula } from './pages/solicitar-aula';
+import { useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { RotaProtegida } from "./components/rota-protegida";
+import { SessaoProvider } from "./contexts/sessao";
+import { PaginaCadastro } from "./pages/cadastro";
+import { PaginaEmConstrucao } from "./pages/em-construcao";
+import { PaginaEntrar } from "./pages/entrar";
+import { PaginaInicio } from "./pages/inicio";
+import { PaginaMeuPerfil } from "./pages/meu-perfil";
+import { PaginaMinhasAulas } from "./pages/minhas-aulas";
+import { PaginaPrivacidade } from "./pages/privacidade";
+import { PaginaProfessor } from "./pages/professor";
+import { PaginaProfessores } from "./pages/professores";
+import { PaginaRecuperarSenha } from "./pages/recuperar-senha";
+import { PaginaRedefinirSenha } from "./pages/redefinir-senha";
+import { PaginaSolicitarAula } from "./pages/solicitar-aula";
 
 /** Ao trocar de página, volta ao topo (links com #âncora continuam rolando até a seção). */
 function RolarParaOTopo() {
@@ -31,7 +31,7 @@ function RolarParaOTopo() {
 export function App() {
   return (
     <SessaoProvider>
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <BrowserRouter>
         <RolarParaOTopo />
         <Routes>
           <Route path="/" element={<PaginaInicio />} />

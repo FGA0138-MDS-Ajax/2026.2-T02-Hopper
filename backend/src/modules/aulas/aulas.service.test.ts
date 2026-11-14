@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { capturarErro } from '../../../tests/helpers/erros';
 import type { Transacao } from '../../infra/prisma';
 import {
@@ -63,28 +64,28 @@ const entradaPadrao = {
 };
 
 function criarServico(detalhe: AulaDetalhe | null = criarDetalhe()) {
-  const repositorio: jest.Mocked<AulasRepositorio> = {
-    criarAulas: jest.fn().mockResolvedValue([resumo]),
-    buscarPorId: jest.fn().mockResolvedValue(detalhe),
-    listar: jest.fn().mockResolvedValue({ itens: [resumo], total: 1 }),
-    listarIntervalosOcupados: jest.fn().mockResolvedValue([]),
-    existeConflito: jest.fn().mockResolvedValue(false),
-    transicionar: jest.fn().mockResolvedValue(undefined),
+  const repositorio: Mocked<AulasRepositorio> = {
+    criarAulas: vi.fn().mockResolvedValue([resumo]),
+    buscarPorId: vi.fn().mockResolvedValue(detalhe),
+    listar: vi.fn().mockResolvedValue({ itens: [resumo], total: 1 }),
+    listarIntervalosOcupados: vi.fn().mockResolvedValue([]),
+    existeConflito: vi.fn().mockResolvedValue(false),
+    transicionar: vi.fn().mockResolvedValue(undefined),
   };
-  const usuarios: jest.Mocked<ServicoDeUsuariosParaAulas> = {
-    obterProfessorParaAula: jest.fn().mockResolvedValue(professorParaAula),
-    obterProfessorIdPorUsuario: jest.fn().mockResolvedValue('p1'),
-    obterContato: jest
+  const usuarios: Mocked<ServicoDeUsuariosParaAulas> = {
+    obterProfessorParaAula: vi.fn().mockResolvedValue(professorParaAula),
+    obterProfessorIdPorUsuario: vi.fn().mockResolvedValue('p1'),
+    obterContato: vi
       .fn()
       .mockResolvedValue({ email: 'outro@exemplo.com', telefone: '61999990000' }),
   };
-  const agenda: jest.Mocked<ServicoDeAgendaParaAulas> = {
-    estaLivre: jest.fn().mockResolvedValue(true),
+  const agenda: Mocked<ServicoDeAgendaParaAulas> = {
+    estaLivre: vi.fn().mockResolvedValue(true),
   };
-  const notificacoes: jest.Mocked<ServicoDeNotificacoesParaAulas> = {
-    notificar: jest.fn().mockResolvedValue(undefined),
+  const notificacoes: Mocked<ServicoDeNotificacoesParaAulas> = {
+    notificar: vi.fn().mockResolvedValue(undefined),
   };
-  const transacao = jest.fn(async (operacao: (cliente: Transacao) => Promise<unknown>) =>
+  const transacao = vi.fn(async (operacao: (cliente: Transacao) => Promise<unknown>) =>
     operacao(tx),
   );
   const servico = new AulasService({

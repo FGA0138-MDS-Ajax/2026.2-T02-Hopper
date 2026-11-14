@@ -13,7 +13,7 @@ function respostaFalsa(status: number, corpo = ''): Response {
 
 describe('envio de e-mail pelo Brevo', () => {
   it('chama a API transacional com a chave, o remetente e a mensagem', async () => {
-    const fetchFalso = jest.fn().mockResolvedValue(respostaFalsa(201, '{"messageId":"1"}'));
+    const fetchFalso = vi.fn().mockResolvedValue(respostaFalsa(201, '{"messageId":"1"}'));
     const enviar = criarEnviadorBrevo({
       apiKey: 'chave-de-teste',
       remetente: { nome: 'AulaCerta', email: 'nao-responda@aulacerta.com.br' },
@@ -40,9 +40,7 @@ describe('envio de e-mail pelo Brevo', () => {
   });
 
   it('falha com o status e o motivo quando o Brevo recusa', async () => {
-    const fetchFalso = jest
-      .fn()
-      .mockResolvedValue(respostaFalsa(401, '{"message":"Key not found"}'));
+    const fetchFalso = vi.fn().mockResolvedValue(respostaFalsa(401, '{"message":"Key not found"}'));
     const enviar = criarEnviadorBrevo({
       apiKey: 'chave-errada',
       remetente: { nome: 'AulaCerta', email: 'nao-responda@aulacerta.com.br' },

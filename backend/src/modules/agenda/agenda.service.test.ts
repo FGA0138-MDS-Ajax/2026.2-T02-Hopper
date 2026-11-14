@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { capturarErro } from '../../../tests/helpers/erros';
 import { ErroNaoEncontrado, ErroProibido, ErroRegraNegocio } from '../../shared/errors';
 import { componentesBrasilia, criarDataBrasilia } from '../../shared/utils/datas';
@@ -8,22 +9,22 @@ const AGORA = criarDataBrasilia(2026, 11, 6, 10, 0);
 const SEGUNDA_9H = criarDataBrasilia(2026, 11, 9, 9);
 const SEGUNDA_10H = criarDataBrasilia(2026, 11, 9, 10);
 
-function criarRepositorio(): jest.Mocked<AgendaRepositorio> {
+function criarRepositorio(): Mocked<AgendaRepositorio> {
   return {
-    buscarProfessorIdPorUsuario: jest.fn().mockResolvedValue('p1'),
-    listarGrade: jest.fn().mockResolvedValue([]),
-    substituirGrade: jest.fn().mockResolvedValue(undefined),
-    listarBloqueiosFuturos: jest.fn().mockResolvedValue([]),
-    listarIntervalosBloqueados: jest.fn().mockResolvedValue([]),
-    criarBloqueio: jest.fn(),
-    buscarBloqueio: jest.fn(),
-    removerBloqueio: jest.fn().mockResolvedValue(undefined),
+    buscarProfessorIdPorUsuario: vi.fn().mockResolvedValue('p1'),
+    listarGrade: vi.fn().mockResolvedValue([]),
+    substituirGrade: vi.fn().mockResolvedValue(undefined),
+    listarBloqueiosFuturos: vi.fn().mockResolvedValue([]),
+    listarIntervalosBloqueados: vi.fn().mockResolvedValue([]),
+    criarBloqueio: vi.fn(),
+    buscarBloqueio: vi.fn(),
+    removerBloqueio: vi.fn().mockResolvedValue(undefined),
   };
 }
 
 function criarServico(repositorio = criarRepositorio()) {
-  const ocupacao: jest.Mocked<ProvedorDeOcupacao> = {
-    listarIntervalosOcupados: jest.fn().mockResolvedValue([]),
+  const ocupacao: Mocked<ProvedorDeOcupacao> = {
+    listarIntervalosOcupados: vi.fn().mockResolvedValue([]),
   };
   const servico = new AgendaService({ repositorio, ocupacao, agora: () => AGORA });
   return { servico, repositorio, ocupacao };

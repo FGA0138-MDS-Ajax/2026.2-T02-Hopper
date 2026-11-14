@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { capturarErro } from '../../../tests/helpers/erros';
 import {
   ErroConflito,
@@ -21,14 +22,14 @@ const entrada = {
   consentimentoLgpd: true,
 };
 
-function criarRepositorio(): jest.Mocked<AuthRepositorio> {
+function criarRepositorio(): Mocked<AuthRepositorio> {
   return {
-    buscarPorEmail: jest.fn(),
-    buscarPorId: jest.fn(),
-    criarUsuario: jest.fn(),
-    substituirTokenRecuperacao: jest.fn(),
-    buscarTokenPorHash: jest.fn(),
-    redefinirSenha: jest.fn(),
+    buscarPorEmail: vi.fn(),
+    buscarPorId: vi.fn(),
+    criarUsuario: vi.fn(),
+    substituirTokenRecuperacao: vi.fn(),
+    buscarTokenPorHash: vi.fn(),
+    redefinirSenha: vi.fn(),
   };
 }
 
@@ -48,8 +49,8 @@ async function criarUsuarioComSenha(
   };
 }
 
-function criarServico(repositorio: jest.Mocked<AuthRepositorio>) {
-  const enviarEmailRecuperacao = jest.fn().mockResolvedValue(undefined);
+function criarServico(repositorio: Mocked<AuthRepositorio>) {
+  const enviarEmailRecuperacao = vi.fn().mockResolvedValue(undefined);
   const servico = new AuthService({
     repositorio,
     seguranca,
@@ -213,7 +214,7 @@ describe('AuthService', () => {
     });
 
     it('nao propaga falha no envio do e-mail', async () => {
-      const silenciar = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+      const silenciar = vi.spyOn(console, 'error').mockImplementation(() => undefined);
       const repositorio = criarRepositorio();
       repositorio.buscarPorEmail.mockResolvedValue(await criarUsuarioComSenha('x'));
       const { servico, enviarEmailRecuperacao } = criarServico(repositorio);

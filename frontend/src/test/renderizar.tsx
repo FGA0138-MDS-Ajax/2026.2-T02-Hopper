@@ -20,10 +20,7 @@ interface OpcoesRenderizar {
 }
 
 /** Renderiza a tela com React Query (sem novas tentativas), a sessão e um roteador em memória. */
-export function renderizar(
-  tela: ReactElement,
-  { url = '/', caminho = '/', outrasRotas = [] }: OpcoesRenderizar = {},
-) {
+export function renderizar(tela: ReactElement, { url = '/', caminho = '/', outrasRotas = [] }: OpcoesRenderizar = {}) {
   const clienteQuery = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
@@ -31,7 +28,7 @@ export function renderizar(
   return render(
     <QueryClientProvider client={clienteQuery}>
       <SessaoProvider>
-        <MemoryRouter initialEntries={[url]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <MemoryRouter initialEntries={[url]}>
           <Routes>
             <Route path={caminho} element={tela} />
             {outrasRotas.map((rota) => (
