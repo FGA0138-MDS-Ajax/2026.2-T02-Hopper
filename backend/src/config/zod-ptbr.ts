@@ -1,34 +1,51 @@
 import { z } from 'zod';
 
-const mapaDeErros: z.ZodErrorMap = (issue, ctx) => {
-  switch (issue.code) {
-    case z.ZodIssueCode.invalid_type:
-      if (issue.received === 'undefined') return { message: 'Campo obrigatório' };
-      return { message: `Tipo inválido: esperado ${issue.expected}` };
-    case z.ZodIssueCode.too_small:
-      if (issue.type === 'string')
-        return { message: `Deve ter no mínimo ${issue.minimum} caracteres` };
-      if (issue.type === 'array') return { message: `Deve ter no mínimo ${issue.minimum} itens` };
-      return { message: `Deve ser maior ou igual a ${issue.minimum}` };
-    case z.ZodIssueCode.too_big:
-      if (issue.type === 'string')
-        return { message: `Deve ter no máximo ${issue.maximum} caracteres` };
-      if (issue.type === 'array') return { message: `Deve ter no máximo ${issue.maximum} itens` };
-      return { message: `Deve ser menor ou igual a ${issue.maximum}` };
-    case z.ZodIssueCode.invalid_string:
-      if (issue.validation === 'email') return { message: 'E-mail inválido' };
-      if (issue.validation === 'uuid') return { message: 'Identificador inválido' };
-      if (issue.validation === 'datetime') {
-        return { message: 'Data e hora inválidas (use o formato ISO 8601)' };
-      }
-      return { message: 'Formato inválido' };
-    case z.ZodIssueCode.invalid_enum_value:
-      return { message: `Valor inválido. Opções: ${issue.options.join(', ')}` };
-    case z.ZodIssueCode.invalid_literal:
-      return { message: 'Valor inválido' };
-    default:
-      return { message: ctx.defaultError };
-  }
+type Problema = Parameters<NonNullable<z.core.$ZodConfig['customError']>>[0];
+
+const FORMATOS: Record<string, string> = {
+  email: 'E-mail inválido',
+  uuid: 'Identificador inválido',
+  guid: 'Identificador inválido',
+  datetime: 'Data e hora inválidas (use o formato ISO 8601)',
+  url: 'Endereço (URL) inválido',
 };
 
-z.setErrorMap(mapaDeErros);
+function limite(problema: Problema, tipo: 'minimo' | 'maximo'): string | undefined {
+  if (problema.code !== 'too_small' && problema.code !== 'too_big') return undefined;
+  const valor = String(tipo === 'minimo' ? problema.minimum : problema.maximum);
+  const noMinimo = tipo === 'minimo' ? 'no mínimo' : 'no máximo';
+  if (problema.origin === 'string') return `Deve ter ${noMinimo} ${valor} caracteres`;
+  if (problema.origin === 'array' || problema.origin === 'set')
+    return `Deve ter ${noMinimo} ${valor} itens`;
+  const comparacao = tipo === 'minimo' ? 'maior' : 'menor';
+  return problema.inclusive === false
+    ? `Deve ser ${comparacao} que ${valor}`
+    : `Deve ser ${comparacao} ou igual a ${valor}`;
+}
+
+/**
+ * Mensagens de validação da API em português. Cobre os casos usados nos esquemas; os demais
+ * caem nas mensagens em português que o próprio Zod traz (locale pt-BR).
+ */
+function mensagemEmPortugues(problema: Problema): string | undefined {
+  switch (problema.code) {
+    case 'invalid_type':
+      if (problema.input === undefined) return 'Campo obrigatório';
+      return `Tipo inválido: esperado ${problema.expected}`;
+    case 'too_small':
+      return limite(problema, 'minimo');
+    case 'too_big':
+      return limite(problema, 'maximo');
+    case 'invalid_format':
+      return FORMATOS[problema.format] ?? 'Formato inválido';
+    case 'invalid_value':
+      return problema.values.length > 1
+        ? `Valor inválido. Opções: ${problema.values.join(', ')}`
+        : 'Valor inválido';
+    default:
+      return undefined;
+  }
+}
+
+z.config(z.locales.ptBR());
+z.config({ customError: mensagemEmPortugues });

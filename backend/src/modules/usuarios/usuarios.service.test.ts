@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { capturarErro } from '../../../tests/helpers/erros';
 import { ErroNaoEncontrado, ErroValidacao } from '../../shared/errors';
 import { criarDataBrasilia } from '../../shared/utils/datas';
@@ -17,15 +18,15 @@ const professorCompleto: ProfessorDados = {
   materias: [{ id: 'm1', nome: 'Matemática', nivel: 'Médio' }],
 };
 
-function criarRepositorio(): jest.Mocked<UsuariosRepositorio> {
+function criarRepositorio(): Mocked<UsuariosRepositorio> {
   return {
-    buscarProfessores: jest.fn().mockResolvedValue({ itens: [], total: 0 }),
-    buscarProfessorPorId: jest.fn().mockResolvedValue(professorCompleto),
-    buscarProfessorPorUsuario: jest.fn().mockResolvedValue(professorCompleto),
-    atualizarPerfilProfessor: jest.fn().mockResolvedValue(professorCompleto),
-    contarMateriasExistentes: jest.fn().mockResolvedValue(1),
-    listarMaterias: jest.fn().mockResolvedValue([]),
-    buscarUsuarioPorId: jest.fn().mockResolvedValue({
+    buscarProfessores: vi.fn().mockResolvedValue({ itens: [], total: 0 }),
+    buscarProfessorPorId: vi.fn().mockResolvedValue(professorCompleto),
+    buscarProfessorPorUsuario: vi.fn().mockResolvedValue(professorCompleto),
+    atualizarPerfilProfessor: vi.fn().mockResolvedValue(professorCompleto),
+    contarMateriasExistentes: vi.fn().mockResolvedValue(1),
+    listarMaterias: vi.fn().mockResolvedValue([]),
+    buscarUsuarioPorId: vi.fn().mockResolvedValue({
       id: 'u1',
       nome: 'Ana',
       email: 'ana@exemplo.com',
@@ -33,13 +34,13 @@ function criarRepositorio(): jest.Mocked<UsuariosRepositorio> {
       perfil: 'PROFESSOR',
       ativo: true,
     }),
-    atualizarUsuario: jest.fn(),
+    atualizarUsuario: vi.fn(),
   };
 }
 
 function criarServico(repositorio = criarRepositorio()) {
-  const horarios: jest.Mocked<ProvedorDeHorariosLivres> = {
-    calcularHorariosLivres: jest.fn().mockResolvedValue([]),
+  const horarios: Mocked<ProvedorDeHorariosLivres> = {
+    calcularHorariosLivres: vi.fn().mockResolvedValue([]),
   };
   const servico = new UsuariosService({ repositorio, horarios, agora: () => AGORA });
   return { servico, repositorio, horarios };

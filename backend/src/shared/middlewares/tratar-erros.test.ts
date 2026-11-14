@@ -41,7 +41,7 @@ describe('tratarErros', () => {
   });
 
   it('responde 500 sem expor detalhes de erros inesperados', () => {
-    const silenciar = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const silenciar = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const res = criarRes();
     tratarErros(new Error('segredo interno'), criarReq(), res, criarProximo());
     expect(res.status).toHaveBeenCalledWith(500);
@@ -50,7 +50,7 @@ describe('tratarErros', () => {
   });
 
   it('encaminha rota inexistente como 404', () => {
-    const proximo = jest.fn();
+    const proximo = vi.fn();
     rotaNaoEncontrada(criarReq({ method: 'GET', path: '/xyz' }), criarRes(), proximo);
     expect(proximo.mock.calls[0][0].status).toBe(404);
   });

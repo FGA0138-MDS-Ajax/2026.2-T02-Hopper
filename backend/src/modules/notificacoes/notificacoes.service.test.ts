@@ -1,15 +1,16 @@
+import type { Mocked } from 'vitest';
 import type { Transacao } from '../../infra/prisma';
 import type { NotificacoesRepositorio } from './notificacoes.repository';
 import { NotificacoesService } from './notificacoes.service';
 
 const tx = {} as Transacao;
 
-function criarRepositorio(): jest.Mocked<NotificacoesRepositorio> {
+function criarRepositorio(): Mocked<NotificacoesRepositorio> {
   return {
-    criar: jest.fn().mockResolvedValue(undefined),
-    listar: jest.fn().mockResolvedValue({ itens: [], total: 0 }),
-    contarNaoLidas: jest.fn().mockResolvedValue(0),
-    marcarComoLidas: jest.fn().mockResolvedValue(0),
+    criar: vi.fn().mockResolvedValue(undefined),
+    listar: vi.fn().mockResolvedValue({ itens: [], total: 0 }),
+    contarNaoLidas: vi.fn().mockResolvedValue(0),
+    marcarComoLidas: vi.fn().mockResolvedValue(0),
   };
 }
 

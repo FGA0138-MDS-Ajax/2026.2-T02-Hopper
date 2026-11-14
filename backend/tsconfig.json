@@ -14,7 +14,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "types": ["node", "jest"]
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src", "tests", "prisma/seed.ts", "jest.config.ts", "prisma.config.ts"]
+  "include": ["src", "tests", "prisma/seed.ts", "vitest.config.mts", "prisma.config.ts"]
 }
