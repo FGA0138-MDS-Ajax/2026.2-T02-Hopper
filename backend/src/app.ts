@@ -74,6 +74,10 @@ export function criarApp(dependencias: DependenciasDoApp = {}): Express {
 
   const app = express();
   app.disable('x-powered-by');
+  // Em produção, a API roda atrás do proxy do Render: confia no primeiro salto para que
+  // req.ip seja o IP do usuário, e não o do proxy. Sem isso, o limite de tentativas de
+  // login valeria para todos os usuários juntos.
+  if (env.NODE_ENV === 'production') app.set('trust proxy', 1);
   // Todas as datas das respostas saem em ISO 8601 no horário de Brasília (-03:00).
   app.set('json replacer', serializarDatasNoFuso);
   app.use(middlewareHelmet);
