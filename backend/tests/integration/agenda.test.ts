@@ -7,6 +7,7 @@ import {
   limparBanco,
   type UsuarioDeTeste,
 } from '../helpers/app';
+import { criarMateria, horario, prepararProfessor } from '../helpers/cenarios';
 
 const { app } = criarAppDeTeste();
 
@@ -151,5 +152,71 @@ describe('bloqueios pontuais', () => {
       .delete('/api/v1/professores/me/bloqueios/11111111-1111-4111-8111-111111111111')
       .set(autorizado(professor.token));
     expect(inexistente.status).toBe(404);
+  });
+});
+
+describe('casos complementares do C02', () => {
+  const ROTA_BLOQUEIOS = '/api/v1/professores/me/bloqueios';
+  const ID_QUALQUER = '11111111-1111-4111-8111-111111111111';
+
+  it('nega a aluno e a visitante o acesso aos bloqueios (CT03.7)', async () => {
+    const corpo = { inicio: emHoras(24), fim: emHoras(26) };
+    const comoAluno = [
+      await request(app).get(ROTA_BLOQUEIOS).set(autorizado(aluno.token)),
+      await request(app).post(ROTA_BLOQUEIOS).set(autorizado(aluno.token)).send(corpo),
+      await request(app).delete(`${ROTA_BLOQUEIOS}/${ID_QUALQUER}`).set(autorizado(aluno.token)),
+    ];
+    expect(comoAluno.map((resposta) => resposta.status)).toEqual([403, 403, 403]);
+
+    const comoVisitante = [
+      await request(app).get(ROTA_BLOQUEIOS),
+      await request(app).post(ROTA_BLOQUEIOS).send(corpo),
+      await request(app).delete(`${ROTA_BLOQUEIOS}/${ID_QUALQUER}`),
+    ];
+    expect(comoVisitante.map((resposta) => resposta.status)).toEqual([401, 401, 401]);
+  });
+
+  it('publicar a grade vazia remove os horários livres do perfil público (CT03.9)', async () => {
+    const materia = await criarMateria();
+    const { professorId } = await prepararProfessor(app, professor, [materia.id]);
+    const antes = await request(app).get(`/api/v1/professores/${professorId}`);
+    expect(antes.body.horariosLivres.length).toBeGreaterThan(0);
+
+    const vazia = await request(app)
+      .put('/api/v1/professores/me/disponibilidade')
+      .set(autorizado(professor.token))
+      .send({ faixas: [] });
+    expect(vazia.status).toBe(200);
+
+    const depois = await request(app).get(`/api/v1/professores/${professorId}`);
+    expect(depois.status).toBe(200);
+    expect(depois.body.horariosLivres).toEqual([]);
+  });
+
+  it('ao remover um bloqueio, o horário volta a ficar livre (CT03.11)', async () => {
+    const materia = await criarMateria();
+    const { professorId } = await prepararProfessor(app, professor, [materia.id]);
+    const alvo = horario(3, 9);
+    const inicioDoAlvo = new Date(alvo.inicio).getTime();
+    const inicioDosLivres = async (): Promise<number[]> => {
+      const perfil = await request(app).get(`/api/v1/professores/${professorId}`);
+      return perfil.body.horariosLivres.map((livre: { inicio: string }) =>
+        new Date(livre.inicio).getTime(),
+      );
+    };
+    expect(await inicioDosLivres()).toContain(inicioDoAlvo);
+
+    const bloqueio = await request(app)
+      .post(ROTA_BLOQUEIOS)
+      .set(autorizado(professor.token))
+      .send(alvo);
+    expect(bloqueio.status).toBe(201);
+    expect(await inicioDosLivres()).not.toContain(inicioDoAlvo);
+
+    const remocao = await request(app)
+      .delete(`${ROTA_BLOQUEIOS}/${bloqueio.body.id}`)
+      .set(autorizado(professor.token));
+    expect(remocao.status).toBe(204);
+    expect(await inicioDosLivres()).toContain(inicioDoAlvo);
   });
 });

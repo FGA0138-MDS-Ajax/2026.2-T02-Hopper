@@ -65,6 +65,20 @@ describe('POST /api/v1/auth/cadastro', () => {
       .send({ ...cadastroBase, consentimentoLgpd: false });
     expect(resposta.status).toBe(422);
   });
+
+  it('recusa cadastro sem nome, e-mail ou senha e indica o campo (CT01.2)', async () => {
+    for (const campo of ['nome', 'email', 'senha']) {
+      const semCampo = Object.fromEntries(
+        Object.entries(cadastroBase).filter(([chave]) => chave !== campo),
+      );
+      const resposta = await request(app).post('/api/v1/auth/cadastro').send(semCampo);
+      expect(resposta.status, campo).toBe(422);
+      expect(
+        resposta.body.erro.detalhes.map((detalhe: { campo: string }) => detalhe.campo),
+      ).toContain(`body.${campo}`);
+    }
+    expect(await prisma.usuario.count()).toBe(0);
+  });
 });
 
 describe('POST /api/v1/auth/login e GET /api/v1/auth/me', () => {
