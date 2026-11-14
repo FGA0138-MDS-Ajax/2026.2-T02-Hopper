@@ -61,10 +61,13 @@ export const esquemaListarAulas = esquemaPaginacao
     },
   );
 
+export const esquemaAceitarAula = z.object({ serie: z.boolean().optional() }).default({});
+
 export const esquemaRecusarAula = z
   .object({ motivo: z.string().trim().min(1).max(TAMANHO_MAXIMO_MOTIVO).optional() })
   .default({});
 
 export type EntradaCriarAula = z.infer<typeof esquemaCriarAula>;
 export type EntradaListarAulas = z.infer<typeof esquemaListarAulas>;
+export type EntradaAceitarAula = z.infer<typeof esquemaAceitarAula>;
 export type EntradaRecusarAula = z.infer<typeof esquemaRecusarAula>;

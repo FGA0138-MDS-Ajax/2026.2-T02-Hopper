@@ -86,6 +86,15 @@ export interface AulasRepositorio {
     ignorarAulaId: string,
   ): Promise<boolean>;
   transicionar(tx: Transacao, dados: DadosTransicao): Promise<void>;
+  /** Pedidos ainda pendentes (SOLICITADA) do professor que se sobrepõem ao intervalo. */
+  listarPedidosSobrepostos(
+    tx: Transacao,
+    professorId: string,
+    intervalo: Intervalo,
+    ignorarAulaIds: string[],
+  ): Promise<AulaResumo[]>;
+  /** Pedidos pendentes de uma série semanal que ainda vão acontecer, na ordem do calendário. */
+  listarPedidosDaSerie(serieId: string, aPartirDe: Date): Promise<AulaResumo[]>;
 }
 
 const inclusaoResumo = {
@@ -223,6 +232,35 @@ export class AulasRepositorioPrisma implements AulasRepositorio {
       },
     });
     return total > 0;
+  }
+
+  async listarPedidosSobrepostos(
+    tx: Transacao,
+    professorId: string,
+    intervalo: Intervalo,
+    ignorarAulaIds: string[],
+  ): Promise<AulaResumo[]> {
+    const registros = await tx.aula.findMany({
+      where: {
+        professorId,
+        id: { notIn: ignorarAulaIds },
+        status: 'SOLICITADA',
+        inicio: { lt: intervalo.fim },
+        fim: { gt: intervalo.inicio },
+      },
+      include: inclusaoResumo,
+      orderBy: [{ criadoEm: 'asc' }, { id: 'asc' }],
+    });
+    return registros.map(paraResumo);
+  }
+
+  async listarPedidosDaSerie(serieId: string, aPartirDe: Date): Promise<AulaResumo[]> {
+    const registros = await prisma.aula.findMany({
+      where: { serieId, status: 'SOLICITADA', inicio: { gt: aPartirDe } },
+      include: inclusaoResumo,
+      orderBy: [{ inicio: 'asc' }, { id: 'asc' }],
+    });
+    return registros.map(paraResumo);
   }
 
   async transicionar(tx: Transacao, dados: DadosTransicao): Promise<void> {

@@ -58,6 +58,9 @@ type PapelNaAula = 'ALUNO' | 'PROFESSOR';
 
 const MINUTOS_POR_SEMANA = 7 * 24 * 60;
 
+/** Motivo gravado no histórico dos pedidos recusados quando outro pedido ocupa o horário. */
+const MOTIVO_HORARIO_PREENCHIDO = 'O horário foi preenchido por outra aula';
+
 export class AulasService {
   constructor(private readonly deps: DependenciasAulasService) {}
 
@@ -154,37 +157,58 @@ export class AulasService {
     return { ...aula, contato: { nome: outroNome, ...contato } };
   }
 
-  async aceitar(professor: UsuarioAutenticado, aulaId: string): Promise<AulaComContato> {
+  /**
+   * RF11/RF12: confirma o pedido e bloqueia o horário. Com { serie: true }, confirma também os
+   * demais pedidos pendentes da mesma série semanal (RF10): todos ou nenhum. Os outros pedidos
+   * pendentes para o mesmo horário deixam de ser possíveis e são recusados automaticamente.
+   */
+  async aceitar(
+    professor: UsuarioAutenticado,
+    aulaId: string,
+    opcoes: { serie?: boolean } = {},
+  ): Promise<AulaComContato> {
     const aula = await this.carregarAula(aulaId);
     this.exigirProfessorDaAula(aula, professor);
     validarTransicao(aula.status, 'CONFIRMADA', 'PROFESSOR');
     if (aula.inicio.getTime() <= this.agora().getTime()) {
       throw new ErroRegraNegocio('A aula já passou e não pode ser confirmada', 'AULA_NO_PASSADO');
     }
+    const aulas = await this.aulasParaConfirmar(aula, opcoes.serie === true);
+    const idsConfirmados = aulas.map((item) => item.id);
+
     await this.deps.transacao(async (tx) => {
-      const conflito = await this.deps.repositorio.existeConflito(
-        tx,
-        aula.professor.id,
-        { inicio: aula.inicio, fim: aula.fim },
-        aula.id,
-      );
-      if (conflito) {
-        throw new ErroConflito(
-          'Já existe uma aula confirmada neste horário',
-          'CONFLITO_DE_HORARIO',
-        );
+      // Confere todas antes de confirmar qualquer uma: numa série, ou entram todas ou nenhuma.
+      for (const item of aulas) {
+        const intervalo = { inicio: item.inicio, fim: item.fim };
+        if (await this.deps.repositorio.existeConflito(tx, item.professor.id, intervalo, item.id)) {
+          throw new ErroConflito(
+            aulas.length === 1
+              ? 'Já existe uma aula confirmada neste horário'
+              : `Já existe uma aula confirmada em ${formatarDataHoraBrasilia(item.inicio)}`,
+            'CONFLITO_DE_HORARIO',
+          );
+        }
       }
-      await this.deps.repositorio.transicionar(tx, {
-        aulaId: aula.id,
-        de: aula.status,
-        para: 'CONFIRMADA',
-        autorId: professor.id,
-      });
+      for (const item of aulas) {
+        await this.deps.repositorio.transicionar(tx, {
+          aulaId: item.id,
+          de: 'SOLICITADA',
+          para: 'CONFIRMADA',
+          autorId: professor.id,
+        });
+      }
+      for (const item of aulas) {
+        await this.recusarPedidosSobrepostos(tx, professor, item, idsConfirmados);
+      }
+      const inicio = formatarDataHoraBrasilia(aula.inicio);
       await this.deps.notificacoes.notificar(tx, {
         usuarioId: aula.aluno.id,
         aulaId: aula.id,
         tipo: 'CONFIRMACAO',
-        mensagem: `${aula.professor.nome} confirmou a sua aula de ${aula.materia.nome} em ${formatarDataHoraBrasilia(aula.inicio)}.`,
+        mensagem:
+          aulas.length === 1
+            ? `${aula.professor.nome} confirmou a sua aula de ${aula.materia.nome} em ${inicio}.`
+            : `${aula.professor.nome} confirmou ${aulas.length} aulas semanais de ${aula.materia.nome} a partir de ${inicio}.`,
       });
     });
     return this.obterDetalhe(professor, aula.id);
@@ -215,6 +239,42 @@ export class AulasService {
       });
     });
     return this.obterDetalhe(professor, aula.id);
+  }
+
+  /** A aula escolhida e, se pedido, os demais pedidos pendentes da série (sempre incluindo a escolhida). */
+  private async aulasParaConfirmar(aula: AulaDetalhe, serie: boolean): Promise<AulaResumo[]> {
+    if (!serie || !aula.serieId) return [aula];
+    const daSerie = await this.deps.repositorio.listarPedidosDaSerie(aula.serieId, this.agora());
+    return daSerie.some((item) => item.id === aula.id) ? daSerie : [aula, ...daSerie];
+  }
+
+  private async recusarPedidosSobrepostos(
+    tx: Transacao,
+    professor: UsuarioAutenticado,
+    confirmada: AulaResumo,
+    idsConfirmados: string[],
+  ): Promise<void> {
+    const pedidos = await this.deps.repositorio.listarPedidosSobrepostos(
+      tx,
+      confirmada.professor.id,
+      { inicio: confirmada.inicio, fim: confirmada.fim },
+      idsConfirmados,
+    );
+    for (const pedido of pedidos) {
+      await this.deps.repositorio.transicionar(tx, {
+        aulaId: pedido.id,
+        de: 'SOLICITADA',
+        para: 'RECUSADA',
+        autorId: professor.id,
+        motivo: MOTIVO_HORARIO_PREENCHIDO,
+      });
+      await this.deps.notificacoes.notificar(tx, {
+        usuarioId: pedido.aluno.id,
+        aulaId: pedido.id,
+        tipo: 'RECUSA',
+        mensagem: `${pedido.professor.nome} recusou a sua aula de ${pedido.materia.nome} em ${formatarDataHoraBrasilia(pedido.inicio)}. Motivo: o horário foi preenchido por outra aula.`,
+      });
+    }
   }
 
   listarIntervalosOcupados(professorId: string, de: Date, ate: Date): Promise<Intervalo[]> {
