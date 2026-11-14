@@ -1,0 +1,1688 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do AulaCerta, projeto do Grupo Hopper na disciplina Métodos de Desenvolvimento de Software.">
+      
+      
+      
+        <link rel="canonical" href="https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/qualidade/">
+      
+      
+        <link rel="prev" href="../documento-de-arquitetura/v1-0/">
+      
+      
+        <link rel="next" href="c01-cadastro-e-autenticacao/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/identidade/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Visão Geral - AulaCerta | Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#visao-geral-da-qualidade" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="AulaCerta | Documentação" class="md-header__button md-logo" aria-label="AulaCerta | Documentação" data-md-component="logo">
+      
+  <img src="../assets/identidade/favicon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AulaCerta | Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Visão Geral
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Alternar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Alternar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Alternar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Alternar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../documento-de-visao/v1-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Documento de Visão
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../documento-de-arquitetura/v1-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Documento de Arquitetura
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Qualidade
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../atas-reuniao/ata-reuniao-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Atas de Reunião
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AulaCerta | Documentação" class="md-nav__button md-logo" aria-label="AulaCerta | Documentação" data-md-component="logo">
+      
+  <img src="../assets/identidade/favicon.svg" alt="logo">
+
+    </a>
+    AulaCerta | Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Visão
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documento de Visão
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documento-de-visao/v1-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documento-de-visao/v1-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documento de Arquitetura
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documento-de-arquitetura/v1-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documento-de-arquitetura/v1-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qualidade
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Qualidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c01-cadastro-e-autenticacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C01 — Cadastro e Autenticação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c02-perfil-e-disponibilidade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C02 — Perfil e Disponibilidade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c03-busca-e-solicitacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C03 — Busca e Solicitação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c04-confirmacao-ou-recusa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C04 — Confirmação ou Recusa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c05-remarcacao-e-cancelamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C05 — Remarcação e Cancelamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c06-acompanhamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C06 — Acompanhamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requisitos-nao-funcionais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requisitos Não Funcionais
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#situacao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Situação geral
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrategia-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia de testes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estratégia de testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ambientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambientes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roteiro-consolidado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteiro consolidado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paginas-por-cenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Páginas por cenário
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bloqueios-de-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bloqueios de implementação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convencoes-de-registro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convenções de registro
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Início
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Qualidade
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="visao-geral-da-qualidade">Visão Geral da Qualidade</h1>
+<p>Esta seção reúne o roteiro, as execuções, os defeitos e as correções do AulaCerta, em uma página por cenário. Cada página tem os mesmos oito blocos: identificação, critérios de aceitação, casos de teste, execuções, defeitos e correções, cobertura, parecer final e contribuições. Situação em <strong>14/11/2026</strong>, com base na <strong>última execução</strong> dos testes automatizados das Sprints 3 e 4, feita nesse dia às 13h47.</p>
+<div class="admonition success">
+<p class="admonition-title">Relatório de testes: última execução (14/11/2026)</p>
+<p>409 de 409 testes automatizados aprovados: 133 unitários do back-end, 73 de integração, 194 do front-end e 9 de sistema (Playwright). O relatório reúne o log, o resultado de cada teste, a cobertura do código linha a linha e as capturas de tela do Playwright.</p>
+<p><a class="md-button md-button--primary" href="../assets/qualidade/relatorio-de-testes/">Acessar o relatório de testes</a></p>
+</div>
+<h2 id="situacao-geral">Situação geral</h2>
+<table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor em 14/11/2026</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Testes automatizados aprovados</td>
+<td>409 de 409: 133 unitários do back-end, 73 de integração, 194 do front-end e 9 de sistema</td>
+</tr>
+<tr>
+<td>Casos do roteiro e complementares</td>
+<td>73 casos: 59 aprovados, 1 pendente e 13 bloqueados</td>
+</tr>
+<tr>
+<td>Caso pendente</td>
+<td>CT10 (status e histórico pela interface), que depende da Sprint 5</td>
+</tr>
+<tr>
+<td>Casos bloqueados</td>
+<td>C05 (RF15 e RF16) e lembretes do C06 (RF19), previstos para a Sprint 5</td>
+</tr>
+<tr>
+<td>Defeitos encontrados no desenvolvimento</td>
+<td>2, ambos corrigidos e retestados na última execução (<a href="c01-cadastro-e-autenticacao/#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro">DEF-C01-01</a> e <a href="c04-confirmacao-ou-recusa/#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500">DEF-C04-01</a>)</td>
+</tr>
+<tr>
+<td>M4 – Conflitos de agendamento</td>
+<td>0, inclusive com aceites simultâneos</td>
+</tr>
+<tr>
+<td>M6 – Cobertura</td>
+<td>Back-end (regras de negócio): 98,7% das linhas e 96,5% das ramificações · Front-end: 96,3% das linhas e 90,5% das ramificações</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Evidências:</strong> o <a href="../assets/qualidade/relatorio-de-testes/">relatório de testes</a> da última execução, de 14/11/2026 reúne o log, o relatório HTML e a cobertura de cada tipo de teste, além do relatório do Playwright com capturas de tela.</p>
+<h2 id="estrategia-de-testes">Estratégia de testes</h2>
+<p>O planejamento segue o <a href="../documento-de-visao/v1-1/">Documento de Visão</a>, seção 6 e Quadros 18 a 21, e o <a href="../documento-de-arquitetura/v1-1/">Documento de Arquitetura</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Nível / tipo</th>
+<th>Foco</th>
+<th>Ferramentas</th>
+<th>Responsáveis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unitário funcional</td>
+<td>Regras de negócio (conflitos, transições de status) e componentes da interface</td>
+<td>Vitest; React Testing Library no front-end</td>
+<td>Desenvolvedores</td>
+</tr>
+<tr>
+<td>Integração funcional</td>
+<td>API com banco de dados de teste separado</td>
+<td>Vitest e Supertest</td>
+<td>Desenvolvedores back-end</td>
+</tr>
+<tr>
+<td>Sistema funcional (ponta a ponta)</td>
+<td>Fluxos de C01 a C04 pela interface, como aluno e professor</td>
+<td>Playwright</td>
+<td>Analista de Qualidade</td>
+</tr>
+<tr>
+<td>Sistema não funcional: responsividade (RNF02)</td>
+<td>Telas em 360 px, sem rolagem horizontal (CT12)</td>
+<td>Playwright</td>
+<td>Analista de Qualidade</td>
+</tr>
+<tr>
+<td>Integração não funcional: segurança (RNF03) e privacidade (RNF06)</td>
+<td>Hash de senha, acesso por JWT, consentimento e contato liberado só após a confirmação (CT13, CT14)</td>
+<td>Vitest e Supertest</td>
+<td>Desenvolvedores back-end e Analista de Qualidade</td>
+</tr>
+<tr>
+<td>Validação pelo P.O.</td>
+<td>Critérios de aceite de cada história</td>
+<td>Demonstração na revisão da sprint</td>
+<td>P.O.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Como executar:</strong> na raiz do repositório, <code>npm run testes</code> roda os quatro tipos em sequência (ou <code>npm run testes:backend</code>, <code>testes:integracao</code>, <code>testes:frontend</code> e <code>testes:sistema</code>). Cada execução grava, em <code>relatorios/&lt;tipo&gt;/&lt;data e hora&gt;/</code>, o log, o relatório HTML e, quando há, a cobertura; <code>relatorios/index.html</code> reúne todas as execuções. Os testes de integração e de sistema usam um banco de teste separado, apagado a cada execução.</p>
+<p><strong>M6 ≥ 70%:</strong> no mínimo 70% em instruções, ramificações, funções e linhas, medidos pelo Vitest; no back-end, nos serviços de domínio (<code>src/modules/**/*.service.ts</code>); no front-end, em todo o <code>src</code>, exceto os testes. Abaixo disso, o comando de cobertura falha.</p>
+<p>Conforme o Quadro 3 do Documento de Visão, Pedro Rodrigues é responsável por QA, com participação de Yasmim Ayres; Pedro França atua como P.O.</p>
+<h3 id="ambientes">Ambientes</h3>
+<table>
+<thead>
+<tr>
+<th>Ambiente</th>
+<th>Branch</th>
+<th>Verificações</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local</td>
+<td><code>feature/*</code>, <code>fix/*</code> e <code>test/*</code></td>
+<td>Lint, unitários, integração, cobertura e ponta a ponta antes do pull request</td>
+</tr>
+<tr>
+<td>Integração</td>
+<td><code>developer</code></td>
+<td>Suíte completa e validação dos critérios de aceite pelo P.O.</td>
+</tr>
+<tr>
+<td>Produção</td>
+<td><code>main</code></td>
+<td>Teste de fumaça dos fluxos principais, após a publicação</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metricas">Métricas</h3>
+<p>As definições estão no Quadro 17 do Documento de Visão.</p>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Meta</th>
+<th>Medido em 14/11/2026</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M4 – Conflitos de agendamento</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>M5 – Taxa de conclusão da sprint</td>
+<td>≥ 80%</td>
+<td>Calculada pelo Scrum Master no GitHub Projects</td>
+</tr>
+<tr>
+<td>M6 – Cobertura de testes</td>
+<td>≥ 70%</td>
+<td>98,7% (back-end) e 96,3% (front-end), em linhas</td>
+</tr>
+<tr>
+<td>M7 – Densidade de defeitos</td>
+<td>≤ 0,5 por história</td>
+<td>0,15 por história: 2 defeitos (<a href="c01-cadastro-e-autenticacao/#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro">DEF-C01-01</a> e <a href="c04-confirmacao-ou-recusa/#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500">DEF-C04-01</a>) em 13 histórias entregues nas Sprints 3 e 4 (US01 a US13); dentro da meta</td>
+</tr>
+<tr>
+<td>M8 – Débito técnico aberto</td>
+<td>Estável ou em queda</td>
+<td>Acompanhado pelo Scrum Master no GitHub</td>
+</tr>
+<tr>
+<td>MN1 – Taxa de confirmação dos pedidos</td>
+<td>≥ 50% (hipótese)</td>
+<td>Medida com dados de teste ao fim da Sprint 5</td>
+</tr>
+<tr>
+<td>MN2 – Tempo até a confirmação</td>
+<td>≤ 24 h (hipótese)</td>
+<td>Medida com dados de teste ao fim da Sprint 5</td>
+</tr>
+</tbody>
+</table>
+<h2 id="roteiro-consolidado">Roteiro consolidado</h2>
+<table>
+<thead>
+<tr>
+<th>Caso</th>
+<th>Nome no roteiro (Quadro 20)</th>
+<th>Cenário</th>
+<th>Situação</th>
+<th>Ciclos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="c01-cadastro-e-autenticacao/">CT01</a></td>
+<td>Cadastro de usuário</td>
+<td>C01</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c01-cadastro-e-autenticacao/">CT02</a></td>
+<td>Login inválido</td>
+<td>C01</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c02-perfil-e-disponibilidade/">CT03</a></td>
+<td>Publicar disponibilidade</td>
+<td>C02</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c03-busca-e-solicitacao/">CT04</a></td>
+<td>Solicitar aula em horário livre</td>
+<td>C03</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c04-confirmacao-ou-recusa/">CT05</a></td>
+<td>Impedir conflito de horário</td>
+<td>C04</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c04-confirmacao-ou-recusa/">CT06</a></td>
+<td>Aceitar solicitação</td>
+<td>C04</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c04-confirmacao-ou-recusa/">CT07</a></td>
+<td>Recusar solicitação</td>
+<td>C04</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c05-remarcacao-e-cancelamento/">CT08</a></td>
+<td>Remarcar aula</td>
+<td>C05</td>
+<td>⛔ Bloqueado (Sprint 5)</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="c05-remarcacao-e-cancelamento/">CT09</a></td>
+<td>Cancelar aula</td>
+<td>C05</td>
+<td>⛔ Bloqueado (Sprint 5)</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="c06-acompanhamento/">CT10</a></td>
+<td>Status e histórico</td>
+<td>C06</td>
+<td>⚪ Pendente (Sprint 5)</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="requisitos-nao-funcionais/">CT12</a></td>
+<td>Responsividade</td>
+<td>RNF02</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="c01-cadastro-e-autenticacao/">CT13</a></td>
+<td>Armazenamento de senha</td>
+<td>RNF03</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="requisitos-nao-funcionais/">CT14</a></td>
+<td>Privacidade dos dados</td>
+<td>RNF06</td>
+<td>✅ Aprovado</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>A numeração não é contínua porque o CT11 (usabilidade) saiu do roteiro, e o CT14 passou a verificar a privacidade na versão 1.1 do Documento de Visão.</p>
+<h2 id="paginas-por-cenario">Páginas por cenário</h2>
+<table>
+<thead>
+<tr>
+<th>Página</th>
+<th>Requisitos</th>
+<th>Casos</th>
+<th>Aprovados</th>
+<th>Pendentes</th>
+<th>Bloqueados</th>
+<th>Parecer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="c01-cadastro-e-autenticacao/">C01 — Cadastro e autenticação</a></td>
+<td>RF01, RF02, RF03, RNF03</td>
+<td>11</td>
+<td>11</td>
+<td>0</td>
+<td>0</td>
+<td>✅ Aprovado</td>
+</tr>
+<tr>
+<td><a href="c02-perfil-e-disponibilidade/">C02 — Perfil e disponibilidade</a></td>
+<td>RF04, RF05, RF06</td>
+<td>10</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>✅ Aprovado</td>
+</tr>
+<tr>
+<td><a href="c03-busca-e-solicitacao/">C03 — Busca e solicitação</a></td>
+<td>RF07, RF08, RF09, RF10</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+<td>0</td>
+<td>✅ Aprovado</td>
+</tr>
+<tr>
+<td><a href="c04-confirmacao-ou-recusa/">C04 — Confirmação ou recusa</a></td>
+<td>RF11, RF12, RF13</td>
+<td>15</td>
+<td>15</td>
+<td>0</td>
+<td>0</td>
+<td>✅ Aprovado</td>
+</tr>
+<tr>
+<td><a href="c05-remarcacao-e-cancelamento/">C05 — Remarcação e cancelamento</a></td>
+<td>RF15, RF16</td>
+<td>11</td>
+<td>0</td>
+<td>0</td>
+<td>11</td>
+<td>⛔ Bloqueado (Sprint 5)</td>
+</tr>
+<tr>
+<td><a href="c06-acompanhamento/">C06 — Acompanhamento</a></td>
+<td>RF17, RF18, RF19</td>
+<td>7</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>⚪ Pendente (Sprint 5)</td>
+</tr>
+<tr>
+<td><a href="requisitos-nao-funcionais/">Requisitos não funcionais</a></td>
+<td>RNF02, RNF06</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>✅ Aprovado</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fora do escopo do semestre:</strong> administração da plataforma (C07, RF22), anotações (RF20) e avaliação de aulas (RF21), conforme o Quadro 9 do Documento de Visão. O RF14 (notificações por e-mail) já havia sido retirado.</p>
+<h2 id="bloqueios-de-implementacao">Bloqueios de implementação</h2>
+<table>
+<thead>
+<tr>
+<th>Página</th>
+<th>Casos bloqueados</th>
+<th>Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="c05-remarcacao-e-cancelamento/">C05</a></td>
+<td>CT08, CT08.1 a CT08.5; CT09, CT09.1 a CT09.4</td>
+<td>Remarcação (RF15) e cancelamento (RF16) ainda não implementados; previstos para a Sprint 5</td>
+</tr>
+<tr>
+<td><a href="c06-acompanhamento/">C06</a></td>
+<td>CT10.5, CT10.6</td>
+<td>Lembretes (RF19) ainda não implementados; previstos para a Sprint 5</td>
+</tr>
+</tbody>
+</table>
+<h2 id="convencoes-de-registro">Convenções de registro</h2>
+<ul>
+<li><strong>CTxx:</strong> caso do roteiro oficial (Quadro 20 do Documento de Visão).</li>
+<li><strong>CTxx.y:</strong> caso complementar, com sufixo numérico e requisito identificado. Os complementares do C02 começam em CT03.5 porque CT03.1 a CT03.4 são do RF03, no C01.</li>
+<li><strong>DEF-Cnn-nn:</strong> defeito vinculado ao cenário e a uma execução real. Para requisitos não funcionais, usar o cenário em que o defeito foi observado e referenciar o caso.</li>
+<li><strong>Branch de correção:</strong> <code>fix/&lt;descricao&gt;</code>; <strong>commit:</strong> <code>fix(&lt;modulo&gt;): &lt;descricao&gt;</code>, com o módulo do código alterado (<code>auth</code>, <code>usuarios</code>, <code>agenda</code>, <code>aulas</code>, <code>notificacoes</code> ou <code>frontend</code>).</li>
+<li><strong>Registro único:</strong> execuções na seção 4; defeitos, causa, branch, PR e reteste na seção 5 da mesma página.</li>
+<li><strong>Status:</strong> ⚪ Pendente · ✅ Aprovado · ❌ Falhou · 🔁 Em reteste · ⛔ Bloqueado. Um caso só é aprovado quando um teste que passou verifica todo o resultado esperado; se os testes cobrem só parte, o caso fica pendente, com a observação "cobertura parcial".</li>
+<li><strong>Última execução:</strong> vale apenas a execução completa mais recente, feita com <code>npm run testes</code> e publicada no <a href="../assets/qualidade/relatorio-de-testes/">relatório de testes</a>; as rodadas feitas durante o desenvolvimento não são registradas. Defeitos encontrados no desenvolvimento ficam na seção 5, com causa, PR e o reteste na última execução.</li>
+<li><strong>Ciclos:</strong> execuções oficiais até a aprovação.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Rodapé" >
+        
+          
+          <a href="../documento-de-arquitetura/v1-0/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Versão 1.0">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Versão 1.0
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="c01-cadastro-e-autenticacao/" class="md-footer__link md-footer__link--next" aria-label="Próximo: C01 — Cadastro e Autenticação">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              <div class="md-ellipsis">
+                C01 — Cadastro e Autenticação
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      AulaCerta · Grupo Hopper · MDS 2026.2
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "toc.follow", "navigation.footer", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,158 @@
+AulaCerta — registro de execução de testes
+------------------------------------------------------------------------------
+Tipo:      Back-end — testes de integração (banco de teste)
+Início:    14/11/2026 13:46:59 (horário de Brasília)
+Branch:    test/casos-pendentes-do-roteiro | commit a6b0102 (com alterações não commitadas)
+Node:      v22.22.3
+Pasta:     backend/
+Comando:   vitest run --project integration --reporter=default --reporter=json --outputFile.json=../relatorios/backend-integracao/2026-11-14_13-46-59/resultado.json --includeTaskLocation
+------------------------------------------------------------------------------
+
+ RUN  v5.1.0 C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend
+
+(node:9520) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+stderr | tests/integration/aulas.test.ts:507 > casos complementares do C03 e do C04 > desfaz o aceite inteiro quando a gravação da notificação falha (CT06.4)
+Erro inesperado PrismaClientKnownRequestError: 
+Invalid `tx.notificacao.createMany()` invocation in
+C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend/src/modules/notificacoes/notificacoes.repository.ts:52:26
+
+  49 
+  50 export class NotificacoesRepositorioPrisma implements NotificacoesRepositorio {
+  51   async criar(tx: Transacao, dados: NovaNotificacao): Promise<void> {
+→ 52     await tx.notificacao.createMany(
+Database error. Code: `P0001`. Message: `falha induzida pelo teste`
+    at vn.handleRequestError (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:65:8640)
+    at vn.handleAndLogRequestError (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:65:7929)
+    at vn.request (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:65:7636)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async a (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:99:6921)
+    at NotificacoesRepositorioPrisma.criar (C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend/src/modules/notificacoes/notificacoes.repository.ts:52:5)
+    at NotificacoesService.notificar (C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend/src/modules/notificacoes/notificacoes.service.ts:40:5)
+    at C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend/src/modules/aulas/aulas.service.ts:207:7
+    at async Proxy._transactionWithCallback (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:99:4854)
+    at Object.transacao (C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend/src/infra/prisma.ts:23:12) {
+  code: 'P2039',
+  meta: {
+    modelName: 'Notificacao',
+    driverAdapterError: DriverAdapterError: falha induzida pelo teste
+        at PgTransaction.onError (file:///C:/Users/pedro/OneDrive/Documentos/Universidade%20de%20Bras%C3%ADlia/2026%20-%202/FGA0312%20-%20M%C3%89TODOS%20DE%20DESENVOLVIMENTO%20DE%20SOFTWARE%20-%20T02%20(2026.2)/2026.2-T02-Hopper/backend/node_modules/@prisma/adapter-pg/dist/index.mjs:666:11)
+        at PgTransaction.performIO (file:///C:/Users/pedro/OneDrive/Documentos/Universidade%20de%20Bras%C3%ADlia/2026%20-%202/FGA0312%20-%20M%C3%89TODOS%20DE%20DESENVOLVIMENTO%20DE%20SOFTWARE%20-%20T02%20(2026.2)/2026.2-T02-Hopper/backend/node_modules/@prisma/adapter-pg/dist/index.mjs:661:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+        at async PgTransaction.executeRaw (file:///C:/Users/pedro/OneDrive/Documentos/Universidade%20de%20Bras%C3%ADlia/2026%20-%202/FGA0312%20-%20M%C3%89TODOS%20DE%20DESENVOLVIMENTO%20DE%20SOFTWARE%20-%20T02%20(2026.2)/2026.2-T02-Hopper/backend/node_modules/@prisma/adapter-pg/dist/index.mjs:634:13)
+        at async C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:11:70205
+        at async e.interpretNode (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:11:71857)
+        at async e.run (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:11:69273)
+        at async e.execute (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:57:815)
+        at async yr.request (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:58:2425)
+        at async Object.singleLoader (C:\Users\pedro\OneDrive\Documentos\Universidade de Brasília\2026 - 2\FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)\2026.2-T02-Hopper\backend\node_modules\@prisma\client\runtime\client.js:65:6917) {
+      cause: [Object]
+    }
+  },
+  clientVersion: '7.10.1'
+}
+
+ ✓ |integration| tests/integration/aulas.test.ts (27 tests) 89704ms
+   ✓ POST /aulas (6)
+     ✓ cria a aula como SOLICITADA, grava historico e notifica o professor 3823ms
+     ✓ exige login e perfil de aluno 2463ms
+     ✓ responde 409 quando o horario esta fora da grade ou bloqueado 2723ms
+     ✓ rejeita materia ou modalidade que o professor nao oferece com 400 2601ms
+     ✓ rejeita aula no passado com 400 e dados invalidos com 422 2460ms
+     ✓ responde 404 para professor inexistente ou bloqueado 2568ms
+   ✓ GET /aulas (3)
+     ✓ lista somente as aulas de cada participante 3799ms
+     ✓ filtra por status e periodo e pagina o resultado 4602ms
+     ✓ valida os filtros e exige login 2331ms
+   ✓ GET /aulas/:id (2)
+     ✓ revela o contato do outro usuario somente depois da confirmacao (RNF06) 3729ms
+     ✓ nega a quem nao participa, responde 404 e valida o id 3068ms
+   ✓ PATCH /aulas/:id/aceitar (4)
+     ✓ confirma a aula, grava historico e notifica o aluno 3373ms
+     ✓ so o professor da aula pode confirmar e nao se confirma duas vezes 3600ms
+     ✓ remove o horario confirmado da lista de horarios livres 3663ms
+     ✓ permite aulas consecutivas, pois o intervalo e semiaberto 4239ms
+   ✓ conflito de horario (CT05, RF12) (3)
+     ✓ ao confirmar uma aula, recusa o outro pedido do mesmo horario e avisa o aluno 3978ms
+     ✓ aceita apenas uma de duas confirmacoes simultaneas do mesmo horario 3977ms
+     ✓ o banco recusa duas aulas confirmadas sobrepostas mesmo fora da API 3319ms
+   ✓ PATCH /aulas/:id/recusar (2)
+     ✓ recusa com motivo, grava historico, notifica o aluno e libera o horario 3533ms
+     ✓ recusa sem corpo, nao repete a recusa e respeita as permissoes 3350ms
+   ✓ aulas recorrentes (RF10) (3)
+     ✓ cria uma serie semanal com o mesmo serieId e notifica o professor uma vez 3513ms
+     ✓ nao cria nada quando uma das semanas esta indisponivel 2632ms
+     ✓ valida a quantidade de semanas com 422 2432ms
+   ✓ casos complementares do C03 e do C04 (4)
+     ✓ recusa pedido sem professor, matéria, modalidade ou horário e não cria aula (CT04.5) 2455ms
+     ✓ recusa aula com menos de 30 minutos e aceita exatamente 30 (CT04.6) 2818ms
+     ✓ confirma aulas no mesmo horário com professores diferentes (CT05.3) 4543ms
+     ✓ desfaz o aceite inteiro quando a gravação da notificação falha (CT06.4) 4101ms
+ ✓ |integration| tests/integration/usuarios.test.ts (12 tests) 15491ms
+   ✓ materias (1)
+     ✓ lista materias e niveis sem exigir login 1286ms
+   ✓ perfil proprio do professor (3)
+     ✓ comeca incompleto e passa a completo depois de preenchido 1457ms
+     ✓ rejeita materia inexistente com 422 e payload invalido com 422 976ms
+     ✓ bloqueia aluno com 403 e visitante com 401 915ms
+   ✓ busca de professores (4)
+     ✓ lista somente professores com perfil completo e sem expor e-mail ou telefone 1535ms
+     ✓ filtra por materia, nivel e modalidade 1610ms
+     ✓ pagina o resultado e valida os parametros 1660ms
+     ✓ nao lista professor bloqueado pelo administrador 1352ms
+   ✓ perfil publico do professor (2)
+     ✓ devolve perfil e horarios livres das proximas semanas sem dados de contato 1672ms
+     ✓ responde 404 para perfil incompleto ou inexistente e 422 para id invalido 1030ms
+   ✓ dados do proprio usuario (2)
+     ✓ atualiza nome e telefone 1087ms
+     ✓ rejeita corpo vazio com 422 e visitante com 401 906ms
+(node:4512) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ |integration| tests/integration/notificacoes.test.ts (7 tests) 13736ms
+   ✓ GET /notificacoes (3)
+     ✓ comeca vazia e acumula notificacoes a cada mudanca de status 3676ms
+     ✓ pagina, filtra nao lidas e nunca mostra notificacoes de outro usuario 2423ms
+     ✓ valida os parametros e exige login 1235ms
+   ✓ PATCH /notificacoes (4)
+     ✓ marca ids especificos como lidos 1890ms
+     ✓ marca todas como lidas 1817ms
+     ✓ nao altera notificacoes de outro usuario 1526ms
+     ✓ rejeita corpo invalido com 422 e exige login 1163ms
+ ✓ |integration| tests/integration/agenda.test.ts (9 tests) 12516ms
+   ✓ grade semanal (3)
+     ✓ comeca vazia, substitui a grade inteira e devolve ordenada 1772ms
+     ✓ rejeita faixas sobrepostas com 400 e faixa invalida com 422 914ms
+     ✓ bloqueia aluno com 403 e visitante com 401 1101ms
+   ✓ bloqueios pontuais (3)
+     ✓ cria, lista e remove bloqueio 1246ms
+     ✓ rejeita bloqueio no passado e intervalo invertido 992ms
+     ✓ impede remover bloqueio de outro professor e responde 404 para id inexistente 1110ms
+   ✓ casos complementares do C02 (3)
+     ✓ nega a aluno e a visitante o acesso aos bloqueios (CT03.7) 1022ms
+     ✓ publicar a grade vazia remove os horários livres do perfil público (CT03.9) 2231ms
+     ✓ ao remover um bloqueio, o horário volta a ficar livre (CT03.11) 2122ms
+ ✓ |integration| tests/integration/auth.test.ts (13 tests) 4377ms
+   ✓ POST /api/v1/auth/cadastro (6)
+     ✓ cria aluno e nunca devolve o hash da senha (CT13) 578ms
+     ✓ cria o perfil de professor vazio ao cadastrar professor 340ms
+   ✓ POST /api/v1/auth/login e GET /api/v1/auth/me (4)
+     ✓ usa a mesma resposta para e-mail inexistente e senha errada (CT02) 454ms
+     ✓ bloqueia usuario inativo com 403 318ms
+   ✓ recuperacao e redefinicao de senha (3)
+     ✓ envia o link, guarda so o hash e redefine a senha uma unica vez 943ms
+     ✓ recusa token expirado 526ms
+ ✓ |integration| tests/integration/saude.test.ts (5 tests) 109ms
+
+ Test Files  6 passed (6)
+      Tests  73 passed (73)
+   Start at  13:47:00
+   Duration  142.31s (tests 97%, import 3%)
+
+JSON report written to C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/relatorios/backend-integracao/2026-11-14_13-46-59/resultado.json
+
+------------------------------------------------------------------------------
+Resultado: APROVADO (código de saída 0)
+Testes:    73 aprovados (de 73)
+Duração:   142,9 s
+Relatórios: html/index.html
+------------------------------------------------------------------------------

@@ -1,0 +1,163 @@
+AulaCerta — registro de execução de testes
+------------------------------------------------------------------------------
+Tipo:      Front-end — testes de componentes (com cobertura)
+Início:    14/11/2026 13:51:49 (horário de Brasília)
+Branch:    test/casos-pendentes-do-roteiro | commit a6b0102 (com alterações não commitadas)
+Node:      v22.22.3
+Pasta:     frontend/
+Comando:   vitest run --reporter=default --reporter=json --outputFile.json=../relatorios/frontend/2026-11-14_13-51-49/resultado.json --includeTaskLocation --coverage --coverage.reportsDirectory=../relatorios/frontend/2026-11-14_13-51-49/cobertura --coverage.reporter=text --coverage.reporter=html --coverage.reporter=json-summary
+------------------------------------------------------------------------------
+
+ RUN  v5.1.0 C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/frontend
+      Coverage enabled with v8
+
+ ✓ src/pages/solicitar-aula.test.tsx (12 tests) 4087ms
+   ✓ PaginaSolicitarAula (12)
+     ✓ envia o pedido e mostra a confirmação com o status "Solicitada" 755ms
+     ✓ se o horário foi ocupado, avisa e oferece escolher outro 727ms
+     ✓ aulas semanais (RF10) (4)
+       ✓ por padrão pede uma só aula, sem recorrência 764ms
+       ✓ envia a série com o número de semanas e mostra até quando vai 609ms
+       ✓ se uma das semanas estiver ocupada, sugere menos semanas ou outro horário 416ms
+ ✓ src/pages/cadastro.test.tsx (11 tests) 8886ms
+   ✓ PaginaCadastro (11)
+     ✓ valida senha, telefone e consentimento antes de enviar 1037ms
+     ✓ cria a conta, entra e segue para o destino 1117ms
+     ✓ professor novo sem destino vai completar o perfil 1107ms
+     ✓ aluno novo sem destino vai para a busca de professores (CT01) 1125ms
+     ✓ aluno que veio de outra página volta para ela depois do cadastro 1067ms
+     ✓ não envia telefone quando o campo fica vazio 810ms
+     ✓ avisa no campo quando o e-mail já tem conta 1149ms
+     ✓ mostra no campo certo os erros de validação da API 1109ms
+ ✓ src/pages/entrar.test.tsx (10 tests) 2949ms
+   ✓ PaginaEntrar (10)
+     ✓ entra, guarda a sessão e volta para onde a pessoa estava 769ms
+     ✓ ignora destinos externos no parâmetro "voltar" 731ms
+     ✓ mostra a mensagem da API quando e-mail ou senha estão errados 843ms
+ ✓ src/pages/meu-perfil.test.tsx (27 tests) 10384ms
+   ✓ PaginaMeuPerfil (24)
+     ✓ aba Perfil (3)
+       ✓ salva apresentação, matérias, modalidades e valor 901ms
+       ✓ desmarca matéria e modalidade e mostra o erro quando a API não salva 395ms
+     ✓ aba Grade semanal (6)
+       ✓ monta a grade, repete nos dias úteis e salva 341ms
+       ✓ não salva mais de 50 faixas de horário 4482ms
+     ✓ aba Bloqueios (8)
+       ✓ cria um bloqueio de dia inteiro no horário de Brasília 307ms
+       ✓ lista e remove bloqueios com confirmação 341ms
+       ✓ cria um bloqueio com horário e exige as duas horas 346ms
+       ✓ mostra o erro quando a API não cria o bloqueio 361ms
+       ✓ mostra bloqueios de vários dias, desiste da remoção e avisa quando a remoção falha 522ms
+ ✓ src/pages/recuperar-senha.test.tsx (7 tests) 3525ms
+   ✓ PaginaRecuperarSenha (3)
+     ✓ pede o link e mostra a mesma confirmação exista ou não a conta 1167ms
+     ✓ valida o e-mail antes de enviar 324ms
+     ✓ mostra o aviso de limite de tentativas da API 393ms
+   ✓ PaginaRedefinirSenha (4)
+     ✓ exige senha forte e as duas senhas iguais 661ms
+     ✓ salva a nova senha e leva para o login com a confirmação 462ms
+     ✓ token recusado pela API mostra a tela de link expirado 483ms
+ ✓ src/pages/minhas-aulas.test.tsx (15 tests) 2950ms
+   ✓ PaginaMinhasAulas (14)
+     ✓ como professor (5)
+       ✓ aceita um pedido e confirma com uma mensagem 318ms
+       ✓ recusa um pedido informando o motivo 796ms
+ ✓ src/pages/professor.test.tsx (14 tests) 3111ms
+   ✓ PaginaProfessor (14)
+     ✓ mostra o perfil do professor 366ms
+     ✓ trocar de dia mostra os horários dele e desfaz a escolha anterior 560ms
+     ✓ navega entre as semanas 396ms
+ ✓ src/App.test.tsx (18 tests) 2032ms
+   ✓ rotas do aplicativo (18)
+     ✓ abre /professores/p1 para o visitante 763ms
+     ✓ abre /entrar para o visitante 303ms
+ ✓ src/pages/professores.test.tsx (8 tests) 1523ms
+   ✓ PaginaProfessores (8)
+     ✓ remove um filtro aplicado e volta para a primeira página 329ms
+     ✓ mostra o estado vazio e limpa os filtros 316ms
+ ✓ src/pages/notificacoes.test.tsx (8 tests) 2106ms
+   ✓ PaginaNotificacoes (8)
+     ✓ lista os avisos, destaca os não lidos e leva até a aula 849ms
+ ✓ src/pages/inicio.test.tsx (7 tests) 1347ms
+   ✓ PaginaInicio (7)
+     ✓ mostra matérias populares da API sem repetir nomes 301ms
+ ✓ src/components/barra-busca.test.tsx (5 tests) 1211ms
+   ✓ BarraBusca (5)
+     ✓ envia matéria, nível e modalidade na URL 567ms
+ ✓ src/components/cabecalho.test.tsx (5 tests) 713ms
+   ✓ Cabecalho (5)
+     ✓ abre e fecha o menu do celular 431ms
+ ✓ src/contexts/sessao.test.tsx (7 tests) 427ms
+ ✓ src/pages/nao-encontrada.test.tsx (1 test) 182ms
+ ✓ src/components/cartao-professor.test.tsx (3 tests) 131ms
+ ✓ src/services/api.test.ts (8 tests) 29ms
+ ✓ src/services/aulas.test.ts (5 tests) 23ms
+ ✓ src/services/auth.test.ts (7 tests) 20ms
+ ✓ src/services/area-professor.test.ts (3 tests) 16ms
+ ✓ src/utils/datas.test.ts (6 tests) 83ms
+ ✓ src/services/notificacoes.test.ts (2 tests) 15ms
+ ✓ src/services/professores.test.ts (3 tests) 16ms
+ ✓ src/test/dependencias.test.ts (2 tests) 7ms
+
+ Test Files  24 passed (24)
+      Tests  194 passed (194)
+   Start at  13:51:50
+   Duration  39.83s (tests 44%, environment 28%, import 17%, setup 9%, worker 1%, transform 1%)
+
+Environment  jsdom was created 24 times · 29.34s total, 28% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JSON report written to C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/relatorios/frontend/2026-11-14_13-51-49/resultado.json
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   95.49 |    90.48 |   94.48 |   96.26 |                   
+ src/components    |   90.86 |    87.76 |   88.37 |   92.64 |                   
+  abas.tsx         |   92.85 |    63.63 |     100 |     100 | 26-27             
+  barra-busca.tsx  |    92.5 |    83.87 |     100 |     100 | 17-19,45          
+  cabecalho.tsx    |   76.47 |     82.6 |   63.63 |      75 | 103,123-136       
+  cartao-aula.tsx  |    90.9 |    88.46 |    87.5 |   90.24 | 36-39,129,165     
+  ...rio-conta.tsx |   68.18 |       70 |      60 |      75 | 59-63             
+  logo.tsx         |     100 |     62.5 |     100 |     100 | 9-31              
+  paginacao.tsx    |   83.33 |      100 |   66.66 |      80 | 22                
+  ...-horarios.tsx |   97.05 |       90 |   93.33 |   96.42 | 66                
+  ...ificacoes.tsx |     100 |    88.88 |     100 |     100 | 28                
+ ...area-professor |      98 |    91.56 |   97.43 |   99.42 |                   
+  editor-grade.tsx |   97.29 |    86.66 |   94.73 |     100 | 59-60,208         
+  ...io-perfil.tsx |     100 |       90 |     100 |     100 | 81-83,105,152     
+  ...bloqueios.tsx |   98.24 |    94.28 |     100 |     100 | 34,42,183         
+  regras.ts        |   96.15 |    93.75 |     100 |   95.45 | 31                
+ src/contexts      |   96.55 |       80 |     100 |     100 |                   
+  sessao.tsx       |   96.55 |       80 |     100 |     100 | 69,91             
+ src/pages         |   94.58 |    91.42 |   91.04 |   94.94 |                   
+  cadastro.tsx     |   97.05 |       90 |     100 |     100 | 76,100,119        
+  meu-perfil.tsx   |   86.48 |    94.33 |      60 |   86.11 | 128,146,164-177   
+  minhas-aulas.tsx |   91.66 |    89.13 |   83.33 |    90.9 | 55,105-108,198    
+  notificacoes.tsx |   90.56 |    85.41 |   86.66 |      90 | ...49-152,205,262 
+  professor.tsx    |     100 |     92.5 |     100 |     100 | 72-176,231        
+  professores.tsx  |   95.23 |    95.83 |   93.75 |   97.36 | 164               
+  ...rar-senha.tsx |   93.33 |      100 |   66.66 |   93.33 | 64                
+  ...nir-senha.tsx |   95.23 |       80 |     100 |      95 | 65                
+  ...itar-aula.tsx |      95 |    90.24 |   94.11 |   96.05 | 309,520-526       
+ src/services      |    98.8 |    96.29 |     100 |   98.75 |                   
+  api.ts           |   96.15 |    93.33 |     100 |   95.83 | 14                
+ src/utils         |   98.36 |    89.65 |     100 |   98.21 |                   
+  formatacao.ts    |    90.9 |     62.5 |     100 |   88.88 | 21                
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 95.49% ( 1080/1131 )
+Branches     : 90.48% ( 780/862 )
+Functions    : 94.48% ( 411/435 )
+Lines        : 96.26% ( 980/1018 )
+================================================================================
+
+------------------------------------------------------------------------------
+Resultado: APROVADO (código de saída 0)
+Testes:    194 aprovados (de 194)
+Cobertura: linhas 96,3%, instruções 95,5%, funções 94,5%, ramificações 90,5%
+Duração:   41 s
+Relatórios: html/index.html, cobertura/index.html
+------------------------------------------------------------------------------

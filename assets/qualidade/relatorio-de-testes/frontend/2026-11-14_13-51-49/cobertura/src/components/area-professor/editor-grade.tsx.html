@@ -1,0 +1,769 @@
+
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <title>Cobertura do código — src/components/area-professor/editor-grade.tsx</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="../../../aulacerta.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<header class="ac-topo"><div class="ac-conteudo">
+  <a class="ac-marca" href="../../../../../../index.html" aria-label="Todas as execuções"><svg viewBox="0 0 64 44" class="logo" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9v29c9-1.5 17 .5 23 5V13C22 8.5 13.5 7 5 9Z" stroke="#1b3a64" stroke-width="3.4"/><path d="M10 16c4.5 0 8.5 1 12.5 3M10 22c4.5 0 8.5 1 12.5 3M10 28c4.5 0 8.5 1 12.5 3" stroke="#1b3a64" stroke-width="2.6"/><circle cx="42" cy="20" r="12.5" stroke="#1fc58e" stroke-width="3.4"/><path d="M42 13.5v7.5h5.5M39 4h6" stroke="#1fc58e" stroke-width="3.2"/><path d="M34 29l7 7 19-21" stroke="#24a8d8" stroke-width="5.2"/></svg><span class="nome">Aula<b>Certa</b></span><small>Cobertura do código</small></a>
+  <nav aria-label="Navegação dos relatórios"><a href="../../../../html/index.html">← Testes desta execução</a><a href="../../../index.html">Todos os arquivos</a><a href="../../../../../../index.html">Todas as execuções</a></nav>
+</div></header>
+<div class='wrapper'>
+    <div class='pad1'>
+        
+        
+
+        <h1><a href="../../../index.html">Todos os arquivos</a> / <a href="index.html">src/components/area-professor</a> editor-grade.tsx</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">97.29% </span>
+                <span class="quiet">Instruções</span>
+                <span class='fraction'>72/74</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">86.66% </span>
+                <span class="quiet">Ramificações</span>
+                <span class='fraction'>26/30</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">94.73% </span>
+                <span class="quiet">Funções</span>
+                <span class='fraction'>36/38</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Linhas</span>
+                <span class='fraction'>57/57</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Tecle <em>n</em> ou <em>j</em> para ir ao próximo trecho sem cobertura, e <em>b</em>, <em>p</em> ou <em>k</em> para o anterior.
+        </p>
+        <p class="ac-legenda"><span><span class="ac-amostra coberta"></span>executado pelos testes</span><span><span class="ac-amostra descoberta"></span>não executado</span><span><span class="ac-amostra vezes">3x</span>quantas vezes a linha rodou</span><span><span class="ac-amostra ramo">I</span><span class="ac-amostra ramo">E</span>caminho do if/else que nenhum teste percorreu</span></p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filtrar:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">67x</span>
+<span class="cline-any cline-yes">67x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">368x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">191x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">184x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1288x</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">184x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">184x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useId, useState } from 'react';
+import { Plus, Trash2 } from 'lucide-react';
+import { useSalvarGrade } from '../../hooks/use-area-professor';
+import { mensagemDeErro } from '../../services/api';
+import type { FaixaHoraria } from '../../services/area-professor';
+import { AlertaErro, BotaoEnviar } from '../layout-autenticacao';
+import { DIAS, minutos, validarGrade } from './regras';
+&nbsp;
+const DIAS_UTEIS = [1, 2, 3, 4, 5];
+const MAXIMO_DE_FAIXAS = 50;
+const DURACAO_DA_AULA_MINUTOS = 60;
+&nbsp;
+interface FaixaEditavel extends FaixaHoraria {
+  chave: string;
+}
+&nbsp;
+let contador = 0;
+function novaChave(): string {
+  contador += 1;
+  return `faixa-${contador}`;
+}
+&nbsp;
+function paraHora(totalMinutos: number): string {
+  const limitado = Math.min(totalMinutos, 23 * 60 + 59);
+  return `${String(Math.floor(limitado / 60)).padStart(2, '0')}:${String(limitado % 60).padStart(2, '0')}`;
+}
+&nbsp;
+/** Quantas aulas de 1 hora cabem na faixa (a API divide as faixas em blocos de 1 hora). */
+function aulasNaFaixa(faixa: FaixaHoraria): number {
+  return Math.max(0, Math.floor((minutos(faixa.horaFim) - minutos(faixa.horaInicio)) / DURACAO_DA_AULA_MINUTOS));
+}
+&nbsp;
+function comChave(faixas: FaixaHoraria[]): FaixaEditavel[] {
+  return faixas.map((faixa) =&gt; ({ ...faixa, chave: novaChave() }));
+}
+&nbsp;
+function semChave(faixas: FaixaEditavel[]): FaixaHoraria[] {
+  return faixas.map(({ diaSemana, horaInicio, horaFim }) =&gt; ({ diaSemana, horaInicio, horaFim }));
+}
+&nbsp;
+/** RF05: grade semanal com uma ou mais faixas por dia. */
+export function EditorGrade({ grade, aoSalvar }: { grade: FaixaHoraria[]; aoSalvar: (mensagem: string) =&gt; void }) {
+  const salvar = useSalvarGrade();
+  const [faixas, setFaixas] = useState&lt;FaixaEditavel[]&gt;(() =&gt; comChave(grade));
+  const [erros, setErros] = useState&lt;Map&lt;number, string&gt;&gt;(new Map());
+  const [erroGeral, setErroGeral] = useState&lt;string | null&gt;(null);
+  const idDica = useId();
+&nbsp;
+  const alterada = JSON.stringify(semChave(faixas)) !== JSON.stringify(grade);
+  const totalDeAulas = faixas.reduce((soma, faixa) =&gt; soma + aulasNaFaixa(faixa), 0);
+&nbsp;
+  function atualizar(chave: string, campo: 'horaInicio' | 'horaFim', valor: string) {
+    setFaixas((atuais) =&gt; atuais.map((faixa) =&gt; (faixa.chave === chave ? { ...faixa, [campo]: valor } : faixa)));
+  }
+&nbsp;
+  function adicionar(diaSemana: number) {
+    setFaixas((atuais) =&gt; {
+      const doDia = atuais.filter(<span class="fstat-no" title="function not covered" >(f</span>aixa) =&gt; <span class="cstat-no" title="statement not covered" >faixa.diaSemana === diaSemana)</span>;
+      const ultimoFim = doDia.reduce(<span class="fstat-no" title="function not covered" >(m</span>aior, faixa) =&gt; <span class="cstat-no" title="statement not covered" >Math.max(maior, minutos(faixa.horaFim || '00:00')), 0</span>);
+      const inicio = doDia.length === 0 ? 8 * 60 : <span class="branch-1 cbranch-no" title="branch not covered" >ultimoFim;</span>
+      return [
+        ...atuais,
+        { chave: novaChave(), diaSemana, horaInicio: paraHora(inicio), horaFim: paraHora(inicio + 4 * 60) },
+      ];
+    });
+  }
+&nbsp;
+  function remover(chave: string) {
+    setFaixas((atuais) =&gt; atuais.filter((faixa) =&gt; faixa.chave !== chave));
+  }
+&nbsp;
+  /** Repete os horários de segunda nos outros dias úteis (atalho comum para quem tem rotina fixa). */
+  function repetirSegundaNosDiasUteis() {
+    setFaixas((atuais) =&gt; {
+      const segunda = atuais.filter((faixa) =&gt; faixa.diaSemana === 1);
+      const foraDosDiasUteis = atuais.filter((faixa) =&gt; !DIAS_UTEIS.includes(faixa.diaSemana));
+      const copias = DIAS_UTEIS.filter((dia) =&gt; dia !== 1).flatMap((dia) =&gt;
+        segunda.map((faixa) =&gt; ({ ...faixa, diaSemana: dia, chave: novaChave() })),
+      );
+      return [...foraDosDiasUteis, ...segunda, ...copias];
+    });
+  }
+&nbsp;
+  async function enviar() {
+    setErroGeral(null);
+    const encontrados = validarGrade(faixas);
+    setErros(encontrados);
+    if (encontrados.size &gt; 0) return;
+    if (faixas.length &gt; MAXIMO_DE_FAIXAS) {
+      setErroGeral(`Use no máximo ${MAXIMO_DE_FAIXAS} faixas de horário.`);
+      return;
+    }
+    try {
+      const salva = await salvar.mutateAsync(semChave(faixas));
+      setFaixas(comChave(salva));
+      aoSalvar(
+        salva.length &gt; 0
+          ? 'Grade salva. Os novos horários já aparecem para os alunos.'
+          : 'Grade salva sem horários. Os alunos não conseguem pedir aulas até você adicionar horários.',
+      );
+    } catch (erro) {
+      setErroGeral(mensagemDeErro(erro, 'Não foi possível salvar a grade. Tente novamente.'));
+    }
+  }
+&nbsp;
+  const segundaTemHorarios = faixas.some((faixa) =&gt; faixa.diaSemana === 1);
+&nbsp;
+  return (
+    &lt;div&gt;
+      &lt;div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"&gt;
+        &lt;p id={idDica} className="max-w-xl text-sm text-suave"&gt;
+          Informe os períodos em que você dá aula, no horário de Brasília. As aulas têm 1 hora: um período das 8h às 12h
+          gera 4 horários para os alunos escolherem.
+        &lt;/p&gt;
+        &lt;button
+          type="button"
+          onClick={repetirSegundaNosDiasUteis}
+          disabled={!segundaTemHorarios}
+          className="botao-secundario h-10 shrink-0 px-4 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+        &gt;
+          Repetir segunda nos dias úteis
+        &lt;/button&gt;
+      &lt;/div&gt;
+&nbsp;
+      {erroGeral &amp;&amp; (
+        &lt;div className="mt-4"&gt;
+          &lt;AlertaErro&gt;{erroGeral}&lt;/AlertaErro&gt;
+        &lt;/div&gt;
+      )}
+&nbsp;
+      &lt;ul className="mt-6 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white"&gt;
+        {DIAS.map((dia) =&gt; {
+          const doDia = faixas.filter((faixa) =&gt; faixa.diaSemana === dia.valor);
+          const erro = erros.get(dia.valor);
+          const idErro = `erro-dia-${dia.valor}`;
+          return (
+            &lt;li key={dia.valor} className="px-4 py-4"&gt;
+              &lt;div className="flex flex-col gap-3 sm:flex-row sm:items-start"&gt;
+                &lt;div className="sm:w-40 sm:pt-2.5"&gt;
+                  &lt;p className="font-semibold text-tinta"&gt;{dia.nome}&lt;/p&gt;
+                  &lt;p className="text-xs text-suave"&gt;
+                    {doDia.length === 0
+                      ? 'Sem aulas'
+                      : `${doDia.reduce((soma, faixa) =&gt; soma + aulasNaFaixa(faixa), 0)} horários de 1 h`}
+                  &lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div className="flex-1 space-y-2"&gt;
+                  {doDia.map((faixa) =&gt; (
+                    &lt;div key={faixa.chave} className="flex flex-wrap items-center gap-2"&gt;
+                      &lt;label className="sr-only" htmlFor={`${faixa.chave}-inicio`}&gt;
+                        {dia.nome}: início
+                      &lt;/label&gt;
+                      &lt;input
+                        id={`${faixa.chave}-inicio`}
+                        type="time"
+                        value={faixa.horaInicio}
+                        onChange={(evento) =&gt; atualizar(faixa.chave, 'horaInicio', evento.target.value)}
+                        aria-invalid={erro ? true : undefined}
+                        aria-describedby={erro ? idErro : idDica}
+                        className="h-11 rounded-xl border border-slate-300 bg-white px-3 tabular-nums text-tinta focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30"
+                      /&gt;
+                      &lt;span className="text-sm text-suave"&gt;às&lt;/span&gt;
+                      &lt;label className="sr-only" htmlFor={`${faixa.chave}-fim`}&gt;
+                        {dia.nome}: fim
+                      &lt;/label&gt;
+                      &lt;input
+                        id={`${faixa.chave}-fim`}
+                        type="time"
+                        value={faixa.horaFim}
+                        onChange={(evento) =&gt; atualizar(faixa.chave, 'horaFim', evento.target.value)}
+                        aria-invalid={erro ? true : undefined}
+                        aria-describedby={erro ? idErro : idDica}
+                        className="h-11 rounded-xl border border-slate-300 bg-white px-3 tabular-nums text-tinta focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30"
+                      /&gt;
+                      &lt;button
+                        type="button"
+                        onClick={() =&gt; remover(faixa.chave)}
+                        className="foco inline-flex h-11 w-11 items-center justify-center rounded-xl text-suave hover:bg-error/10 hover:text-error"
+                        aria-label={`Remover horário de ${dia.nome} das ${faixa.horaInicio} às ${faixa.horaFim}`}
+                      &gt;
+                        &lt;Trash2 size={18} aria-hidden="true" /&gt;
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  ))}
+                  &lt;button
+                    type="button"
+                    onClick={() =&gt; adicionar(dia.valor)}
+                    className="foco inline-flex h-10 items-center gap-1.5 rounded-lg px-1 text-sm font-bold text-secondary hover:underline"
+                    aria-label={`Adicionar horário na ${dia.nome}`}
+                  &gt;
+                    &lt;Plus size={16} aria-hidden="true" /&gt;
+                    Adicionar horário
+                  &lt;/button&gt;
+                  {erro &amp;&amp; (
+                    &lt;p id={idErro} className="text-sm font-medium text-error"&gt;
+                      {erro}
+                    &lt;/p&gt;
+                  )}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/li&gt;
+          );
+        })}
+      &lt;/ul&gt;
+&nbsp;
+      &lt;div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between"&gt;
+        &lt;p className="text-sm text-suave" aria-live="polite"&gt;
+          {totalDeAulas} {totalDeAulas === 1 ? <span class="branch-0 cbranch-no" title="branch not covered" >'horário' : '</span>horários'} de aula por semana
+          {alterada &amp;&amp; &lt;span className="font-semibold text-amber-800"&gt; · alterações não salvas&lt;/span&gt;}
+        &lt;/p&gt;
+        &lt;div className="sm:w-56"&gt;
+          &lt;form
+            onSubmit={(evento) =&gt; {
+              evento.preventDefault();
+              void enviar();
+            }}
+          &gt;
+            &lt;BotaoEnviar enviando={salvar.isPending} rotulo="Salvar grade" rotuloEnviando="Salvando…" /&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Cobertura gerada pelo
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                em 14/11/2026 13:52:30 (horário de Brasília)
+            </div>
+        <script src="../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
+    </body>
+</html>
+    

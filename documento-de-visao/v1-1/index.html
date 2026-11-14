@@ -1,0 +1,3558 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do AulaCerta, projeto do Grupo Hopper na disciplina Métodos de Desenvolvimento de Software.">
+      
+      
+      
+        <link rel="canonical" href="https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/documento-de-visao/v1-1/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../v1-0/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/identidade/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Versão 1.1 (atual) - AulaCerta | Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documento-de-visao" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="AulaCerta | Documentação" class="md-header__button md-logo" aria-label="AulaCerta | Documentação" data-md-component="logo">
+      
+  <img src="../../assets/identidade/favicon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AulaCerta | Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Versão 1.1 (atual)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Alternar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Alternar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Alternar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Alternar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Documento de Visão
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../documento-de-arquitetura/v1-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Documento de Arquitetura
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../qualidade/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Qualidade
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../atas-reuniao/ata-reuniao-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Atas de Reunião
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AulaCerta | Documentação" class="md-nav__button md-logo" aria-label="AulaCerta | Documentação" data-md-component="logo">
+      
+  <img src="../../assets/identidade/favicon.svg" alt="logo">
+
+    </a>
+    AulaCerta | Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Visão
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documento de Visão
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-visao-geral-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 VISÃO GERAL DO PRODUTO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 VISÃO GERAL DO PRODUTO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-problema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Problema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-declaracao-de-posicao-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Declaração de Posição do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-objetivos-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Objetivos do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-tecnologias-a-serem-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Tecnologias a Serem Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-visao-geral-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 VISÃO GERAL DO PROJETO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 VISÃO GERAL DO PROJETO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Ciclo de vida do projeto de desenvolvimento de software
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-organizacao-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Organização do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-planejamento-das-fases-eou-iteracoes-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Planejamento das Fases e/ou Iterações do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-matriz-de-comunicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Matriz de Comunicação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-gerenciamento-de-riscos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Gerenciamento de Riscos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-criterios-de-replanejamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Critérios de Replanejamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-processo-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 PROCESSO DE DESENVOLVIMENTO DE SOFTWARE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-declaracao-de-escopo-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 DECLARAÇÃO DE ESCOPO DO PROJETO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 DECLARAÇÃO DE ESCOPO DO PROJETO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-perfis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Perfis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Cenários
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-tabela-de-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Tabela de Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-metricas-e-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 MÉTRICAS E MEDIÇÕES
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 MÉTRICAS E MEDIÇÕES">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-gqm-de-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 GQM de medições
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-testes-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 TESTES DE SOFTWARE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 TESTES DE SOFTWARE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-estrategia-de-testes-contendo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Estratégia de testes contendo:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-roteiro-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Roteiro de teste:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-referencias-bibliograficas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 REFERÊNCIAS BIBLIOGRÁFICAS
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v1-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documento de Arquitetura
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-de-arquitetura/v1-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-de-arquitetura/v1-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../qualidade/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qualidade
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Qualidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c01-cadastro-e-autenticacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C01 — Cadastro e Autenticação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c02-perfil-e-disponibilidade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C02 — Perfil e Disponibilidade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c03-busca-e-solicitacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C03 — Busca e Solicitação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c04-confirmacao-ou-recusa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C04 — Confirmação ou Recusa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c05-remarcacao-e-cancelamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C05 — Remarcação e Cancelamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c06-acompanhamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C06 — Acompanhamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/requisitos-nao-funcionais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requisitos Não Funcionais
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-visao-geral-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 VISÃO GERAL DO PRODUTO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 VISÃO GERAL DO PRODUTO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-problema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Problema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-declaracao-de-posicao-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Declaração de Posição do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-objetivos-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Objetivos do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-tecnologias-a-serem-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Tecnologias a Serem Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-visao-geral-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 VISÃO GERAL DO PROJETO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 VISÃO GERAL DO PROJETO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Ciclo de vida do projeto de desenvolvimento de software
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-organizacao-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Organização do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-planejamento-das-fases-eou-iteracoes-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Planejamento das Fases e/ou Iterações do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-matriz-de-comunicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Matriz de Comunicação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-gerenciamento-de-riscos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Gerenciamento de Riscos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-criterios-de-replanejamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Critérios de Replanejamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-processo-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 PROCESSO DE DESENVOLVIMENTO DE SOFTWARE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-declaracao-de-escopo-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 DECLARAÇÃO DE ESCOPO DO PROJETO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 DECLARAÇÃO DE ESCOPO DO PROJETO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-perfis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Perfis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Cenários
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-tabela-de-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Tabela de Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-metricas-e-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 MÉTRICAS E MEDIÇÕES
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 MÉTRICAS E MEDIÇÕES">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-gqm-de-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 GQM de medições
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-testes-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 TESTES DE SOFTWARE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 TESTES DE SOFTWARE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-estrategia-de-testes-contendo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Estratégia de testes contendo:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-roteiro-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Roteiro de teste:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-referencias-bibliograficas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 REFERÊNCIAS BIBLIOGRÁFICAS
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Início
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Documento de Visão
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="documento-de-visao">Documento de Visão</h1>
+<p><a class="md-button" href="../../assets/pdf/T02_Hopper_Documento_de_Visao_1.1.pdf">Baixar em PDF</a> Documento original da versão 1.1, nas normas ABNT.</p>
+<p>AulaCerta – Grupo Hopper</p>
+<p>Versão 1.1</p>
+<p><strong>Tabela - Integrantes do Grupo:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Matrícula</th>
+<th>Nome</th>
+<th>Função (responsabilidade)</th>
+<th>Pontos de participação na elaboração</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>232036401</strong></td>
+<td>Pedro França de Lima</td>
+<td>Scrum Master, Product Owner e Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>251037617</strong></td>
+<td>Matheus Ferraz de Queiroz</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>251014793</strong></td>
+<td>Pedro Henrique Caldas Alves</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>251037125</strong></td>
+<td>Juliana Pereira de Rocha</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>251016724</strong></td>
+<td>Yasmim Ayres dos Santos Guedes</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>251019780</strong></td>
+<td>Daniel Valle Rodrigues Maia</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>251039513</strong></td>
+<td>Felipe Lima Sant’Ana</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>242005418</strong></td>
+<td>Pedro Henrique Rodrigues Pereira</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td><strong>Total de pontos</strong></td>
+<td></td>
+<td></td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Histórico de Revisões</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Data</strong></th>
+<th><strong>Versão</strong></th>
+<th><strong>Descrição</strong></th>
+<th><strong>Autor</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>30/09/2026</strong></td>
+<td>1.0</td>
+<td>Versão inicial: visão do produto e do projeto, processo, escopo (backlog), métricas e testes.</td>
+<td>Equipe</td>
+</tr>
+<tr>
+<td><strong>14/11/2026</strong></td>
+<td>1.1</td>
+<td>Revisão após a avaliação do documento e o ponto de controle: TDD, teste de usabilidade (CT11, M1 a M3) e RNF01, RNF04 e RNF05 retirados, com a experiência do usuário mantida como diretriz de projeto; teste de aceitação substituído pela validação dos critérios de aceite pelo P.O.; Figura 2 substituída pelo ciclo de vida Scrum + XP; marcos com datas no Quadro 4 e percentuais atualizados; critério explícito de exposição dos riscos, com recálculo do Quadro 6 e novo risco R09 (planos gratuitos); métricas de negócio (G3: MN1 e MN2); RF20 (anotações), RF21 (avaliação) e RF22 (administração, cenário C07) retirados do escopo do semestre; ferramentas de teste e roteiro de testes atualizados conforme o código (Vitest, Supertest, React Testing Library e Playwright), com o registro das execuções no Quadro 21; hospedagem do front-end e da API no Render, no lugar da Vercel (Quadro 2).</td>
+<td>Equipe</td>
+</tr>
+</tbody>
+</table>
+<p>Este documento registra a visão do produto AulaCerta e do projeto que o desenvolve, no contexto da disciplina FGA0312 – Métodos de Desenvolvimento de Software (UnB/FCTE, 2026/2). Ele reúne o problema tratado, a solução proposta, a organização e o planejamento do projeto, o processo de desenvolvimento, o escopo do produto, as métricas e a estratégia de testes.</p>
+<h2 id="1-visao-geral-do-produto">1 VISÃO GERAL DO PRODUTO</h2>
+<h3 id="11-problema">1.1 Problema</h3>
+<p><strong>Contexto</strong></p>
+<p>O problema proposto pela disciplina trata da coordenação entre clientes e prestadores de serviços em geral. A equipe escolheu as aulas particulares como recorte desse problema para desenvolver uma solução viável no prazo do semestre: alunos e professores precisam coordenar horários, pedidos, confirmações e acompanhamento de aulas, permitindo tratar as quatro etapas em um contexto específico. Esse recorte não pretende abranger todos os tipos de serviço. As aulas particulares, tratadas na literatura acadêmica como parte da chamada "educação-sombra" (BRAY, 2009), são uma atividade muito difundida no Brasil: apenas na categoria de reforço escolar, uma única plataforma lista mais de 158 mil professores no país (SUPERPROF, 2026b). Elas atendem desde alunos do ensino fundamental até universitários e candidatos a vestibulares, ao ENEM e a concursos. Do lado da oferta estão, em sua maioria, professores autônomos: estudantes universitários, professores da rede de ensino que complementam a renda e profissionais que ensinam uma habilidade específica, como idiomas ou música. Quando o aluno é menor de idade, os responsáveis também participam da contratação e do acompanhamento.</p>
+<p>Na observação da equipe, é comum que a contratação aconteça por indicação e redes sociais e que a coordenação das aulas seja feita por canais informais: mensagens de WhatsApp, directs do Instagram, ligações e agendas de papel ou planilhas mantidas pelo próprio professor. O WhatsApp, em particular, é o aplicativo mais presente na tela inicial dos smartphones brasileiros, entre todos os aplicativos, aparecendo em 64,8% deles (MOBILE TIME, 2026). Plataformas especializadas, como o Superprof, ajudam a encontrar um professor, mas não resolvem a coordenação do dia a dia das aulas.</p>
+<p><strong>Problema encontrado</strong></p>
+<p>Alunos e professores enfrentam dificuldades para coordenar a disponibilidade, a solicitação, a confirmação e o acompanhamento das aulas particulares, sobretudo porque essas informações ficam espalhadas por canais dispersos. Cada etapa acontece em um lugar diferente e nenhum dos envolvidos tem a visão completa da situação.</p>
+<p>Para o aluno (ou responsável), isso significa não saber quais professores atendem a matéria e o nível desejados nem quando eles estão livres, não ter certeza se a aula foi confirmada e perder o controle das aulas já realizadas e das próximas. Para o professor, significa responder repetidamente às mesmas perguntas, administrar a agenda de vários alunos por mensagens, lidar com remarcações e cancelamentos frequentes, correr o risco de marcar dois alunos no mesmo horário e perder pedidos no meio das conversas.</p>
+<p>A Figura 1 apresenta o diagrama de Ishikawa (ISHIKAWA, 1986) elaborado pela equipe para organizar as causas desse problema em seis categorias.</p>
+<p><strong>Figura 1 –</strong> Diagrama de Ishikawa (espinha de peixe) do problema</p>
+<p><img alt="Diagrama de Ishikawa" src="../../assets/documento-de-visao/media/image1.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>As três primeiras categorias acompanham as etapas da coordenação. Em Disponibilidade, a agenda do professor não é pública, então o aluno precisa perguntar e esperar uma resposta. Em Solicitação, a causa é o pedido informal e incompleto; a falta de matéria, nível e objetivo da aula, que aparece na figura como item separado, é consequência desse pedido informal, e não uma causa independente. Em Confirmação, o acordo costuma ser um "ok, fechado" ambíguo, e o horário não fica bloqueado, o que gera conflitos e remarcações.</p>
+<p>Em Acompanhamento, não existe histórico das aulas nem lembretes, o que favorece faltas e esquecimentos. A categoria Canais de comunicação reúne a causa transversal: as conversas se espalham por vários aplicativos e as informações se perdem no histórico. Por fim, em Ferramentas existentes, observa-se que as plataformas do setor focam em encontrar o professor; depois do primeiro contato, a combinação continua fora delas.</p>
+<p><strong>Questão de pesquisa:</strong> como facilitar a coordenação entre alunos e professores de aulas particulares quanto à disponibilidade, à solicitação, à confirmação e ao acompanhamento das aulas?</p>
+<p><strong>Solução de software proposta</strong></p>
+<p>A solução proposta é o AulaCerta, uma aplicação web responsiva de reserva de aulas particulares que centraliza as quatro etapas da coordenação em um único fluxo, com o status de cada aula visível para aluno e professor:</p>
+<ul>
+<li>
+<p><strong>Disponibilidade:</strong> o professor publica sua grade de horários livres, as matérias, os níveis e a modalidade de atendimento (online, presencial ou em domicílio), e o aluno vê apenas os horários realmente disponíveis.</p>
+</li>
+<li>
+<p><strong>Solicitação:</strong> o aluno escolhe matéria, nível, modalidade e horário e descreve o objetivo da aula (prova, ENEM, reforço etc.) em um formulário estruturado.</p>
+</li>
+<li>
+<p><strong>Confirmação:</strong> o professor aceita ou recusa o pedido; ao aceitar, o horário é bloqueado automaticamente e o aluno é notificado. Remarcações e cancelamentos também passam pela plataforma, com registro.</p>
+</li>
+<li>
+<p><strong>Acompanhamento:</strong> cada aula tem um status (solicitada, confirmada, remarcada, cancelada, realizada) e fica registrada em um histórico, com lembretes antes do horário marcado.</p>
+</li>
+</ul>
+<p>A experiência do usuário (UX) é uma diretriz de projeto da solução, e não apenas um cuidado estético: a reserva de uma aula precisa ser simples o suficiente para competir com a troca de mensagens, pois, se o fluxo exigir esforço excessivo, há risco de os usuários preferirem os canais dispersos. Por isso, as telas são projetadas com poucos passos, status sempre visível, notificações e layout responsivo, tendo as heurísticas de Nielsen (NIELSEN, 1994) como referência. O projeto não prevê teste de usabilidade com alunos e professores reais; a facilidade de uso percebida por esse público permanece uma hipótese da equipe.</p>
+<p>Espera-se, com isso, reduzir o tempo gasto para marcar e confirmar aulas, eliminar conflitos de horário, diminuir faltas e esquecimentos e dar a alunos, responsáveis e professores uma visão única e confiável das aulas. Assim, problema, causas e solução ficam alinhados: cada categoria do diagrama da Figura 1 é tratada por uma das etapas do fluxo proposto.</p>
+<h3 id="12-declaracao-de-posicao-do-produto">1.2 Declaração de Posição do Produto</h3>
+<p>O AulaCerta é uma aplicação web responsiva para a reserva e a coordenação de aulas particulares. Seus usuários-alvo são, de um lado, alunos (e seus responsáveis) que buscam aulas particulares, geralmente estudantes da educação básica, vestibulandos e universitários, e, de outro, professores autônomos que oferecem essas aulas e precisam organizar a agenda de vários alunos. Para ambos, o produto é importante porque substitui a troca de mensagens em vários canais por um fluxo único e rastreável.</p>
+<p>O principal concorrente pesquisado é o Superprof, plataforma que conecta alunos e professores em mais de mil disciplinas. Nela, porém, o aluno precisa assinar o Passe Aluno para enviar pedidos de aula, e o pagamento das aulas é combinado entre aluno e professor, podendo ocorrer fora da plataforma (SUPERPROF, 2026a). Ou seja, o foco está em encontrar o professor, e boa parte da coordenação continua nos canais informais. O AulaCerta se diferencia por coordenar a aula do início ao fim: agenda, pedido, confirmação, remarcação e histórico no mesmo lugar, sem exigir pagamento prévio para o primeiro contato. O Quadro 1 resume a posição do produto.</p>
+<p><strong>Quadro 1 –</strong> Declaração de posição do produto</p>
+<table>
+<thead>
+<tr>
+<th>Para:</th>
+<th>Alunos (e responsáveis) que buscam aulas particulares e professores autônomos que as oferecem.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Necessidade:</td>
+<td>Coordenar disponibilidade, solicitação, confirmação e acompanhamento das aulas em um único canal, sem depender de conversas espalhadas.</td>
+</tr>
+<tr>
+<td>O AulaCerta:</td>
+<td>é uma aplicação web responsiva de reserva de aulas particulares.</td>
+</tr>
+<tr>
+<td>Que:</td>
+<td>Centraliza agenda, pedidos, confirmações, remarcações e histórico das aulas, com status visível e notificações para aluno e professor.</td>
+</tr>
+<tr>
+<td>Ao contrário:</td>
+<td>Da coordenação por WhatsApp, ligações e redes sociais, em que as informações se perdem, e de plataformas como o Superprof, que focam em encontrar o professor e cobram assinatura para o primeiro contato.</td>
+</tr>
+<tr>
+<td>Nosso produto:</td>
+<td>Coordena a aula do início ao fim, em poucos passos e com foco em UX, sem barreira de pagamento para o primeiro contato.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Em síntese, o Quadro 1 mostra que o valor do produto não está em ampliar a oferta de professores, mas em tornar a coordenação das aulas simples e confiável. Sem uma solução desse tipo, alunos e professores continuam dependendo de mensagens avulsas, com os conflitos de horário, as faltas e o retrabalho descritos na seção 1.1.</p>
+<h3 id="13-objetivos-do-produto">1.3 Objetivos do Produto</h3>
+<p><strong>Objetivo principal:</strong> desenvolver uma aplicação web responsiva que centralize a coordenação de aulas particulares entre alunos e professores, cobrindo disponibilidade, solicitação, confirmação e acompanhamento das aulas, tendo a experiência do usuário como diretriz de projeto.</p>
+<p><strong>Objetivos secundários:</strong></p>
+<ul>
+<li>
+<p>permitir que o professor mantenha um perfil com matérias, níveis, modalidades e valor da hora-aula, e publique sua disponibilidade semanal;</p>
+</li>
+<li>
+<p>permitir que o aluno encontre professores por matéria, nível e modalidade e solicite uma aula informando o objetivo;</p>
+</li>
+<li>
+<p>garantir a confirmação ou recusa dos pedidos com bloqueio automático do horário, impedindo conflitos de agenda;</p>
+</li>
+<li>
+<p>registrar remarcações e cancelamentos na própria plataforma;</p>
+</li>
+<li>
+<p>oferecer acompanhamento por status, histórico de aulas, notificações e lembretes;</p>
+</li>
+<li>
+<p>medir se os pedidos de aula se convertem em aulas confirmadas e em quanto tempo isso acontece (métricas de negócio MN1 e MN2).</p>
+</li>
+</ul>
+<p>O objetivo principal responde diretamente à questão de pesquisa da seção 1.1. Os objetivos intermediários correspondem às etapas do fluxo de coordenação e, portanto, às categorias do diagrama de Ishikawa. O último objetivo liga o produto ao negócio: ele é acompanhado pelas métricas de negócio da seção 5.</p>
+<h3 id="14-tecnologias-a-serem-utilizadas">1.4 Tecnologias a Serem Utilizadas</h3>
+<p>A escolha das tecnologias considerou três critérios: aderência ao problema (uma aplicação web responsiva, acessível pelo celular), familiaridade ou facilidade de aprendizado pela equipe no prazo do semestre e disponibilidade de ferramentas gratuitas. O Quadro 2 apresenta as tecnologias adotadas. O detalhamento de como elas se organizam na solução é tratado no Documento de Arquitetura.</p>
+<p><strong>Quadro 2 –</strong> Tecnologias adotadas no projeto</p>
+<table>
+<thead>
+<tr>
+<th><strong>Categoria</strong></th>
+<th><strong>Tecnologia</strong></th>
+<th><strong>Justificativa</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Front-end</td>
+<td>React com TypeScript (Vite)</td>
+<td>Componentização da interface, tipagem que reduz defeitos e ampla documentação.</td>
+</tr>
+<tr>
+<td>Estilo e interface</td>
+<td>Tailwind CSS</td>
+<td>Agiliza a construção de telas responsivas e consistentes.</td>
+</tr>
+<tr>
+<td>Back-end</td>
+<td>Node.js com Express (TypeScript)</td>
+<td>Mesma linguagem no front-end e no back-end, o que facilita a colaboração na equipe.</td>
+</tr>
+<tr>
+<td>Banco de dados e acesso</td>
+<td>PostgreSQL com Prisma ORM</td>
+<td>Banco relacional adequado a agendas e reservas; o ORM simplifica migrações e consultas.</td>
+</tr>
+<tr>
+<td>Autenticação e segurança</td>
+<td>JWT e bcrypt</td>
+<td>Sessões sem estado e armazenamento seguro de senhas.</td>
+</tr>
+<tr>
+<td>Notificações</td>
+<td>Notificações na aplicação; e-mail apenas para recuperação de senha, pela API HTTP do Brevo</td>
+<td>Avisos de solicitação, confirmação e recusa exibidos na aplicação; link de redefinição de senha por e-mail (RF03). A API HTTP é usada porque a hospedagem gratuita bloqueia as portas SMTP (risco R09).</td>
+</tr>
+<tr>
+<td>Testes</td>
+<td>Vitest e Supertest (back-end); Vitest e React Testing Library (front-end); Playwright (sistema)</td>
+<td>Cobrem os níveis unitário, de integração e de sistema (ponta a ponta). Front-end e back-end usam a mesma ferramenta de testes, o Vitest.</td>
+</tr>
+<tr>
+<td>UX</td>
+<td>Heurísticas de Nielsen como diretriz de projeto</td>
+<td>Orientam o projeto das telas e dos fluxos; não há teste de usabilidade previsto.</td>
+</tr>
+<tr>
+<td>Versionamento e gestão</td>
+<td>Git, GitHub e GitHub Projects</td>
+<td>Repositório, revisão por pull requests e quadro Kanban das sprints.</td>
+</tr>
+<tr>
+<td>Ambiente e implantação</td>
+<td>Docker; hospedagem gratuita no Render (front-end e API) e no Neon (banco de dados)</td>
+<td>Ambiente padronizado para a equipe e publicação da versão do software.</td>
+</tr>
+<tr>
+<td>Métodos e técnicas</td>
+<td>Scrum, XP, histórias de usuário, MoSCoW, heurísticas de Nielsen</td>
+<td>Base do processo descrito nas seções 2.1 e 3.</td>
+</tr>
+<tr>
+<td>Comunicação</td>
+<td>Microsoft Teams e WhatsApp</td>
+<td>Canais já usados pela turma, pelo professor e pelos monitores.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h2 id="2-visao-geral-do-projeto">2 VISÃO GERAL DO PROJETO</h2>
+<h3 id="21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software">2.1 Ciclo de vida do projeto de desenvolvimento de software</h3>
+<p>O projeto segue um ciclo de vida iterativo e incremental que combina os eventos e artefatos do Scrum com práticas do XP, apresentado na Figura 2. O projeto tem três fases: concepção (Sprints 1 e 2), desenvolvimento iterativo e incremental (Sprints 3 a 5) e estabilização antes da apresentação. Na fase de desenvolvimento, cada sprint repete o mesmo ciclo: o P.O. prioriza o backlog do produto, a equipe planeja a sprint e forma o backlog da sprint, desenvolve com as práticas do XP e acompanhamento diário, e entrega um incremento, que o P.O. valida na revisão; a retrospectiva gera melhorias para a sprint seguinte, e os itens não aceitos voltam ao backlog do produto.</p>
+<p><strong>Figura 2 –</strong> Ciclo de vida Scrum + XP do projeto AulaCerta</p>
+<p><img alt="Ciclo de vida Scrum + XP do projeto" src="../../assets/documento-de-visao/media/ciclo-de-vida-scrum-xp.svg" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026), com base nos ciclos do Scrum e do XP apresentados na disciplina.</p>
+<p>O ciclo da Figura 2 é instanciado para o AulaCerta da seguinte forma:</p>
+<p><strong>Metodologia:</strong> ágil. O semestre oferece cerca de sete semanas de desenvolvimento, e o backlog poderá ser refinado conforme a equipe examina os incrementos. Uma abordagem ágil permite entregar valor cedo, verificar internamente os fluxos e ajustar o rumo a cada ciclo (PRESSMAN; MAXIM, 2016).</p>
+<p><strong>Processo:</strong> Scrum combinado com práticas do XP, em um ciclo de vida iterativo e incremental (SCHWABER; SUTHERLAND, 2020; BECK, 2004). As duas primeiras sprints seguem o calendário da disciplina e são dedicadas à concepção (Documentos de Visão e de Arquitetura). Após a reunião de 02/10/2026, que definiu a arquitetura, e a entrega do respectivo documento em 07/10/2026, o desenvolvimento começou em 08/10/2026. As três sprints seguintes duram de uma semana e meia a três semanas e terminam com um incremento funcionando.</p>
+<p><strong>Procedimentos:</strong> planejamento, daily assíncrona, revisão e retrospectiva de cada sprint; toda alteração de código entra por pull request revisado; as histórias só entram na sprint quando atendem à Definição de Preparado (DoR) e só são encerradas quando atendem à Definição de Pronto (DoD), descritas na seção 3.</p>
+<p><strong>Métodos:</strong> histórias de usuário (COHN, 2004), priorização MoSCoW, estimativa por planning poker, testes automatizados unitários e de integração escritos junto com o código das regras de agendamento, programação em pares nas tarefas críticas e heurísticas de Nielsen (NIELSEN, 1994) como diretriz de projeto da interface.</p>
+<p><strong>Ferramentas:</strong> GitHub e GitHub Projects para código e gestão, VS Code como ambiente de desenvolvimento e Microsoft Teams para comunicação, conforme o Quadro 2.</p>
+<h3 id="22-organizacao-do-projeto">2.2 Organização do Projeto</h3>
+<p>O Quadro 3 apresenta a divisão de atribuições e responsabilidades entre os membros do projeto, sem qualquer relação de hierarquia ou grau de importância: todos os integrantes são igualmente responsáveis pelo sucesso do projeto. Seguindo o princípio de propriedade coletiva do código do XP, todos os membros também desenvolvem; o papel indica a responsabilidade principal de cada um. No Quadro 3, os integrantes são identificados por nome e sobrenome; seus nomes completos e matrículas constam na tabela de integrantes do grupo.</p>
+<p><strong>Quadro 3 –</strong> Organização do projeto: papéis e responsabilidades</p>
+<table>
+<thead>
+<tr>
+<th><strong>Papel</strong></th>
+<th><strong>Atribuições</strong></th>
+<th><strong>Responsável</strong></th>
+<th><strong>Participantes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scrum Master</td>
+<td>Facilitar as cerimônias, remover impedimentos, manter o quadro do GitHub Projects, as atas e o relatório de situação, acompanhar os riscos.</td>
+<td>Pedro França</td>
+<td>Toda a equipe</td>
+</tr>
+<tr>
+<td>Product Owner (P.O.)</td>
+<td>Manter e priorizar o backlog, escrever e refinar histórias e critérios de aceite, validar as entregas nas revisões de sprint.</td>
+<td>Pedro França</td>
+<td>Toda a equipe</td>
+</tr>
+<tr>
+<td>Designer UX/UI</td>
+<td>Aplicar as diretrizes de UX aos fluxos e revisar a consistência visual da interface.</td>
+<td>Pedro Caldas</td>
+<td>Felipe Lima</td>
+</tr>
+<tr>
+<td>Desenvolvedor front-end</td>
+<td>Implementar as telas responsivas em React, integrá-las à API e escrever testes de componentes.</td>
+<td>Pedro Caldas</td>
+<td>Felipe Lima</td>
+</tr>
+<tr>
+<td>Desenvolvedor back-end</td>
+<td>Modelar os dados, implementar a API e as regras de agendamento, escrever testes unitários e de integração, cuidar da implantação.</td>
+<td>Matheus Ferraz</td>
+<td>Daniel Valle</td>
+</tr>
+<tr>
+<td>Desenvolvedor de banco de dados</td>
+<td>Modelar o banco relacional, manter migrações, consultas e integridade dos dados de agenda e reservas.</td>
+<td>Juliana Pereira</td>
+<td>Yasmim Ayres</td>
+</tr>
+<tr>
+<td>Analista de Qualidade</td>
+<td>Definir a estratégia e o roteiro de testes, revisar pull requests, verificar a DoD, registrar defeitos e coletar as métricas.</td>
+<td>Pedro Rodrigues</td>
+<td>Yasmim Ayres</td>
+</tr>
+<tr>
+<td>Cliente potencial</td>
+<td>Os clientes potenciais do AulaCerta são alunos, responsáveis e professores particulares. Neste projeto acadêmico, o P.O. da equipe representa suas necessidades como hipóteses; o professor e os monitores acompanham e avaliam o projeto.</td>
+<td>Pedro França (P.O.; representação interna)</td>
+<td>Equipe do projeto</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="23-planejamento-das-fases-eou-iteracoes-do-projeto">2.3 Planejamento das Fases e/ou Iterações do Projeto</h3>
+<p>O Quadro 4 registra as fases e iterações do projeto, com datas alinhadas ao cronograma da disciplina e à reunião de definição da arquitetura em 02/10/2026: entrega do Documento de Visão em 30/09/2026, Documento de Arquitetura em 07/10/2026 e início do desenvolvimento em 08/10/2026. Os eventos críticos aparecem no próprio quadro como marcos, com suas datas: a entrega da release no ponto de controle (11/11/2026), a inspeção (16/11/2026), os reparos da inspeção (16 a 26/11/2026) e a apresentação do software rodando (30/11/2026). A Sprint 5 termina em 26/11/2026; o período de 27 a 29/11/2026 fica reservado para estabilização, ensaio e contingências antes da apresentação, sem previsão de novas funcionalidades. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%, e essa atualização é auditada pelos monitores no repositório da equipe.</p>
+<p><strong>Quadro 4 –</strong> Planejamento das sprints do projeto</p>
+<table>
+<thead>
+<tr>
+<th><strong>Sprint</strong></th>
+<th><strong>Produto (Entrega)</strong></th>
+<th><strong>Data Início</strong></th>
+<th><strong>Data Fim</strong></th>
+<th style="text-align: center;"><strong>Entregável(eis)</strong></th>
+<th><strong>Responsáveis</strong></th>
+<th><strong>% conclusão</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sprint 1</td>
+<td>Definição do produto</td>
+<td>16/09/2026</td>
+<td>30/09/2026</td>
+<td style="text-align: center;">DV, BKL</td>
+<td>P.O., Scrum Master, UX e equipe</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Sprint 2</td>
+<td>Definição e documentação da arquitetura</td>
+<td>01/10/2026</td>
+<td>07/10/2026</td>
+<td style="text-align: center;">DA</td>
+<td>Desenvolvedores, UX e Scrum Master</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Sprint 3</td>
+<td>Preparação do ambiente; cadastro, autenticação, perfil e disponibilidade (C01, C02)</td>
+<td>08/10/2026</td>
+<td>25/10/2026</td>
+<td style="text-align: center;">AMB, APR, INC1</td>
+<td>Desenvolvedores, QA e P.O.</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Sprint 4</td>
+<td>Busca, solicitação e confirmação de aulas (C03, C04)</td>
+<td>26/10/2026</td>
+<td>15/11/2026</td>
+<td style="text-align: center;">INC2, PC</td>
+<td>Desenvolvedores, QA e P.O.</td>
+<td>100%</td>
+</tr>
+<tr>
+<td><strong>Marco</strong></td>
+<td><strong>Ponto de controle: entrega e apresentação da release (INC2)</strong></td>
+<td><strong>11/11/2026</strong></td>
+<td><strong>11/11/2026</strong></td>
+<td style="text-align: center;"><strong>PC</strong></td>
+<td>Toda a equipe</td>
+<td>100%</td>
+</tr>
+<tr>
+<td><strong>Marco</strong></td>
+<td><strong>Inspeção do produto</strong></td>
+<td><strong>16/11/2026</strong></td>
+<td><strong>16/11/2026</strong></td>
+<td style="text-align: center;">—</td>
+<td>Professor, monitores e equipe</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Marco</strong></td>
+<td><strong>Reparos da inspeção, dentro da Sprint 5</strong></td>
+<td><strong>16/11/2026</strong></td>
+<td><strong>26/11/2026</strong></td>
+<td style="text-align: center;"><strong>RINSP</strong></td>
+<td>Toda a equipe</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>Sprint 5</td>
+<td>Remarcação, cancelamento e acompanhamento (C05, C06)</td>
+<td>16/11/2026</td>
+<td>26/11/2026</td>
+<td style="text-align: center;">INC3, RT</td>
+<td>Toda a equipe</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Estabilização</td>
+<td>Correções finais, ensaio e contingências, sem novas funcionalidades</td>
+<td>27/11/2026</td>
+<td>29/11/2026</td>
+<td style="text-align: center;">—</td>
+<td>Toda a equipe</td>
+<td>0%</td>
+</tr>
+<tr>
+<td><strong>Marco</strong></td>
+<td><strong>Apresentação com o software rodando</strong></td>
+<td><strong>30/11/2026</strong></td>
+<td><strong>30/11/2026</strong></td>
+<td style="text-align: center;"><strong>APF</strong></td>
+<td>Toda a equipe</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Situação em 14/11/2026, conferida no código do repositório: as Sprints 1 a 4 estão concluídas, incluindo RF10 (aulas recorrentes) e RF13 (notificações na aplicação) no back-end e no front-end. Na Sprint 5, o RF17 está parcial (o selo de status aparece nas aulas, mas nenhuma aula passa sozinha a "realizada") e o RF18 também (a lista de aulas tem a aba Histórico, ainda sem filtros); os demais requisitos da Sprint 5 (RF15, RF16 e RF19) não foram iniciados.</p>
+<p><strong>Legenda dos entregáveis (aliases):</strong></p>
+<ul>
+<li>
+<p><strong>DV:</strong> Documento de Visão do Produto e do Projeto (este documento).</p>
+</li>
+<li>
+<p><strong>BKL:</strong> backlog inicial priorizado, registrado no GitHub Projects.</p>
+</li>
+<li>
+<p><strong>DA:</strong> Documento de Arquitetura.</p>
+</li>
+<li>
+<p><strong>AMB:</strong> repositório e ambientes configurados.</p>
+</li>
+<li>
+<p><strong>APR:</strong> apresentações do DV (14/10/2026) e do DA (19/10/2026).</p>
+</li>
+<li>
+<p><strong>INC1, INC2, INC3:</strong> incrementos de software funcionando, integrados na branch developer ao fim de cada sprint; a versão estável é publicada na branch main antes da apresentação final.</p>
+</li>
+<li>
+<p><strong>PC:</strong> entrega e apresentação da release no ponto de controle de 11/11/2026.</p>
+</li>
+<li>
+<p><strong>RINSP:</strong> correção dos defeitos apontados na inspeção de 16/11/2026, feita durante a Sprint 5.</p>
+</li>
+<li>
+<p><strong>RT:</strong> relatório de testes, com o roteiro de previsto x realizado (Quadro 21).</p>
+</li>
+<li>
+<p><strong>APF:</strong> apresentação da equipe com o software rodando em 30/11/2026.</p>
+</li>
+</ul>
+<h3 id="24-matriz-de-comunicacao">2.4 Matriz de Comunicação</h3>
+<p>O Quadro 5 descreve a estratégia de comunicação adotada para monitorar o progresso do projeto: as reuniões previstas, sua periodicidade, os envolvidos e os produtos gerados. As atas e os relatórios de situação ficam na pasta de documentação do repositório.</p>
+<p><strong>Quadro 5 –</strong> Matriz de comunicação</p>
+<table>
+<thead>
+<tr>
+<th><strong>Descrição</strong></th>
+<th><strong>Área / Envolvidos</strong></th>
+<th><strong>Periodicidade</strong></th>
+<th><strong>Produtos gerados</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Daily: andamento das tarefas e impedimentos</td>
+<td>Equipe do projeto</td>
+<td>Dias úteis (assíncrona, no Teams)</td>
+<td>Registro no canal da equipe; quadro atualizado</td>
+</tr>
+<tr>
+<td>Planejamento da sprint</td>
+<td>Equipe e P.O.</td>
+<td>Início de cada sprint</td>
+<td>Backlog da sprint no GitHub Projects</td>
+</tr>
+<tr>
+<td>Acompanhamento das atividades, riscos, compromissos, ações pendentes e indicadores</td>
+<td>Equipe do projeto</td>
+<td>Semanal</td>
+<td>Ata de reunião; relatório de situação do projeto</td>
+</tr>
+<tr>
+<td>Revisão da sprint: demonstração do incremento e validação dos critérios de aceite</td>
+<td>Equipe e P.O.</td>
+<td>Fim de cada sprint</td>
+<td>Incremento validado; ata de revisão</td>
+</tr>
+<tr>
+<td>Retrospectiva</td>
+<td>Equipe do projeto</td>
+<td>Fim de cada sprint</td>
+<td>Lista de ações de melhoria</td>
+</tr>
+<tr>
+<td>Comunicar a situação do projeto</td>
+<td>Equipe, professor e monitor</td>
+<td>Semanal e nos marcos avaliativos</td>
+<td>Relatório de situação; apresentações</td>
+</tr>
+<tr>
+<td>Execução e registro dos testes</td>
+<td>Desenvolvedores e Analista de Qualidade</td>
+<td>Antes de cada pull request e ao fim de cada sprint</td>
+<td>Log e relatório HTML de cada execução; roteiro da seção 6.2 atualizado</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="25-gerenciamento-de-riscos">2.5 Gerenciamento de Riscos</h3>
+<p>O Quadro 6 reúne os riscos identificados no projeto. A exposição é calculada por um critério explícito: probabilidade (P) e impacto (I) recebem pesos de 1 a 3 (baixa ou baixo = 1; média ou médio = 2; alta ou alto = 3), a pontuação é o produto P × I e a exposição segue a faixa da pontuação: de 1 a 2, baixa; de 3 a 4, média; de 6 a 9, alta. Assim, riscos com combinações diferentes podem ter a mesma exposição, mas não a mesma pontuação: R01 (alta × alto = 9) e R04 (média × alto = 6) são ambos de exposição alta, assim como R03 (alta × alto = 9) e R05 (média × alto = 6), e a pontuação indica que R01 e R03 têm prioridade; já R02 (alta × médio = 6) tem exposição alta, enquanto R07 e R08 (média × médio = 4) têm exposição média. Riscos de exposição alta recebem plano de mitigação, para evitar que ocorram, e todos têm plano de contingência, acionado caso ocorram<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. A lista é revisada semanalmente na reunião de acompanhamento, e os riscos são registrados no quadro do projeto no GitHub.</p>
+<p><strong>Quadro 6 –</strong> Riscos do projeto</p>
+<table>
+<thead>
+<tr>
+<th><strong>ID</strong></th>
+<th><strong>Risco</strong></th>
+<th><strong>Prob.</strong></th>
+<th><strong>Impacto</strong></th>
+<th><strong>P × I</strong></th>
+<th><strong>Exposição</strong></th>
+<th><strong>Plano de mitigação</strong></th>
+<th><strong>Plano de contingência</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R01</td>
+<td>Curva de adoção das tecnologias escolhidas (React, Node.js e Prisma)</td>
+<td>Alta</td>
+<td>Alto</td>
+<td>9</td>
+<td>Alta</td>
+<td>Estudos dirigidos e provas de conceito na Sprint 3; programação em pares.</td>
+<td>Reduzir o escopo às histórias Must; simplificar a arquitetura.</td>
+</tr>
+<tr>
+<td>R02</td>
+<td>Indisponibilidade de membros (provas, outras disciplinas)</td>
+<td>Alta</td>
+<td>Médio</td>
+<td>6</td>
+<td>Alta</td>
+<td>Tarefas pequenas e visíveis no quadro; conhecimento compartilhado por revisão de código.</td>
+<td>Redistribuir tarefas e replanejar a sprint.</td>
+</tr>
+<tr>
+<td>R03</td>
+<td>Escopo maior que o tempo de desenvolvimento (cerca de sete semanas)</td>
+<td>Alta</td>
+<td>Alto</td>
+<td>9</td>
+<td>Alta</td>
+<td>Priorização MoSCoW; MVP formado apenas pelas histórias Must.</td>
+<td>Mover itens Should e Could para versões futuras (aplicada: anotações, avaliação e administração ficaram fora do escopo do semestre).</td>
+</tr>
+<tr>
+<td>R04</td>
+<td>Falhas na regra de agendamento (reserva dupla, horários sobrepostos)</td>
+<td>Média</td>
+<td>Alto</td>
+<td>6</td>
+<td>Alta</td>
+<td>Validação no back-end, dentro de transação; testes unitários e de integração dessa regra (CT05).</td>
+<td>Priorizar a correção; exigir confirmação manual até corrigir.</td>
+</tr>
+<tr>
+<td>R05</td>
+<td>Fluxo trabalhoso leva o usuário a preferir o WhatsApp</td>
+<td>Média</td>
+<td>Alto</td>
+<td>6</td>
+<td>Alta</td>
+<td>Diretrizes de UX no projeto das telas (poucos passos, status visível, notificações); validação dos critérios de aceite pelo P.O. em cada revisão.</td>
+<td>Simplificar o fluxo crítico na sprint seguinte.</td>
+</tr>
+<tr>
+<td>R07</td>
+<td>Conflitos de merge ou perda de código</td>
+<td>Média</td>
+<td>Médio</td>
+<td>4</td>
+<td>Média</td>
+<td>Política de branches e pull requests revisados.</td>
+<td>Reverter pelo histórico do Git.</td>
+</tr>
+<tr>
+<td>R08</td>
+<td>Interrupções no calendário acadêmico (feriados, eventos, cancelamentos de aula)</td>
+<td>Média</td>
+<td>Médio</td>
+<td>4</td>
+<td>Média</td>
+<td>Folga no planejamento das sprints.</td>
+<td>Aplicar os critérios de replanejamento (seção 2.6).</td>
+</tr>
+<tr>
+<td>R09</td>
+<td>Limitações dos planos gratuitos de hospedagem e serviços (materializado em 09/11/2026: o Render bloqueia as portas SMTP, e o e-mail de recuperação de senha não saía)</td>
+<td>Alta</td>
+<td>Médio</td>
+<td>6</td>
+<td>Alta</td>
+<td>Conferir os limites do plano gratuito antes de adotar um serviço; preferir serviços acessados por API HTTP.</td>
+<td>Trocar de provedor ou de forma de acesso: o envio de e-mail passou do SMTP para a API HTTP do Brevo.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A numeração dos riscos não é contínua porque riscos retirados em revisões anteriores mantiveram seus números, para rastreabilidade (ver o Histórico de Revisões).</p>
+<h3 id="26-criterios-de-replanejamento">2.6 Critérios de Replanejamento</h3>
+<p>Os critérios do Quadro 7 indicam quando o planejamento deve ser revisto. Muitos deles derivam dos riscos da seção 2.5 e estão alinhados aos respectivos planos de mitigação e contingência. Os critérios são verificados a cada revisão de sprint, e todo replanejamento gera uma nova versão deste documento, registrada no Histórico de Revisões.</p>
+<p><strong>Quadro 7 –</strong> Critérios de replanejamento</p>
+<table>
+<thead>
+<tr>
+<th><strong>Critério</strong></th>
+<th><strong>Gatilho</strong></th>
+<th><strong>Ação de replanejamento</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desempenho da sprint</td>
+<td>Menos de 70% dos pontos planejados concluídos</td>
+<td>Rever a capacidade e reduzir o escopo da sprint seguinte.</td>
+</tr>
+<tr>
+<td>Risco materializado</td>
+<td>Ocorrência de risco de exposição alta (R01 a R05 e R09)</td>
+<td>Acionar a contingência do Quadro 6 e replanejar as sprints afetadas.</td>
+</tr>
+<tr>
+<td>Mudança de prioridade</td>
+<td>O P.O. reprioriza o backlog ou não aceita uma história na revisão da sprint por não atender aos critérios de aceite</td>
+<td>Reordenar o backlog e incluir o ajuste na próxima sprint.</td>
+</tr>
+<tr>
+<td>Qualidade</td>
+<td>Defeitos críticos abertos ao fim da sprint ou apontados na inspeção de 16/11/2026</td>
+<td>Reservar capacidade da sprint seguinte para correções antes de novas histórias.</td>
+</tr>
+<tr>
+<td>Equipe</td>
+<td>Saída ou afastamento prolongado de um integrante</td>
+<td>Redistribuir papéis e tarefas e revisar o escopo.</td>
+</tr>
+<tr>
+<td>Calendário</td>
+<td>Alteração no cronograma da disciplina</td>
+<td>Ajustar datas e entregáveis do Quadro 4.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h2 id="3-processo-de-desenvolvimento-de-software">3 PROCESSO DE DESENVOLVIMENTO DE SOFTWARE</h2>
+<p>O processo adotado é uma adaptação do Scrum com práticas do XP, coerente com o ciclo de vida da seção 2.1. Esta seção não pretende ser prescritiva nem detalhista: ela serve de guia para a equipe. A Figura 3 ilustra o fluxo de trabalho.</p>
+<p><strong>Figura 3 –</strong> Fluxo de trabalho do processo de desenvolvimento</p>
+<p><img alt="Processo de desenvolvimento de software" src="../../assets/documento-de-visao/media/image3.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A cada sprint, o P.O. traz as histórias priorizadas do backlog do produto, e a equipe seleciona as que cabem na sua capacidade, formando o backlog da sprint. Durante a execução, cada desenvolvedor seleciona uma tarefa, cria uma branch, implementa o código com seus testes, executa os testes localmente e abre um pull request, que é revisado; se houver ajustes, a tarefa volta à codificação. Aprovado, o código é integrado à branch developer. Ao fim da sprint, o incremento é demonstrado na revisão e a equipe faz a retrospectiva, cujas melhorias alimentam a sprint seguinte. O Quadro 8 detalha as atividades, com entradas, saídas e responsáveis.</p>
+<p><strong>Quadro 8 –</strong> Atividades do processo de desenvolvimento</p>
+<table>
+<thead>
+<tr>
+<th><strong>Atividade</strong></th>
+<th><strong>Entrada</strong></th>
+<th><strong>Saída</strong></th>
+<th><strong>Responsável (papel)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Refinamento do backlog</td>
+<td>Backlog do produto; itens devolvidos na revisão</td>
+<td>Histórias com critérios de aceite, estimadas e priorizadas</td>
+<td>P.O. (com a equipe)</td>
+</tr>
+<tr>
+<td>Planejamento da sprint</td>
+<td>Histórias que atendem à DoR; capacidade da equipe</td>
+<td>Meta e backlog da sprint</td>
+<td>Equipe, P.O. e Scrum Master</td>
+</tr>
+<tr>
+<td>Planejamento de UX</td>
+<td>Histórias da sprint</td>
+<td>Diretrizes de UX e regras de interação registradas nas histórias</td>
+<td>Designer UX/UI</td>
+</tr>
+<tr>
+<td>Desenvolvimento</td>
+<td>Tarefa (issue) do backlog da sprint</td>
+<td>Código e testes em uma branch própria</td>
+<td>Desenvolvedores</td>
+</tr>
+<tr>
+<td>Revisão de código e QA</td>
+<td>Pull request com os testes executados e aprovados pelo autor</td>
+<td>Pull request aprovado ou ajustes solicitados</td>
+<td>Analista de Qualidade e um desenvolvedor revisor</td>
+</tr>
+<tr>
+<td>Integração</td>
+<td>Pull request aprovado</td>
+<td>Merge em developer; história atende à DoD</td>
+<td>Autor do pull request</td>
+</tr>
+<tr>
+<td>Revisão da sprint</td>
+<td>Incremento integrado em developer</td>
+<td>Incremento aceito pelo P.O. ou itens devolvidos ao backlog</td>
+<td>Equipe e P.O.</td>
+</tr>
+<tr>
+<td>Retrospectiva</td>
+<td>Resultados e métricas da sprint</td>
+<td>Ações de melhoria para a próxima sprint</td>
+<td>Equipe, facilitada pelo Scrum Master</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>Política de branches e commits</strong></p>
+<ul>
+<li>
+<p><strong>main:</strong> versão estável, atualizada a partir de developer somente quando o incremento está pronto para publicação; a versão final é publicada antes da apresentação de 30/11/2026.</p>
+</li>
+<li>
+<p><strong>developer:</strong> branch de integração, que recebe os pull requests aprovados.</p>
+</li>
+<li>
+<p><strong><code>feature/&lt;descricao&gt;</code>:</strong> uma branch por história ou tarefa, criada a partir de developer; correções usam <code>fix/&lt;descricao&gt;</code> e trabalhos só de testes usam <code>test/&lt;descricao&gt;</code>.</p>
+</li>
+<li>
+<p><strong>Commits:</strong> mensagens no padrão Conventional Commits (ex.: feat: solicitar aula), referenciando o requisito ou a issue quando houver (ex.: RF12).</p>
+</li>
+</ul>
+<p><strong>Definição de Preparado (DoR)</strong></p>
+<p>Uma história só entra na sprint quando tem descrição no formato de história de usuário, critérios de aceite, estimativa em pontos e nenhuma dependência bloqueante.</p>
+<p><strong>Definição de Pronto (DoD)</strong></p>
+<p>Uma história só é considerada pronta quando todos os critérios de aceite foram atendidos, o código foi revisado e integrado em developer, os testes automatizados passam, a cobertura das regras de negócio se mantém acima de 70%, a interface funciona em celular e em computador, não há defeitos críticos abertos e o P.O. validou os critérios de aceite da história.</p>
+<h2 id="4-declaracao-de-escopo-do-projeto">4 DECLARAÇÃO DE ESCOPO DO PROJETO</h2>
+<h3 id="41-backlog-do-produto">4.1 Backlog do produto</h3>
+<p>O backlog do produto está organizado por perfis (seção 4.2), cenários (seção 4.3) e requisitos associados a histórias de usuário (seção 4.4). A prioridade de cada requisito segue a técnica MoSCoW, e o Quadro 9 define o que cada classe representa para o AulaCerta. Essa classificação é a visão da equipe e é validada pelo P.O.</p>
+<p><strong>Quadro 9 –</strong> Classes de priorização MoSCoW para o AulaCerta</p>
+<table>
+<thead>
+<tr>
+<th><strong>Classe</strong></th>
+<th><strong>Significado para o produto</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Must (obrigatório)</td>
+<td>Sem o requisito, o fluxo de coordenação (disponibilidade, solicitação, confirmação e acompanhamento) não funciona ou não resolve o problema. Compõe o MVP.</td>
+</tr>
+<tr>
+<td>Should (importante)</td>
+<td>Melhora significativamente a experiência ou reduz esforço, mas existe alternativa manual temporária. Entra se houver capacidade nas sprints.</td>
+</tr>
+<tr>
+<td>Could (desejável)</td>
+<td>Agrega valor, mas não é essencial para validar a solução. Fica para o fim do projeto ou para versões futuras.</td>
+</tr>
+<tr>
+<td>Won't (fora do escopo)</td>
+<td>Não será tratado neste semestre: pagamento dentro da plataforma, videochamada integrada, aplicativo móvel nativo, anotações da aula, avaliação de aulas e administração da plataforma.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Os requisitos foram formulados pela equipe com brainstorming e benchmarking na concepção. O Quadro 10 apresenta essas fontes e a revisão interna feita a cada incremento. As necessidades atribuídas ao público-alvo são hipóteses da equipe.</p>
+<p><strong>Quadro 10 –</strong> Técnicas de elicitação de requisitos</p>
+<table>
+<thead>
+<tr>
+<th><strong>Técnica</strong></th>
+<th><strong>Finalidade</strong></th>
+<th><strong>Responsável</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brainstorming</td>
+<td>Levantar ideias iniciais e causas do problema (base do diagrama de Ishikawa)</td>
+<td>Equipe</td>
+</tr>
+<tr>
+<td>Benchmarking</td>
+<td>Analisar concorrentes como o Superprof e agendas genéricas, identificando lacunas</td>
+<td>Equipe</td>
+</tr>
+<tr>
+<td>Análise de cenários pela equipe</td>
+<td>Identificar hipóteses sobre necessidades de alunos e responsáveis sem pesquisa de campo</td>
+<td>Equipe e P.O.</td>
+</tr>
+<tr>
+<td>Revisão de regras de negócio</td>
+<td>Verificar coerência entre agenda, remarcações, cancelamentos e critérios de aceite</td>
+<td>Equipe e P.O.</td>
+</tr>
+<tr>
+<td>Validação dos critérios de aceite</td>
+<td>Verificar, na revisão de cada sprint, se cada história atende aos seus critérios de aceite e orientar ajustes nas sprints seguintes</td>
+<td>P.O. e equipe</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="42-perfis">4.2 Perfis</h3>
+<p>O Quadro 11 identifica os perfis de acesso ao AulaCerta, suas características e permissões. As limitações de cada perfil são tratadas nas regras de autorização descritas no Documento de Arquitetura.</p>
+<p><strong>Quadro 11 –</strong> Perfis de acesso</p>
+<table>
+<thead>
+<tr>
+<th><strong>#</strong></th>
+<th><strong>Nome do perfil</strong></th>
+<th><strong>Características do perfil</strong></th>
+<th><strong>Permissões de acesso</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Visitante</td>
+<td>Pessoa não autenticada que conhece a plataforma.</td>
+<td>Buscar professores, ver perfis e horários livres, cadastrar-se.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Aluno</td>
+<td>Estudante que busca aulas; inclui o responsável que age em nome de um aluno menor de idade.</td>
+<td>Manter o próprio perfil; solicitar, remarcar e cancelar aulas; acompanhar status e histórico.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Professor</td>
+<td>Profissional autônomo que oferece aulas particulares.</td>
+<td>Manter perfil e disponibilidade; aceitar ou recusar pedidos; remarcar e cancelar aulas; ver histórico.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Administrador</td>
+<td>Membro da equipe responsável pela operação da plataforma.</td>
+<td>Perfil previsto no modelo de dados, sem funções próprias neste semestre: a administração da plataforma está fora do escopo (Quadro 9).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Como os perfis têm características distintas, a equipe usa técnicas de elicitação diferentes para cada um, conforme o Quadro 12.</p>
+<p><strong>Quadro 12 –</strong> Técnicas de elicitação por perfil</p>
+<table>
+<thead>
+<tr>
+<th><strong>Perfil</strong></th>
+<th><strong>Técnica(s)</strong></th>
+<th><strong>Justificativa</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aluno</td>
+<td>Análise interna de cenários e validação dos critérios de aceite</td>
+<td>A equipe examina cenários de reserva do aluno e o P.O. valida os critérios de aceite nas revisões, sem inferir a experiência de usuários reais.</td>
+</tr>
+<tr>
+<td>Professor</td>
+<td>Revisão interna das regras de agenda</td>
+<td>A agenda com vários alunos e remarcações exige cenários e critérios de aceite específicos, revisados pela equipe.</td>
+</tr>
+<tr>
+<td>Administrador</td>
+<td>Brainstorming da equipe</td>
+<td>Perfil interno, cujas necessidades são conhecidas pela própria equipe.</td>
+</tr>
+<tr>
+<td>Visitante</td>
+<td>Benchmarking e análise de cenários</td>
+<td>A equipe compara o fluxo inicial com alternativas disponíveis, sem afirmar avaliação por visitantes reais.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="43-cenarios">4.3 Cenários</h3>
+<p>Os cenários funcionais agrupam os requisitos segundo as etapas do fluxo de coordenação. O Quadro 13 lista os cenários e as sprints em que são desenvolvidos.</p>
+<p><strong>Quadro 13 –</strong> Cenários funcionais</p>
+<table>
+<thead>
+<tr>
+<th><strong>Sistema: AulaCerta – Cenários funcionais</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Numeração do cenário</strong></td>
+<td><strong>Nome do cenário</strong></td>
+<td><strong>Sprints</strong></td>
+</tr>
+<tr>
+<td>C01</td>
+<td>Cadastro e autenticação de usuários</td>
+<td>Sprint 3</td>
+</tr>
+<tr>
+<td>C02</td>
+<td>Perfil e disponibilidade do professor</td>
+<td>Sprint 3</td>
+</tr>
+<tr>
+<td>C03</td>
+<td>Busca de professores e solicitação de aula</td>
+<td>Sprint 4</td>
+</tr>
+<tr>
+<td>C04</td>
+<td>Confirmação ou recusa de aula</td>
+<td>Sprint 4</td>
+</tr>
+<tr>
+<td>C05</td>
+<td>Remarcação e cancelamento de aula</td>
+<td>Sprint 5</td>
+</tr>
+<tr>
+<td>C06</td>
+<td>Acompanhamento das aulas (status, histórico, notificações e lembretes)</td>
+<td>Sprint 5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Os cenários C02 a C06 correspondem diretamente às quatro etapas da questão de pesquisa: disponibilidade (C02), solicitação (C03), confirmação (C04) e acompanhamento (C06); a remarcação e o cancelamento (C05) completam o fluxo. C01 dá suporte ao fluxo principal.</p>
+<h3 id="44-tabela-de-backlog-do-produto">4.4 Tabela de Backlog do produto</h3>
+<p>O Quadro 14 apresenta o backlog do produto. A numeração associa cada requisito ao seu cenário (Quadro 13); os requisitos não funcionais valem para todas as sprints. Ao todo, são 18 requisitos funcionais (13 Must, 4 Should e 1 Could) e 3 requisitos não funcionais, todos comprovados por testes (seção 6). A numeração não é contínua porque requisitos retirados em revisões anteriores mantiveram seus números, para rastreabilidade (ver o Histórico de Revisões).</p>
+<p>Na Sprint 5, os itens Must são cancelar (RF16) e remarcar (RF15), e os itens Should são lembretes (RF19) e histórico com filtros (RF18), além da conclusão do acompanhamento de status (RF17).</p>
+<p><strong>Quadro 14 –</strong> Backlog do produto</p>
+<table>
+<thead>
+<tr>
+<th><strong>Sistema: AulaCerta – Backlog do produto</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Numeração</strong><br> <strong>(Cenário / requisito)</strong></td>
+<td><strong>Sprint</strong></td>
+<td><strong>Nome do requisito</strong></td>
+<td><strong>Tipo de requisito</strong><br> <strong>(Funcional / não funcional)</strong></td>
+<td><strong>Priorização do requisito</strong><br> <strong>Must, Should, Could</strong></td>
+<td><strong>Descrição sucinta do requisito</strong></td>
+<td><strong>Histórias de usuário (U.S.) associadas</strong></td>
+</tr>
+<tr>
+<td>C01-RF01</td>
+<td>Sprint 3</td>
+<td>Cadastrar usuário</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Cadastro como aluno ou professor, com nome, e-mail, senha e telefone.</td>
+<td>US01 – Como visitante, quero me cadastrar como aluno ou professor, para usar a plataforma.</td>
+</tr>
+<tr>
+<td>C01-RF02</td>
+<td>Sprint 3</td>
+<td>Autenticar usuário</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Entrar e sair da plataforma com e-mail e senha.</td>
+<td>US02 – Como usuário, quero entrar com meu e-mail e senha, para acessar minhas aulas.</td>
+</tr>
+<tr>
+<td>C01-RF03</td>
+<td>Sprint 3</td>
+<td>Recuperar senha</td>
+<td>Funcional</td>
+<td>Should</td>
+<td>Redefinir a senha por link enviado ao e-mail.</td>
+<td>US03 – Como usuário, quero recuperar minha senha, para voltar a acessar minha conta.</td>
+</tr>
+<tr>
+<td>C02-RF04</td>
+<td>Sprint 3</td>
+<td>Manter perfil do professor</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Matérias, níveis, modalidades (online, presencial, domicílio), valor da hora-aula e apresentação.</td>
+<td>US04 – Como professor, quero descrever o que ensino e como atendo, para receber pedidos adequados.</td>
+</tr>
+<tr>
+<td>C02-RF05</td>
+<td>Sprint 3</td>
+<td>Publicar disponibilidade</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Grade semanal de horários livres.</td>
+<td>US05 – Como professor, quero publicar meus horários livres, para não precisar informá-los a cada aluno.</td>
+</tr>
+<tr>
+<td>C02-RF06</td>
+<td>Sprint 3</td>
+<td>Bloquear horários pontuais</td>
+<td>Funcional</td>
+<td>Should</td>
+<td>Exceções na grade (feriados, compromissos).</td>
+<td>US06 – Como professor, quero bloquear um horário específico, para evitar pedidos quando não posso atender.</td>
+</tr>
+<tr>
+<td>C03-RF07</td>
+<td>Sprint 4</td>
+<td>Buscar professores</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Filtros por matéria, nível e modalidade.</td>
+<td>US07 – Como aluno, quero buscar professores por matéria, nível e modalidade, para encontrar quem atende minha necessidade.</td>
+</tr>
+<tr>
+<td>C03-RF08</td>
+<td>Sprint 4</td>
+<td>Visualizar perfil e horários livres</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Perfil do professor com os horários realmente disponíveis.</td>
+<td>US08 – Como aluno, quero ver os horários livres do professor, para escolher um sem precisar perguntar.</td>
+</tr>
+<tr>
+<td>C03-RF09</td>
+<td>Sprint 4</td>
+<td>Solicitar aula</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Pedido com matéria, nível, modalidade, horário e objetivo.</td>
+<td>US09 – Como aluno, quero solicitar uma aula informando meu objetivo, para que o professor tenha o que precisa para aceitar.</td>
+</tr>
+<tr>
+<td>C03-RF10</td>
+<td>Sprint 4</td>
+<td>Solicitar aulas recorrentes</td>
+<td>Funcional</td>
+<td>Could</td>
+<td>Pedido de aula semanal em um mesmo horário.</td>
+<td>US10 – Como aluno, quero marcar aulas semanais de uma vez, para não repetir o pedido toda semana.</td>
+</tr>
+<tr>
+<td>C04-RF11</td>
+<td>Sprint 4</td>
+<td>Aceitar ou recusar solicitação</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Decisão do professor sobre cada pedido, com motivo opcional na recusa.</td>
+<td>US11 – Como professor, quero aceitar ou recusar pedidos, para controlar minha agenda.</td>
+</tr>
+<tr>
+<td>C04-RF12</td>
+<td>Sprint 4</td>
+<td>Bloquear horário e impedir conflito</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Ao aceitar, o horário é bloqueado; pedidos e aceites sobrepostos são impedidos.</td>
+<td>US12 – Como professor, quero que um horário aceito fique bloqueado, para nunca marcar dois alunos juntos.</td>
+</tr>
+<tr>
+<td>C04-RF13</td>
+<td>Sprint 4</td>
+<td>Notificar na plataforma</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Aviso ao aluno e ao professor a cada mudança de status.</td>
+<td>US13 – Como aluno, quero ser avisado quando o professor responder, para saber se a aula está confirmada.</td>
+</tr>
+<tr>
+<td>C05-RF15</td>
+<td>Sprint 5</td>
+<td>Remarcar aula</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Proposta de novo horário, que precisa ser aceita pela outra parte.</td>
+<td>US15 – Como aluno ou professor, quero propor um novo horário, para remarcar sem trocar mensagens.</td>
+</tr>
+<tr>
+<td>C05-RF16</td>
+<td>Sprint 5</td>
+<td>Cancelar aula</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Cancelamento com registro do motivo e liberação do horário.</td>
+<td>US16 – Como aluno ou professor, quero cancelar uma aula informando o motivo, para que o horário seja liberado.</td>
+</tr>
+<tr>
+<td>C06-RF17</td>
+<td>Sprint 5</td>
+<td>Acompanhar status da aula</td>
+<td>Funcional</td>
+<td>Must</td>
+<td>Status: solicitada, confirmada, recusada, remarcada, cancelada, realizada.</td>
+<td>US17 – Como aluno, quero ver o status das minhas aulas, para saber sempre em que pé estão.</td>
+</tr>
+<tr>
+<td>C06-RF18</td>
+<td>Sprint 5</td>
+<td>Consultar histórico de aulas</td>
+<td>Funcional</td>
+<td>Should</td>
+<td>Lista das aulas passadas e futuras, com filtros.</td>
+<td>US18 – Como aluno ou responsável, quero consultar o histórico, para acompanhar a frequência das aulas.</td>
+</tr>
+<tr>
+<td>C06-RF19</td>
+<td>Sprint 5</td>
+<td>Enviar lembrete</td>
+<td>Funcional</td>
+<td>Should</td>
+<td>Lembrete exibido na aplicação para as aulas confirmadas nas próximas 24 h.</td>
+<td>US19 – Como aluno ou professor, quero receber um lembrete, para não esquecer a aula.</td>
+</tr>
+<tr>
+<td>RNF02</td>
+<td>Todas</td>
+<td>Responsividade</td>
+<td>Não funcional</td>
+<td>Must</td>
+<td>Funcionar em telas a partir de 360 px de largura e em computadores, sem rolagem horizontal.</td>
+<td>Todas as histórias com interface.</td>
+</tr>
+<tr>
+<td>RNF03</td>
+<td>Todas</td>
+<td>Segurança</td>
+<td>Não funcional</td>
+<td>Must</td>
+<td>Senhas com hash (bcrypt), autenticação por JWT e HTTPS.</td>
+<td>US01, US02, US03</td>
+</tr>
+<tr>
+<td>RNF06</td>
+<td>Todas</td>
+<td>Privacidade</td>
+<td>Não funcional</td>
+<td>Should</td>
+<td>Coleta mínima de dados e consentimento, conforme a LGPD (BRASIL, 2018); contato do outro participante liberado somente após a confirmação da aula.</td>
+<td>US01, US04, US11</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h2 id="5-metricas-e-medicoes">5 MÉTRICAS E MEDIÇÕES</h2>
+<h3 id="51-gqm-de-medicoes">5.1 GQM de medições</h3>
+<p>A equipe adota a abordagem Goal Question Metric (BASILI; CALDIERA; ROMBACH, 1994) para acompanhar o projeto. Foram definidos três objetivos de medição: G1, voltado ao produto e à sua regra central (evitar conflitos de horário); G2, voltado ao acompanhamento e à qualidade do desenvolvimento; e G3, voltado ao negócio, isto é, ao valor que a plataforma gera ao transformar pedidos em aulas confirmadas. O Quadro 15 estrutura esses objetivos.</p>
+<p><strong>Quadro 15 –</strong> Objetivos de medição (GQM)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Elemento</strong></th>
+<th><strong>G1 – Produto</strong></th>
+<th><strong>G2 – Processo</strong></th>
+<th><strong>G3 – Negócio</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analisar</td>
+<td>o produto AulaCerta</td>
+<td>o processo de desenvolvimento</td>
+<td>o uso da plataforma por alunos e professores</td>
+</tr>
+<tr>
+<td>Com o propósito de</td>
+<td>avaliar</td>
+<td>acompanhar e melhorar</td>
+<td>avaliar</td>
+</tr>
+<tr>
+<td>Com respeito à</td>
+<td>prevenção de conflitos de horário</td>
+<td>previsibilidade das entregas e qualidade do código</td>
+<td>conversão dos pedidos em aulas confirmadas e agilidade da confirmação</td>
+</tr>
+<tr>
+<td>Do ponto de vista</td>
+<td>da equipe de desenvolvimento</td>
+<td>da equipe de desenvolvimento</td>
+<td>do P.O., representando o negócio</td>
+</tr>
+<tr>
+<td>No contexto de</td>
+<td>testes automatizados com banco de teste, disciplina MDS 2026/2</td>
+<td>sprints de desenvolvimento, disciplina MDS 2026/2</td>
+<td>dados registrados pela própria plataforma; nesta disciplina, apenas dados de teste e de demonstração</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Cada objetivo se desdobra em questões que as métricas devem responder, conforme o Quadro 16.</p>
+<p><strong>Quadro 16 –</strong> Questões e métricas associadas</p>
+<table>
+<thead>
+<tr>
+<th><strong>Objetivo</strong></th>
+<th><strong>Questão</strong></th>
+<th><strong>Métricas</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G1</td>
+<td>Q1 – A plataforma evita conflitos de horário?</td>
+<td>M4 – Conflitos de agendamento</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>Q2 – A equipe entrega o que planeja em cada sprint?</td>
+<td>M5 – Taxa de conclusão da sprint</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>Q3 – O código tem qualidade adequada?</td>
+<td>M6 – Cobertura de testes; M7 – Densidade de defeitos; M8 – Débito técnico aberto</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>Q4 – Os pedidos de aula se convertem em aulas confirmadas?</td>
+<td>MN1 – Taxa de confirmação dos pedidos</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>Q5 – Quanto tempo o aluno espera pela confirmação?</td>
+<td>MN2 – Tempo até a confirmação</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A numeração das métricas não é contínua porque métricas retiradas em revisões anteriores mantiveram seus números (ver o Histórico de Revisões). O Quadro 17 detalha cada métrica segundo o 5W1H: definição e forma de cálculo, escala e unidade, valor esperado, quem coleta, quando e onde, e como o resultado será analisado. Os valores medidos são registrados a cada sprint na pasta de documentação do repositório.</p>
+<p><strong>Quadro 17 –</strong> Detalhamento das métricas</p>
+<table>
+<thead>
+<tr>
+<th><strong>Métrica</strong></th>
+<th><strong>Definição e cálculo</strong></th>
+<th><strong>Escala / unidade</strong></th>
+<th><strong>Valor esperado</strong></th>
+<th><strong>Coleta (quem, quando, onde)</strong></th>
+<th><strong>Análise</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M4 – Conflitos de agendamento</td>
+<td>Reservas sobrepostas aceitas pelo sistema nos testes. Cálculo: contagem.</td>
+<td>Nº (absoluta)</td>
+<td>0</td>
+<td>QA, a cada execução dos testes de integração e de sistema (CT05, CT06).</td>
+<td>Qualquer ocorrência é defeito crítico.</td>
+</tr>
+<tr>
+<td>M5 – Taxa de conclusão da sprint</td>
+<td>Pontos concluídos / pontos planejados × 100.</td>
+<td>% (razão)</td>
+<td>≥ 80%</td>
+<td>Scrum Master, na revisão de cada sprint, pelo GitHub Projects.</td>
+<td>Abaixo de 70%: aplicar critério de replanejamento.</td>
+</tr>
+<tr>
+<td>M6 – Cobertura de testes</td>
+<td>Linhas das regras de negócio (serviços do back-end) cobertas por testes / total × 100; o front-end é acompanhado pelo mesmo indicador.</td>
+<td>% (razão)</td>
+<td>≥ 70%</td>
+<td>Autor do pull request e QA, antes de cada merge, pelo relatório de cobertura do Vitest (log e HTML de cada execução).</td>
+<td>O comando de cobertura falha abaixo de 70%, o que bloqueia o merge.</td>
+</tr>
+<tr>
+<td>M7 – Densidade de defeitos</td>
+<td>Defeitos encontrados / histórias entregues na sprint.</td>
+<td>Defeitos por história (razão)</td>
+<td>≤ 0,5</td>
+<td>QA, ao fim da sprint, pelos defeitos registrados (issues e páginas de qualidade).</td>
+<td>Tendência de alta: reforçar revisão e testes.</td>
+</tr>
+<tr>
+<td>M8 – Débito técnico aberto</td>
+<td>Issues com rótulo "débito técnico" ainda abertas.</td>
+<td>Nº (absoluta)</td>
+<td>Estável ou em queda</td>
+<td>Scrum Master, semanalmente, pelo GitHub.</td>
+<td>Crescimento contínuo: reservar capacidade para quitar.</td>
+</tr>
+<tr>
+<td>MN1 – Taxa de confirmação dos pedidos</td>
+<td>Pedidos que chegaram ao status "confirmada" / pedidos já decididos (confirmados + recusados) no período × 100; pedidos ainda pendentes ficam fora do cálculo.</td>
+<td>% (razão)</td>
+<td>≥ 50% (hipótese da equipe, a validar com uso real)</td>
+<td>QA, ao fim da Sprint 5 e antes da apresentação, por consulta às tabelas de aulas e de histórico de status no banco de dados da aplicação.</td>
+<td>Com dados de teste, serve apenas para validar o cálculo. Com uso real, valor baixo indica pedidos inadequados ou professores sem disponibilidade real: rever perfil, busca e grade.</td>
+</tr>
+<tr>
+<td>MN2 – Tempo até a confirmação</td>
+<td>Mediana do intervalo entre a criação do pedido e o registro do status "confirmada" no histórico da aula.</td>
+<td>Horas (razão)</td>
+<td>≤ 24 h (hipótese da equipe, a validar com uso real)</td>
+<td>QA, junto com MN1, pela mesma consulta ao banco de dados da aplicação.</td>
+<td>Com dados de teste, serve apenas para validar o cálculo. Com uso real, tempo alto indica pedidos esquecidos: avaliar avisos ao professor sobre pedidos pendentes.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>As métricas de negócio dependem de uso real, que o AulaCerta não terá durante a disciplina, pois não há alunos e professores reais previstos. Por isso, MN1 e MN2 são calculadas com os dados de teste e de demonstração registrados pela plataforma: no ponto de controle (11/11/2026), a equipe as calculou apenas com dados de teste, para validar a forma de cálculo. Esses valores não representam o comportamento de alunos e professores reais; servem de linha de base técnica para uma eventual operação. Os dados necessários já são gravados pela aplicação: a data de criação de cada aula e o histórico de mudanças de status, com data e hora.</p>
+<p>Valores medidos em 14/11/2026, na última execução dos testes automatizados: M4 = 0 (nenhuma reserva sobreposta aceita); M6 = 98,7% das linhas das regras de negócio do back-end e 96,3% das linhas do front-end. Nessa execução passaram 133 testes unitários do back-end, 73 de integração, 194 do front-end e 9 de sistema.</p>
+<h2 id="6-testes-de-software">6 TESTES DE SOFTWARE</h2>
+<h3 id="61-estrategia-de-testes-contendo">6.1 Estratégia de testes contendo:</h3>
+<p><strong>a) Níveis e tipos de testes abordados.</strong> A estratégia combina testes funcionais em três níveis automatizados (SOMMERVILLE, 2018) e a validação dos critérios de aceite pelo P.O., como resume o Quadro 18. Os testes não funcionais se limitam aos três requisitos não funcionais do backlog, e cada um é comprovado por um caso de teste do roteiro: responsividade (RNF02) pelo CT12, segurança (RNF03) pelo CT13 e pelos testes de autenticação (CT02) e privacidade (RNF06) pelo CT14. A regra de conflito de horários (RF12) recebe atenção especial, por ser o núcleo da confiabilidade do produto.</p>
+<p><strong>Quadro 18 –</strong> Níveis e tipos de teste</p>
+<table>
+<thead>
+<tr>
+<th><strong>Nível</strong></th>
+<th><strong>Tipo</strong></th>
+<th><strong>Foco</strong></th>
+<th><strong>Ferramenta</strong></th>
+<th><strong>Responsável</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unitário</td>
+<td>Funcional</td>
+<td>Regras de negócio isoladas, em especial conflito de horários e transições de status, e componentes da interface</td>
+<td>Vitest; React Testing Library no front-end</td>
+<td>Desenvolvedores</td>
+</tr>
+<tr>
+<td>Integração</td>
+<td>Funcional</td>
+<td>API com banco de dados de teste separado: cadastro, autenticação, agenda, solicitação, confirmação e notificações</td>
+<td>Vitest e Supertest</td>
+<td>Desenvolvedores back-end</td>
+</tr>
+<tr>
+<td>Sistema (ponta a ponta)</td>
+<td>Funcional</td>
+<td>Fluxos completos pela interface, como aluno e como professor: C01 a C04 automatizados; os casos da Sprint 5 (CT08 a CT10) executados pelo roteiro, de forma manual ou automatizada</td>
+<td>Playwright e execução manual</td>
+<td>Analista de Qualidade</td>
+</tr>
+<tr>
+<td>Sistema</td>
+<td>Não funcional: responsividade (RNF02)</td>
+<td>Telas principais em 360 px, sem rolagem horizontal (CT12)</td>
+<td>Playwright</td>
+<td>Analista de Qualidade</td>
+</tr>
+<tr>
+<td>Integração</td>
+<td>Não funcional: segurança (RNF03) e privacidade (RNF06)</td>
+<td>Hash bcrypt das senhas, acesso por JWT, consentimento e liberação do contato só após a confirmação (CT13, CT14)</td>
+<td>Vitest e Supertest</td>
+<td>Desenvolvedores back-end e Analista de Qualidade</td>
+</tr>
+<tr>
+<td>Validação pelo P.O.</td>
+<td>Funcional</td>
+<td>Critérios de aceite de cada história</td>
+<td>Demonstração na revisão da sprint, com contas de teste, sem usuários externos</td>
+<td>P.O.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>b) Ambientes de testes.</strong> Os ambientes acompanham a política de branches e de commits da seção 3, conforme o Quadro 19. Os testes de integração e de sistema usam um banco de dados de teste separado, que é apagado a cada execução; os testes se recusam a rodar no banco da aplicação.</p>
+<p><strong>Quadro 19 –</strong> Ambientes de teste e política de branches</p>
+<table>
+<thead>
+<tr>
+<th><strong>Ambiente</strong></th>
+<th><strong>Branch</strong></th>
+<th><strong>Uso</strong></th>
+<th><strong>Testes executados</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local</td>
+<td>feature/*, fix/* e test/*</td>
+<td>Desenvolvimento da tarefa</td>
+<td>Lint, unitários, integração, cobertura e ponta a ponta, executados pelo desenvolvedor antes do pull request</td>
+</tr>
+<tr>
+<td>Integração</td>
+<td>developer</td>
+<td>Versão integrada, usada nas revisões das sprints</td>
+<td>Suíte completa de testes automatizados e validação dos critérios de aceite pelo P.O.</td>
+</tr>
+<tr>
+<td>Produção</td>
+<td>main</td>
+<td>Versão estável publicada para a apresentação</td>
+<td>Teste de fumaça dos fluxos principais</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>c) Formas de análise.</strong> Um pull request só é integrado com todos os testes automatizados passando e a cobertura das regras de negócio igual ou superior a 70% (M6). Defeitos são registrados e classificados por severidade (crítico, alto, médio, baixo); defeitos críticos impedem o encerramento da história. Os testes não funcionais são analisados pelos resultados esperados dos casos CT12, CT13 e CT14. Cada execução dos testes automatizados gera um log e um relatório HTML, com data e hora, que servem de evidência objetiva no Quadro 21. Esses critérios se ligam à Definição de Pronto (DoD) da seção 3: uma história só é encerrada com seus testes aprovados e sem defeitos críticos abertos.</p>
+<p><strong>d) Resultados obtidos (previsto x realizado).</strong> Cada caso de teste tem um resultado previsto. Se o realizado for diferente do previsto, o teste não passou e um defeito foi identificado: ele é corrigido e o teste é repetido até que previsto e realizado coincidam, quando o teste é aprovado. Os resultados são registrados no roteiro da seção 6.2 a cada ciclo de execução.</p>
+<h3 id="62-roteiro-de-teste">6.2 Roteiro de teste:</h3>
+<p>O roteiro de testes concentra-se nos casos funcionais (CT01 a CT10), complementados pelos casos não funcionais CT12 (responsividade), CT13 (segurança) e CT14 (privacidade). O Quadro 20 identifica cada caso, com objetivo, nível, tipo, pré-condições e o resultado esperado que define sua aceitação. O Quadro 21 registra a execução: resultado realizado, evidência objetiva, reparos e quantidade de ciclos. A numeração dos casos não é contínua porque casos retirados em revisões anteriores mantiveram seus números (ver o Histórico de Revisões).</p>
+<p><strong>Quadro 20 –</strong> Roteiro de testes: planejamento dos casos de teste</p>
+<table>
+<thead>
+<tr>
+<th><strong>ID</strong></th>
+<th><strong>Nome</strong></th>
+<th><strong>Objetivo</strong></th>
+<th><strong>Nível</strong></th>
+<th><strong>Tipo</strong></th>
+<th><strong>Pré-condições</strong></th>
+<th><strong>Resultado esperado (aceite)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CT01</td>
+<td>Cadastro de usuário</td>
+<td>Verificar o cadastro com dados válidos (RF01)</td>
+<td>Sistema</td>
+<td>Funcional</td>
+<td>Visitante na tela de cadastro</td>
+<td>Conta criada; o aluno é direcionado à busca de professores e o professor, à edição do seu perfil</td>
+</tr>
+<tr>
+<td>CT02</td>
+<td>Login inválido</td>
+<td>Verificar a recusa de credenciais incorretas (RF02, RNF03)</td>
+<td>Integração e sistema</td>
+<td>Funcional</td>
+<td>Usuário cadastrado</td>
+<td>Acesso negado com mensagem clara, sem revelar qual dado está errado</td>
+</tr>
+<tr>
+<td>CT03</td>
+<td>Publicar disponibilidade</td>
+<td>Verificar a publicação da grade semanal (RF05)</td>
+<td>Sistema</td>
+<td>Funcional</td>
+<td>Professor autenticado com perfil completo</td>
+<td>Horários exibidos no perfil público do professor</td>
+</tr>
+<tr>
+<td>CT04</td>
+<td>Solicitar aula em horário livre</td>
+<td>Verificar o envio do pedido (RF09)</td>
+<td>Sistema</td>
+<td>Funcional</td>
+<td>Aluno autenticado; professor com horário livre</td>
+<td>Pedido criado com status "solicitada" e professor notificado</td>
+</tr>
+<tr>
+<td>CT05</td>
+<td>Impedir conflito de horário</td>
+<td>Verificar o bloqueio de reservas sobrepostas (RF12)</td>
+<td>Unitário e integração</td>
+<td>Funcional</td>
+<td>Horário já confirmado para outro aluno</td>
+<td>Pedido ou aceite recusado pelo sistema; nenhuma reserva duplicada (M4 = 0)</td>
+</tr>
+<tr>
+<td>CT06</td>
+<td>Aceitar solicitação</td>
+<td>Verificar aceite, bloqueio e notificação (RF11 a RF13)</td>
+<td>Sistema</td>
+<td>Funcional</td>
+<td>Pedido pendente</td>
+<td>Status "confirmada", horário bloqueado e aluno notificado</td>
+</tr>
+<tr>
+<td>CT07</td>
+<td>Recusar solicitação</td>
+<td>Verificar a recusa (RF11)</td>
+<td>Sistema</td>
+<td>Funcional</td>
+<td>Pedido pendente</td>
+<td>Status "recusada", horário continua livre e aluno notificado</td>
+</tr>
+<tr>
+<td>CT08</td>
+<td>Remarcar aula</td>
+<td>Verificar a remarcação com aceite da outra parte (RF15)</td>
+<td>Integração e sistema</td>
+<td>Funcional</td>
+<td>Aula confirmada</td>
+<td>Novo horário bloqueado, antigo liberado e status "remarcada"</td>
+</tr>
+<tr>
+<td>CT09</td>
+<td>Cancelar aula</td>
+<td>Verificar o cancelamento com motivo (RF16)</td>
+<td>Integração e sistema</td>
+<td>Funcional</td>
+<td>Aula confirmada</td>
+<td>Status "cancelada", motivo registrado e horário liberado</td>
+</tr>
+<tr>
+<td>CT10</td>
+<td>Status e histórico</td>
+<td>Verificar a exibição do status e do histórico (RF17, RF18)</td>
+<td>Sistema</td>
+<td>Funcional</td>
+<td>Aluno com aulas em vários status</td>
+<td>Todas as aulas listadas com o status correto</td>
+</tr>
+<tr>
+<td>CT12</td>
+<td>Responsividade</td>
+<td>Verificar o uso em tela pequena (RNF02)</td>
+<td>Sistema</td>
+<td>Não funcional: portabilidade</td>
+<td>Navegador com largura de 360 px</td>
+<td>Fluxos principais utilizáveis, sem rolagem horizontal</td>
+</tr>
+<tr>
+<td>CT13</td>
+<td>Armazenamento de senha</td>
+<td>Verificar que senhas não ficam legíveis (RNF03)</td>
+<td>Integração</td>
+<td>Não funcional: segurança</td>
+<td>Usuário recém-cadastrado</td>
+<td>Senha armazenada apenas como hash bcrypt e nunca devolvida pela API</td>
+</tr>
+<tr>
+<td>CT14</td>
+<td>Privacidade dos dados</td>
+<td>Verificar consentimento e exposição mínima de dados (RNF06)</td>
+<td>Integração</td>
+<td>Não funcional: privacidade</td>
+<td>Cadastro sem consentimento; aula pendente e aula confirmada</td>
+<td>Cadastro sem consentimento recusado; perfil público sem e-mail e telefone; contato do outro participante liberado somente após a confirmação</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>Quadro 21 –</strong> Roteiro de testes: registro da execução</p>
+<table>
+<thead>
+<tr>
+<th><strong>ID</strong></th>
+<th><strong>Resultado realizado</strong></th>
+<th><strong>Evidência objetiva</strong></th>
+<th><strong>Reparos executados</strong></th>
+<th><strong>Ciclos</strong></th>
+<th><strong>Situação</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CT01</td>
+<td>Conforme o previsto para aluno e professor</td>
+<td>Execução automatizada (Playwright) de 14/11/2026: log e relatório HTML com capturas de tela</td>
+<td>DEF-C01-01: após o cadastro, o usuário ia para a página inicial; corrigido no front-end durante o desenvolvimento (PRs #9 e #11)</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT02</td>
+<td>Conforme o previsto</td>
+<td>Execuções automatizadas de integração e Playwright de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT03</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada (Playwright) de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT04</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada (Playwright) de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT05</td>
+<td>Conforme o previsto; M4 = 0</td>
+<td>Execuções automatizadas unitária e de integração de 14/11/2026: log e relatório HTML</td>
+<td>Aceites simultâneos do mesmo horário respondiam com erro 500; o aceite passou a reservar a agenda do professor e o conflito responde 409 (PR #10, durante o desenvolvimento)</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT06</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada (Playwright) de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT07</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada (Playwright) de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT08</td>
+<td>A executar (Sprint 5)</td>
+<td>—</td>
+<td>—</td>
+<td>0</td>
+<td>Pendente</td>
+</tr>
+<tr>
+<td>CT09</td>
+<td>A executar (Sprint 5)</td>
+<td>—</td>
+<td>—</td>
+<td>0</td>
+<td>Pendente</td>
+</tr>
+<tr>
+<td>CT10</td>
+<td>A executar (Sprint 5)</td>
+<td>—</td>
+<td>—</td>
+<td>0</td>
+<td>Pendente</td>
+</tr>
+<tr>
+<td>CT12</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada (Playwright, 360 px) de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT13</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada de integração de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+<tr>
+<td>CT14</td>
+<td>Conforme o previsto</td>
+<td>Execução automatizada de integração de 14/11/2026: log e relatório HTML</td>
+<td>—</td>
+<td>1</td>
+<td>Aprovado</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Os testes de software são obrigatórios. O Quadro 21 mostra a última execução, de 14/11/2026, a única registrada; os defeitos encontrados durante o desenvolvimento aparecem como reparos executados; os casos CT08 a CT10 dependem dos requisitos da Sprint 5 e serão executados à medida que forem implementados. Cada ciclo de testes atualiza as colunas de resultado, evidência (captura de tela, log de execução ou relatório), reparos e ciclos executados.</p>
+<h2 id="7-referencias-bibliograficas">7 REFERÊNCIAS BIBLIOGRÁFICAS</h2>
+<p>BASILI, Victor R.; CALDIERA, Gianluigi; ROMBACH, H. Dieter. The goal question metric approach. In: MARCINIAK, John J. (ed.). Encyclopedia of software engineering. New York: Wiley, 1994. p. 528-532.</p>
+<p>BECK, Kent. Programação extrema (XP) explicada: acolha as mudanças. Porto Alegre: Bookman, 2004.</p>
+<p>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.</p>
+<p>BRAY, Mark. Confronting the shadow education system: what government policies for what private tutoring? Paris: UNESCO International Institute for Educational Planning, 2009. Disponível em: <a href="https://unesdoc.unesco.org/ark:/48223/pf0000185106">https://unesdoc.unesco.org/ark:/48223/pf0000185106</a>. Acesso em: 2 out. 2026.</p>
+<p>COHN, Mike. User stories applied: for agile software development. Boston: Addison-Wesley, 2004.</p>
+<p>ISHIKAWA, Kaoru. Guide to quality control. 2. ed. Tokyo: Asian Productivity Organization, 1986.</p>
+<p>MOBILE TIME. WhatsApp está na tela inicial de 65% dos smartphones brasileiros. Mobile Time, 9 jun. 2026. Disponível em: <a href="https://www.mobiletime.com.br/noticias/09/06/2026/whatsapp-super-panorama/">https://www.mobiletime.com.br/noticias/09/06/2026/whatsapp-super-panorama/</a>. Acesso em: 2 out. 2026.</p>
+<p>NIELSEN, Jakob. 10 usability heuristics for user interface design. Nielsen Norman Group, 1994. Disponível em: <a href="https://www.nngroup.com/articles/ten-usability-heuristics/">https://www.nngroup.com/articles/ten-usability-heuristics/</a>. Acesso em: 28 set. 2026.</p>
+<p>PRESSMAN, Roger S.; MAXIM, Bruce R. Engenharia de software: uma abordagem profissional. 8. ed. Porto Alegre: AMGH, 2016.</p>
+<p>SCHWABER, Ken; SUTHERLAND, Jeff. O guia do Scrum: o guia definitivo para o Scrum: as regras do jogo. 2020. Disponível em: <a href="https://scrumguides.org">https://scrumguides.org</a>. Acesso em: 28 set. 2026.</p>
+<p>SOMMERVILLE, Ian. Engenharia de software. 10. ed. São Paulo: Pearson, 2018.</p>
+<p>SUPERPROF. Superprof: aulas particulares. 2026a. Disponível em: <a href="https://www.superprof.com.br">https://www.superprof.com.br</a>. Acesso em: 28 set. 2026.</p>
+<p>SUPERPROF. Reforço escolar no Brasil. 2026b. Disponível em: <a href="https://www.superprof.com.br/aulas/reforco-escolar/brasil/">https://www.superprof.com.br/aulas/reforco-escolar/brasil/</a>. Acesso em: 2 out. 2026.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Lembrando: plano de mitigação existe para tentar evitar que um risco ocorra. Plano de contingência é acionado se um risco efetivamente ocorre e deve tratar os efeitos do risco já ocorrido.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Rodapé" >
+        
+          
+          <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Anterior: Início">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Início
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../v1-0/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Versão 1.0">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              <div class="md-ellipsis">
+                Versão 1.0
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      AulaCerta · Grupo Hopper · MDS 2026.2
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "toc.follow", "navigation.footer", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

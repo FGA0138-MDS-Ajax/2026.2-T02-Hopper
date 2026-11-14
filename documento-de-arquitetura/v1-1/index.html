@@ -1,0 +1,2442 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do AulaCerta, projeto do Grupo Hopper na disciplina Métodos de Desenvolvimento de Software.">
+      
+      
+      
+        <link rel="canonical" href="https://fga0138-mds-ajax.github.io/2026.2-T02-Hopper/documento-de-arquitetura/v1-1/">
+      
+      
+        <link rel="prev" href="../../documento-de-visao/v1-0/">
+      
+      
+        <link rel="next" href="../v1-0/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/identidade/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Versão 1.1 (atual) - AulaCerta | Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documento-de-arquitetura" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="AulaCerta | Documentação" class="md-header__button md-logo" aria-label="AulaCerta | Documentação" data-md-component="logo">
+      
+  <img src="../../assets/identidade/favicon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AulaCerta | Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Versão 1.1 (atual)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Alternar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Alternar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Alternar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Alternar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../documento-de-visao/v1-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Documento de Visão
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Documento de Arquitetura
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../qualidade/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Qualidade
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../atas-reuniao/ata-reuniao-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Atas de Reunião
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AulaCerta | Documentação" class="md-nav__button md-logo" aria-label="AulaCerta | Documentação" data-md-component="logo">
+      
+  <img src="../../assets/identidade/favicon.svg" alt="logo">
+
+    </a>
+    AulaCerta | Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Visão
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documento de Visão
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-de-visao/v1-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-de-visao/v1-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documento de Arquitetura
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.1 (atual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Introdução
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Introdução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Escopo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representacao-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Representação Arquitetural
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Representação Arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-definicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Definições
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-justifique-sua-escolha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Justifique sua escolha.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-detalhamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Detalhamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-metas-e-restricoes-arquiteturais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Metas e restrições arquiteturais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-visoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Visões
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Visões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-visao-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 Visão de uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-visao-de-organizacao-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.2 Visão de organização lógica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#253-visao-estrutural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.3 Visão estrutural
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-visao-de-implantacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Visão de Implantação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-restricoes-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Restrições adicionais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Bibliografia
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v1-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versão 1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../qualidade/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qualidade
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Qualidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c01-cadastro-e-autenticacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C01 — Cadastro e Autenticação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c02-perfil-e-disponibilidade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C02 — Perfil e Disponibilidade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c03-busca-e-solicitacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C03 — Busca e Solicitação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c04-confirmacao-ou-recusa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C04 — Confirmação ou Recusa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c05-remarcacao-e-cancelamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C05 — Remarcação e Cancelamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/c06-acompanhamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C06 — Acompanhamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../qualidade/requisitos-nao-funcionais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requisitos Não Funcionais
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Introdução
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Introdução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Escopo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representacao-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Representação Arquitetural
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Representação Arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-definicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Definições
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-justifique-sua-escolha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Justifique sua escolha.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-detalhamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Detalhamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-metas-e-restricoes-arquiteturais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Metas e restrições arquiteturais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-visoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Visões
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Visões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-visao-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 Visão de uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-visao-de-organizacao-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.2 Visão de organização lógica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#253-visao-estrutural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.3 Visão estrutural
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-visao-de-implantacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Visão de Implantação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-restricoes-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Restrições adicionais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Bibliografia
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Início
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Documento de Arquitetura
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="documento-de-arquitetura">Documento de Arquitetura</h1>
+<p><a class="md-button" href="../../assets/pdf/T02_Hopper_Documento_de_Arquitetura_1.1.pdf">Baixar em PDF</a> Documento original da versão 1.1, nas normas ABNT.</p>
+<p>AulaCerta – Grupo Hopper</p>
+<p>Versão 1.1</p>
+<p><strong>Tabela - Integrantes do Grupo</strong></p>
+<table>
+<thead>
+<tr>
+<th>Matrícula</th>
+<th>Nome</th>
+<th>Função (responsabilidade)</th>
+<th>Pontos de participação na elaboração</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>232036401</td>
+<td>Pedro França de Lima</td>
+<td>Scrum Master, Product Owner e Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>251037617</td>
+<td>Matheus Ferraz de Queiroz</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>251014793</td>
+<td>Pedro Henrique Caldas Alves</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>251037125</td>
+<td>Juliana Pereira de Rocha</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>251016724</td>
+<td>Yasmim Ayres dos Santos Guedes</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>251019780</td>
+<td>Daniel Valle Rodrigues Maia</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>251039513</td>
+<td>Felipe Lima Sant’Ana</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td>242005418</td>
+<td>Pedro Henrique Rodrigues Pereira</td>
+<td>Developer</td>
+<td>12,5</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>Total de pontos</strong></td>
+<td><strong>100</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Histórico de Revisões</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Data</strong></th>
+<th><strong>Versão</strong></th>
+<th><strong>Descrição</strong></th>
+<th><strong>Autor(es)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>02/10/2026</strong></td>
+<td>1.0</td>
+<td>Versão inicial: estilo arquitetural, metas e restrições, visões de uso, lógica, estrutural e de implantação.</td>
+<td>Equipe</td>
+</tr>
+<tr>
+<td><strong>14/11/2026</strong></td>
+<td>1.1</td>
+<td>Revisão após a avaliação do documento, alinhada ao Documento de Visão 1.1 e ao código: e-mail de recuperação de senha pela API HTTP do Brevo, no lugar de SMTP e Nodemailer; Vitest no front-end e no back-end; contrato da API nos esquemas Zod, sem documentação OpenAPI; TDD retirado; meta de desempenho (RNF04) substituída por diretriz, com o efeito da hibernação explicado; critério de cobertura especificado; RNF01, RNF04, RNF05 e WCAG retirados; administração, anotações e avaliação de aulas fora do escopo (módulo admin, rotas, ator Administrador e classe Avaliacao); dependências entre módulos alinhadas ao código (Quadro 6 e Figura 4); regras de negócio atribuídas aos serviços e entidades sem operações (Quadro 1 e Figura 5); finalidade de cada visão delimitada, com menos repetições; rotas conferidas com o código; front-end publicado como site estático no Render, no lugar da Vercel (seção 2.6, Quadros 7 e 8 e Figura 7).</td>
+<td>Equipe</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-introducao">1 Introdução</h2>
+<h3 id="11-proposito">1.1 Propósito</h3>
+<p>Este documento descreve a arquitetura do sistema desenvolvido pelo Grupo Hopper na disciplina FGA0312 – Métodos de Desenvolvimento de Software (UnB/FCTE), edição do segundo semestre de 2026, para o sistema AulaCerta, a fim de fornecer uma visão abrangente do sistema para desenvolvedores, testadores e demais interessados nos aspectos relacionados às tecnologias usadas no desenvolvimento.</p>
+<h3 id="12-escopo">1.2 Escopo</h3>
+<p>O detalhamento do escopo se encontra na seção 4 (Declaração de Escopo do Projeto) do Documento de Visão do Produto e do Projeto do AulaCerta, versão 1.1 (GRUPO HOPPER, 2026). Em linhas gerais, o escopo compreende uma aplicação web responsiva que centraliza a coordenação de aulas particulares entre alunos e professores: cadastro e autenticação, perfil e disponibilidade do professor, busca de professores, solicitação (inclusive de aulas semanais recorrentes), confirmação, remarcação e cancelamento de aulas e acompanhamento por status, histórico, notificações e lembretes. Isso corresponde aos cenários C01 a C06, aos requisitos funcionais do Quadro 14 e aos requisitos não funcionais RNF02 (responsividade), RNF03 (segurança) e RNF06 (privacidade) daquele documento. Notificações e lembretes ocorrem apenas dentro da aplicação; o e-mail é usado somente para a recuperação de senha (RF03). A administração da plataforma, as anotações e a avaliação de aulas estão fora do escopo do semestre.</p>
+<h2 id="2-representacao-arquitetural">2 Representação Arquitetural</h2>
+<h3 id="21-definicoes">2.1 Definições</h3>
+<p>O sistema segue uma arquitetura <strong>cliente-servidor</strong>, na qual uma aplicação cliente do tipo SPA (Single Page Application), em React, se comunica por meio de uma <strong>API REST</strong> com um servidor em Node.js e Express, organizado internamente em <strong>camadas</strong> (interface, negócio e dados) e dividido em módulos funcionais, no formato de um <strong>monólito modular</strong>. Os dados são persistidos em um banco relacional PostgreSQL.</p>
+<h3 id="22-justifique-sua-escolha">2.2 Justifique sua escolha.</h3>
+<p>A escolha considera o que foi definido no Documento de Visão do Produto e do Projeto (GRUPO HOPPER, 2026), referenciado a seguir por seção, quadro ou identificador:</p>
+<ul>
+<li>
+<p><strong>Tecnologias já declaradas (Quadro 2 do Documento de Visão).</strong> React, Node.js com Express e PostgreSQL com Prisma, hospedados separadamente, levam naturalmente a um cliente e a um servidor independentes que conversam por uma interface bem definida. O estilo REST é o mais simples e difundido para essa interface (FIELDING, 2000) e é o que os testes de integração com Supertest pressupõem.</p>
+</li>
+<li>
+<p><strong>Prazo e produtividade (risco R03).</strong> O desenvolvimento dispõe de cerca de sete semanas. Um único serviço de back-end, com TypeScript nos dois lados, simplifica a implantação, permite que qualquer integrante atue no front-end ou no back-end e concentra o esforço da equipe nas funcionalidades. Microsserviços trariam custos de comunicação, implantação e monitoramento sem benefício para o porte do sistema.</p>
+</li>
+<li>
+<p><strong>Regra central de confiabilidade (RF12 e métrica M4).</strong> Impedir reservas sobrepostas exige que a regra fique em um ponto único e controlado. A camada de negócio concentra essa validação, e o banco relacional a reforça com transações e uma restrição de exclusão, o que não seria possível se o cliente acessasse os dados diretamente.</p>
+</li>
+<li>
+<p><strong>Testabilidade (seção 6 do Documento de Visão).</strong> A separação em camadas permite testar as regras de negócio de forma isolada, com as dependências simuladas (testes unitários), a API com um banco de dados de teste (testes de integração) e os fluxos pela interface (testes de sistema), que são os níveis da estratégia de testes.</p>
+</li>
+<li>
+<p><strong>Evolução (classe Won’t do Quadro 9 do Documento de Visão).</strong> Um aplicativo móvel nativo está fora do escopo deste semestre. Com uma API REST independente, ele poderia ser construído no futuro reaproveitando todo o back-end.</p>
+</li>
+</ul>
+<p>A alternativa de uma aplicação full-stack única, sem API separada (por exemplo, Next.js), foi considerada e descartada: alteraria tecnologias já declaradas no Documento de Visão e acoplaria interface e servidor em um mesmo projeto.</p>
+<h3 id="23-detalhamento">2.3 Detalhamento</h3>
+<p>Esta seção descreve as camadas e o papel de cada elemento; as visões da seção 2.5 mostram, cada uma, um aspecto que esta seção não detalha. A Figura 1 representa o estilo arquitetural instanciado para o AulaCerta, com as camadas, seus componentes principais, as interfaces e os conectores utilizados.</p>
+<p><strong>Figura 1 –</strong> Estilo arquitetural do AulaCerta: cliente-servidor com API REST e back-end em camadas</p>
+<p><img alt="Estilo arquitetural do AulaCerta: cliente-servidor com API REST e back-end em camadas" src="../../assets/documento-de-arquitetura/media/v1-1/figura-1-estilo-arquitetural.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Na camada de apresentação, a SPA é construída com React, TypeScript e Tailwind CSS e publicada como arquivos estáticos. No servidor, a API é implementada com Express em TypeScript, e cada requisição atravessa, em ordem, os middlewares, os controladores, os serviços e os repositórios; o acesso ao PostgreSQL é feito exclusivamente pelo Prisma. O Quadro 1 explica a responsabilidade de cada elemento, suas entradas e saídas e as regras de uso de suas interfaces.</p>
+<p><strong>Quadro 1 –</strong> Responsabilidades e interfaces dos elementos da arquitetura</p>
+<table>
+<thead>
+<tr>
+<th><strong>Elemento</strong></th>
+<th><strong>Responsabilidade</strong></th>
+<th><strong>Entradas e saídas</strong></th>
+<th><strong>Regras de uso</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Páginas e componentes (React)</td>
+<td>Apresentar as telas de visitante, aluno e professor, de forma responsiva.</td>
+<td>Entrada: ações do usuário. Saída: chamadas aos hooks de dados.</td>
+<td>Componentes reutilizáveis; telas utilizáveis a partir de 360 px de largura (RNF02).</td>
+</tr>
+<tr>
+<td>Estado e cache (TanStack Query)</td>
+<td>Buscar, armazenar em cache e revalidar os dados, mantendo o status das aulas atualizado na tela.</td>
+<td>Entrada: pedidos dos hooks. Saída: dados prontos para as telas.</td>
+<td>Após cada alteração (aceitar, recusar, salvar a grade), as consultas afetadas são invalidadas.</td>
+</tr>
+<tr>
+<td>Cliente HTTP (Axios)</td>
+<td>Centralizar as chamadas à API, anexar o token de autenticação e tratar erros.</td>
+<td>Entrada: requisições do front-end. Saída: respostas JSON.</td>
+<td>URL base definida por ambiente; resposta 401 leva o usuário de volta ao login.</td>
+</tr>
+<tr>
+<td>Middlewares</td>
+<td>Aplicar cabeçalhos de segurança (Helmet) e CORS, limitar tentativas de login e de recuperação de senha, autenticar o token JWT, autorizar por perfil, validar os dados com Zod e padronizar os erros.</td>
+<td>Entrada: requisição HTTP. Saída: requisição validada ou erro 4xx no formato padrão.</td>
+<td>Ordem fixa: cabeçalhos e CORS, limite de tentativas (quando houver), autenticação, perfil, validação e controlador; o tratamento de erros fica por último.</td>
+</tr>
+<tr>
+<td>Rotas e controladores</td>
+<td>Mapear cada rota REST para um caso de uso, traduzindo HTTP em chamadas aos serviços.</td>
+<td>Entrada: requisição validada. Saída: resposta JSON e código de status.</td>
+<td>Não contêm regra de negócio.</td>
+</tr>
+<tr>
+<td>Serviços de domínio</td>
+<td>Executar <strong>todas as regras de negócio</strong>: disponibilidade, conflito de horários, transições de status (consultando a tabela de transições permitidas do módulo aulas), recusa automática dos pedidos sobrepostos e verificação de que o usuário é dono do recurso.</td>
+<td>Entrada: dados já validados. Saída: dados das entidades ou erros de domínio.</td>
+<td>Recebem repositórios e outros serviços por injeção de dependência, o que permite testá-los com dependências simuladas; não acessam o banco diretamente.</td>
+</tr>
+<tr>
+<td>Serviço de notificações</td>
+<td>Gerar as notificações na aplicação a partir das mudanças de status (RF13) e, na Sprint 5, os lembretes das próximas aulas (RF19).</td>
+<td>Entrada: chamadas do serviço de aulas. Saída: notificações exibidas na aplicação.</td>
+<td>Notificação gravada na mesma transação da mudança de status, com chave única que impede duplicação.</td>
+</tr>
+<tr>
+<td>Envio de e-mail</td>
+<td>Enviar o link de recuperação de senha (RF03), a pedido do serviço de autenticação.</td>
+<td>Entrada: endereço do usuário e link com token. Saída: mensagem entregue ao Brevo pela API HTTP.</td>
+<td>Usado apenas para recuperação de senha; notificações não são enviadas por e-mail.</td>
+</tr>
+<tr>
+<td>Repositórios (Prisma)</td>
+<td>Executar consultas, gravações e transações no banco.</td>
+<td>Entrada: consultas tipadas. Saída: dados persistidos.</td>
+<td>Único ponto de acesso ao banco; migrações versionadas no repositório.</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>Persistir os dados e garantir sua integridade.</td>
+<td>Entrada e saída: comandos SQL sobre TLS.</td>
+<td>Restrição de exclusão impede duas aulas confirmadas ou remarcadas sobrepostas para o mesmo professor.</td>
+</tr>
+<tr>
+<td>Brevo (serviço externo de e-mail)</td>
+<td>Entregar o e-mail de recuperação de senha.</td>
+<td>Entrada: mensagem enviada pela API HTTP do Brevo.</td>
+<td>Chave de acesso mantida em variável de ambiente, fora do código.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A interface entre cliente e servidor é a API REST. Todas as rotas usam o prefixo <code>/api/v1</code>, trocam dados em JSON e, exceto as públicas, exigem o token JWT no cabeçalho <code>Authorization</code>. O Quadro 2 apresenta as rotas e os requisitos do Documento de Visão que elas atendem; as rotas de remarcação e cancelamento são da Sprint 5.</p>
+<p><strong>Quadro 2 –</strong> Rotas da API REST (prefixo <code>/api/v1</code>)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Método</strong></th>
+<th><strong>Rota</strong></th>
+<th><strong>Descrição</strong></th>
+<th><strong>Acesso</strong></th>
+<th><strong>Requisito</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/cadastro</code></td>
+<td>Cadastrar aluno ou professor, com consentimento</td>
+<td>Público</td>
+<td>RF01, RNF06</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/login</code></td>
+<td>Autenticar e obter o token</td>
+<td>Público</td>
+<td>RF02</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/auth/me</code></td>
+<td>Consultar o usuário autenticado</td>
+<td>Autenticado</td>
+<td>RF02</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/recuperar-senha</code></td>
+<td>Enviar por e-mail o link de redefinição de senha</td>
+<td>Público</td>
+<td>RF03</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/redefinir-senha</code></td>
+<td>Definir nova senha com o token recebido</td>
+<td>Público (token)</td>
+<td>RF03</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/usuarios/me</code></td>
+<td>Atualizar nome e telefone da própria conta</td>
+<td>Autenticado</td>
+<td>RF01</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/materias</code></td>
+<td>Listar as matérias e os níveis</td>
+<td>Público</td>
+<td>RF04, RF07</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/professores</code></td>
+<td>Buscar professores (filtros: matéria, nível e modalidade)</td>
+<td>Público</td>
+<td>RF07</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/professores/:id</code></td>
+<td>Ver perfil e horários livres</td>
+<td>Público</td>
+<td>RF08</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/professores/me</code></td>
+<td>Consultar o próprio perfil de professor</td>
+<td>Professor</td>
+<td>RF04</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/professores/me</code></td>
+<td>Atualizar o próprio perfil de professor</td>
+<td>Professor</td>
+<td>RF04</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/professores/me/disponibilidade</code></td>
+<td>Consultar a grade semanal</td>
+<td>Professor</td>
+<td>RF05</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/professores/me/disponibilidade</code></td>
+<td>Substituir a grade semanal</td>
+<td>Professor</td>
+<td>RF05</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/professores/me/bloqueios</code></td>
+<td>Listar os bloqueios futuros</td>
+<td>Professor</td>
+<td>RF06</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/professores/me/bloqueios</code></td>
+<td>Criar bloqueio pontual</td>
+<td>Professor</td>
+<td>RF06</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/professores/me/bloqueios/:id</code></td>
+<td>Remover bloqueio pontual</td>
+<td>Professor</td>
+<td>RF06</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/aulas</code></td>
+<td>Solicitar aula ou série semanal</td>
+<td>Aluno</td>
+<td>RF09, RF10</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/aulas</code></td>
+<td>Listar as próprias aulas (filtros: status e período)</td>
+<td>Aluno, Professor</td>
+<td>RF17, RF18</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/aulas/:id</code></td>
+<td>Ver detalhes, histórico e contato liberado</td>
+<td>Aluno, Professor</td>
+<td>RF17, RNF06</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/aulas/:id/aceitar</code></td>
+<td>Aceitar solicitação (ou a série) e bloquear o horário</td>
+<td>Professor</td>
+<td>RF11, RF12</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/aulas/:id/recusar</code></td>
+<td>Recusar solicitação</td>
+<td>Professor</td>
+<td>RF11</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/aulas/:id/remarcacoes</code></td>
+<td>Propor novo horário (Sprint 5)</td>
+<td>Aluno, Professor</td>
+<td>RF15</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/aulas/:id/remarcacoes/:rid</code></td>
+<td>Aceitar ou recusar remarcação (Sprint 5)</td>
+<td>Aluno, Professor</td>
+<td>RF15</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/aulas/:id/cancelar</code></td>
+<td>Cancelar aula com motivo (Sprint 5)</td>
+<td>Aluno, Professor</td>
+<td>RF16</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/notificacoes</code></td>
+<td>Listar notificações</td>
+<td>Aluno, Professor</td>
+<td>RF13</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/notificacoes</code></td>
+<td>Marcar notificações como lidas</td>
+<td>Aluno, Professor</td>
+<td>RF13</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/saude</code></td>
+<td>Verificar se a API está no ar</td>
+<td>Público</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="24-metas-e-restricoes-arquiteturais">2.4 Metas e restrições arquiteturais</h3>
+<p>O Quadro 3 identifica as metas e restrições que orientam a arquitetura, com a justificativa de cada uma.</p>
+<p><strong>Quadro 3 –</strong> Metas e restrições arquiteturais</p>
+<table>
+<thead>
+<tr>
+<th><strong>Meta ou restrição</strong></th>
+<th><strong>Definição</strong></th>
+<th><strong>Justificativa</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Integridade da agenda</td>
+<td>Nenhuma reserva confirmada sobreposta para o mesmo professor, mesmo com aceites simultâneos.</td>
+<td>Atende ao RF12 e à métrica M4. O aceite reserva a agenda do professor dentro de uma transação, e o banco garante a regra com uma restrição de exclusão (POSTGRESQL GLOBAL DEVELOPMENT GROUP, 2026); conflitos entre transações respondem 409.</td>
+</tr>
+<tr>
+<td>Padrão da API</td>
+<td>REST com JSON; prefixo <code>/api/v1</code>; códigos 200, 201, 204, 400, 401, 403, 404, 409 (conflito), 422 (validação) e 429 (excesso de tentativas); erros no formato <code>{ erro: { codigo, mensagem, detalhes } }</code>; datas em ISO 8601 no horário de Brasília (−03:00).</td>
+<td>Um contrato único e previsível reduz erros de integração entre front-end e back-end. O contrato de cada rota fica nos esquemas de validação Zod do back-end e é verificado pelos testes de integração.</td>
+</tr>
+<tr>
+<td>Segurança</td>
+<td>HTTPS nos ambientes publicados; senhas com hash bcrypt; JWT com validade curta (padrão de 2 horas, definida por variável de ambiente); link de recuperação de senha de uso único, válido por 1 hora e guardado apenas como hash; limite de tentativas no login e na recuperação de senha; segredos apenas em variáveis de ambiente.</td>
+<td>Atende ao RNF03.</td>
+</tr>
+<tr>
+<td>Privacidade</td>
+<td>Consentimento registrado no cadastro; perfil público sem e-mail e telefone; contato do outro participante liberado somente após a confirmação da aula.</td>
+<td>Atende ao RNF06 e à LGPD (BRASIL, 2018).</td>
+</tr>
+<tr>
+<td>Responsividade</td>
+<td>Telas principais utilizáveis a partir de 360 px de largura, sem rolagem horizontal.</td>
+<td>Atende ao RNF02; o público usa principalmente o celular.</td>
+</tr>
+<tr>
+<td>Qualidade do código</td>
+<td>Cobertura mínima de 70% em quatro critérios medidos pelo Vitest: instruções, ramificações, funções e linhas. No back-end, a medição inclui os serviços de domínio (<code>src/modules/**/*.service.ts</code>), onde estão as regras de negócio; no front-end, todo o <code>src</code>, exceto os testes e os arquivos de inicialização.</td>
+<td>Mantém a métrica M6 e a Definição de Pronto do Documento de Visão. Abaixo de 70% em qualquer critério, o comando de cobertura falha.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>Desempenho como diretriz.</strong> O projeto não estabelece meta de desempenho com compromisso de teste. As telas usam cache no cliente, consultas paginadas e índices nas buscas de professores e de agenda. Há, porém, um efeito que o usuário percebe: no plano gratuito do Render, a API hiberna após cerca de 15 minutos sem requisições, e a primeira requisição depois disso espera o serviço reiniciar, o que pode levar dezenas de segundos; as seguintes voltam ao tempo normal. Para reduzir esse efeito, o front-end mostra um indicador de carregamento enquanto aguarda a resposta, e, antes de demonstrações, a equipe acessa a rota <code>/saude</code> para reativar o serviço.</p>
+<p>Além disso, a equipe adota o padrão de codificação do Quadro 4, válido para todo o código do repositório.</p>
+<p><strong>Quadro 4 –</strong> Padrão de codificação da equipe</p>
+<table>
+<thead>
+<tr>
+<th><strong>Aspecto</strong></th>
+<th><strong>Diretriz</strong></th>
+<th><strong>Justificativa</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linguagem</td>
+<td>TypeScript em modo estrito no front-end e no back-end.</td>
+<td>Erros de tipo são detectados antes da execução.</td>
+</tr>
+<tr>
+<td>Formatação e análise estática</td>
+<td>Prettier para formatação e ESLint com regras recomendadas, executados pelo desenvolvedor antes de abrir o pull request.</td>
+<td>Código uniforme, independentemente do autor.</td>
+</tr>
+<tr>
+<td>Nomenclatura</td>
+<td>camelCase para variáveis e funções; PascalCase para classes, tipos e componentes React; kebab-case para nomes de arquivos; termos do domínio em português, sem acentos (Aula, Professor, Disponibilidade).</td>
+<td>Aproxima o código do vocabulário do Documento de Visão e dos diagramas.</td>
+</tr>
+<tr>
+<td>Organização</td>
+<td>Back-end organizado por módulo (auth, usuarios, agenda, aulas e notificacoes), cada um com rotas, controlador, serviço, repositório e esquemas de validação; testes unitários ao lado do arquivo testado.</td>
+<td>Cada integrante encontra o código de uma funcionalidade em um único lugar.</td>
+</tr>
+<tr>
+<td>Versionamento</td>
+<td>Branches main, developer e <code>feature/&lt;descricao&gt;</code> (correções em <code>fix/&lt;descricao&gt;</code>, testes em <code>test/&lt;descricao&gt;</code>); commits no padrão Conventional Commits; todo código entra por pull request revisado.</td>
+<td>Mantém a política da seção 3 do Documento de Visão.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="25-visoes">2.5 Visões</h3>
+<p>A arquitetura é comunicada por quatro visões complementares, inspiradas no modelo 4+1 (KRUCHTEN, 1995) e representadas em UML (OBJECT MANAGEMENT GROUP, 2017). Cada visão responde a uma pergunta diferente:</p>
+<ul>
+<li><strong>visão de uso (2.5.1):</strong> o que o sistema faz e para quem, e como acontece o fluxo mais complexo;</li>
+<li><strong>visão de organização lógica (2.5.2):</strong> como o código está dividido e quais módulos dependem de quais;</li>
+<li><strong>visão estrutural (2.5.3):</strong> quais dados o sistema guarda e quais componentes se conectam em execução;</li>
+<li><strong>visão de implantação (2.6):</strong> onde cada parte roda e em quais ambientes.</li>
+</ul>
+<h4 id="251-visao-de-uso">2.5.1 Visão de uso</h4>
+<p>O AulaCerta permite que visitantes encontrem professores e consultem horários livres; que alunos solicitem, remarquem, cancelem e acompanhem aulas; e que professores mantenham perfil e disponibilidade e decidam sobre as solicitações. Alunos e professores também recebem notificações e visualizam lembretes das próximas aulas. A Figura 2 apresenta o diagrama de casos de uso.</p>
+<p><strong>Figura 2 –</strong> Diagrama de casos de uso do AulaCerta</p>
+<p><img alt="Diagrama de casos de uso do AulaCerta" src="../../assets/documento-de-arquitetura/media/v1-1/figura-2-casos-de-uso.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A numeração dos casos de uso não é contínua porque casos retirados em revisões anteriores mantiveram seus números (ver o Histórico de Revisões).</p>
+<p>A funcionalidade mais complexa é a solicitação e confirmação de aula (UC07 e UC08), porque envolve dois atores, notificações e a regra de conflito de horários. A Figura 3 mostra seu diagrama de atividades: a disponibilidade é verificada quando o aluno solicita e verificada novamente, dentro de uma transação, quando o professor aceita, pois outro pedido pode ter sido confirmado nesse intervalo. Ao confirmar, o sistema também recusa automaticamente os outros pedidos pendentes para o mesmo horário.</p>
+<p><strong>Figura 3 –</strong> Diagrama de atividades: solicitar e confirmar aula</p>
+<p><img alt="Diagrama de atividades: solicitar e confirmar aula" src="../../assets/documento-de-arquitetura/media/v1-1/figura-3-atividades.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>O Quadro 5 relaciona os requisitos de uso que mais influenciaram a arquitetura.</p>
+<p><strong>Quadro 5 –</strong> Requisitos que influenciaram a escolha arquitetural</p>
+<table>
+<thead>
+<tr>
+<th><strong>Requisito</strong></th>
+<th><strong>Influência na arquitetura</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RF12 (impedir conflito)</td>
+<td>Regra concentrada na camada de negócio e reforçada no banco por transação e restrição de exclusão.</td>
+</tr>
+<tr>
+<td>RF13 e RF19 (notificações e lembretes)</td>
+<td>Módulo de notificações separado, com avisos apenas na aplicação; lembretes gerados sob demanda, sem processo agendado, já que só são vistos dentro da aplicação e o serviço gratuito pode hibernar.</td>
+</tr>
+<tr>
+<td>Perfis de acesso (Quadro 11 do Documento de Visão)</td>
+<td>Middleware de autorização por perfil e verificação de dono do recurso nos serviços.</td>
+</tr>
+<tr>
+<td>RNF02 (responsividade)</td>
+<td>SPA responsiva com Tailwind CSS, publicada em CDN.</td>
+</tr>
+<tr>
+<td>RNF03 e RNF06 (segurança e privacidade)</td>
+<td>JWT, bcrypt, HTTPS, limite de tentativas e coleta mínima de dados; contato do outro usuário visível apenas após a confirmação da aula.</td>
+</tr>
+<tr>
+<td>Risco R03 (prazo de desenvolvimento)</td>
+<td>Monólito modular em uma única linguagem, com implantação simples.</td>
+</tr>
+<tr>
+<td>Risco R09 (planos gratuitos)</td>
+<td>E-mail pela API HTTP do Brevo, porque a hospedagem gratuita bloqueia as portas SMTP; lembretes sem processo sempre ativo.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h4 id="252-visao-de-organizacao-logica">2.5.2 Visão de organização lógica</h4>
+<p>Esta visão mostra como o código está dividido e as dependências entre as partes. O front-end é organizado em páginas (pages), componentes reutilizáveis (components), hooks de dados (hooks), contextos (contexts, como a sessão do usuário), utilitários (utils) e o cliente da API (services). O back-end é subdividido nos módulos auth, usuarios, agenda, aulas e notificacoes, apoiados pelos pacotes shared, infra e config. O Quadro 6 explica a razão lógica de cada parte e de quais outras ela depende.</p>
+<p><strong>Quadro 6 –</strong> Módulos do back-end: razão lógica e dependências</p>
+<table>
+<thead>
+<tr>
+<th><strong>Módulo ou pacote</strong></th>
+<th><strong>Razão lógica</strong></th>
+<th><strong>Interfaces e dependências</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auth</td>
+<td>Cadastro, login, emissão do token e recuperação de senha (C01).</td>
+<td>Rotas <code>/auth/*</code>. Usa shared; seu repositório usa infra (Prisma), e o envio de e-mail (infra) é injetado na criação do serviço.</td>
+</tr>
+<tr>
+<td>usuarios</td>
+<td>Dados da conta e perfil do professor, com matérias, níveis e modalidades (C02), e a busca de professores (C03).</td>
+<td>Rotas <code>/usuarios/me</code>, <code>/professores</code> e <code>/materias</code>. Usa shared e infra; consulta os horários livres em agenda.</td>
+</tr>
+<tr>
+<td>agenda</td>
+<td>Grade semanal, bloqueios pontuais e cálculo dos horários livres (C02).</td>
+<td>Rotas <code>/professores/me/disponibilidade</code> e <code>/professores/me/bloqueios</code>. Usa shared e infra; consulta os horários ocupados em aulas.</td>
+</tr>
+<tr>
+<td>aulas</td>
+<td>Solicitação, aceite e recusa (C03 e C04), além de remarcação e cancelamento (C05, Sprint 5), com o histórico de status.</td>
+<td>Rotas <code>/aulas/*</code>. Usa usuarios, agenda e notificacoes, além de shared e infra (repositório e transações).</td>
+</tr>
+<tr>
+<td>notificacoes</td>
+<td>Notificações na aplicação e lembretes das próximas aulas (C04 e C06).</td>
+<td>Rotas <code>/notificacoes</code>. Usa shared e infra; é chamado por aulas dentro da transação.</td>
+</tr>
+<tr>
+<td>shared</td>
+<td>Middlewares, erros, tipos e utilitários comuns (datas, paginação, segurança e validações).</td>
+<td>Usado por todos os módulos.</td>
+</tr>
+<tr>
+<td>infra</td>
+<td>Cliente Prisma e transações; envio de e-mail pelo Brevo.</td>
+<td>Usado pelos repositórios de todos os módulos e pelos serviços de aulas e notificacoes; o envio de e-mail é usado por auth.</td>
+</tr>
+<tr>
+<td>config</td>
+<td>Variáveis de ambiente validadas e mensagens de validação em português.</td>
+<td>Usado por infra e na inicialização da API.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A comunicação entre front-end e back-end ocorre apenas pela API REST. Dentro do back-end, um módulo nunca acessa o repositório de outro: ele chama o serviço do outro módulo. As dependências que formariam um ciclo (aulas consulta a agenda, e a agenda precisa saber quais horários as aulas já ocupam) são ligadas no ponto de montagem da aplicação, por injeção de dependência: cada serviço declara apenas a interface de que precisa. Assim, não há importação circular, e cada serviço é testado isoladamente. A Figura 4 apresenta o diagrama de pacotes com essas dependências.</p>
+<p><strong>Figura 4 –</strong> Diagrama de pacotes do AulaCerta</p>
+<p><img alt="Diagrama de pacotes do AulaCerta" src="../../assets/documento-de-arquitetura/media/v1-1/figura-4-pacotes.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h4 id="253-visao-estrutural">2.5.3 Visão estrutural</h4>
+<p>Esta visão mostra os dados que o sistema guarda e os componentes que se conectam em execução. A Figura 5 apresenta o diagrama de classes do domínio, que corresponde ao modelo de dados do Prisma.</p>
+<p><strong>Figura 5 –</strong> Diagrama de classes do domínio</p>
+<p><img alt="Diagrama de classes do domínio" src="../../assets/documento-de-arquitetura/media/v1-1/figura-5-classes.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>Usuario representa qualquer pessoa autenticada, e seu perfil (aluno ou professor) define as permissões. Quando o usuário é professor, ele possui um PerfilProfessor, que reúne as matérias ensinadas, a grade de Disponibilidade e os BloqueioHorario pontuais. Aula é a entidade central: liga um aluno a um professor e a uma matéria e guarda o intervalo de horário, a modalidade, o objetivo e o status atual; aulas da mesma série semanal compartilham um identificador de série. Cada mudança de status gera um registro em HistoricoStatus, o que permite o acompanhamento e o histórico (RF17 e RF18). Remarcacao guarda as propostas de novo horário, Notificacao registra os avisos de cada usuário e TokenRecuperacaoSenha guarda, apenas como hash, os links de redefinição de senha.</p>
+<p>As classes do domínio guardam apenas dados e não têm operações. Os comportamentos, como confirmar, recusar, remarcar e cancelar uma aula, são executados pelos serviços de domínio (Quadro 1), que consultam a tabela de transições de status permitidas e gravam a mudança e seu histórico na mesma transação. Essa divisão mantém as regras em um único lugar e permite testá-las sem o banco de dados.</p>
+<p>A Figura 6 apresenta o diagrama de componentes, que mostra quais componentes se conectam em tempo de execução e quais interfaces usam.</p>
+<p><strong>Figura 6 –</strong> Diagrama de componentes do AulaCerta</p>
+<p><img alt="Diagrama de componentes do AulaCerta" src="../../assets/documento-de-arquitetura/media/v1-1/figura-6-componentes.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>A SPA consome a interface REST, e toda requisição passa pelos middlewares antes de chegar aos componentes de domínio. Somente o componente Auth usa o serviço externo de e-mail (Brevo).</p>
+<h3 id="26-visao-de-implantacao">2.6 Visão de Implantação</h3>
+<p>Esta visão mostra onde cada parte do sistema roda. O software é implantado em serviços de nuvem com planos gratuitos, o que atende ao critério de custo zero do Documento de Visão (seção 1.4) e permite que o professor e os monitores acessem a aplicação por um endereço HTTP, como exige o plano de ensino para soluções web. O front-end e a API ficam no Render: o front-end como site estático (Static Site), servido por CDN, e a API em um contêiner Docker (Web Service); o banco de dados é um PostgreSQL gerenciado no Neon; o e-mail de recuperação de senha é enviado pela API HTTP do Brevo. A Figura 7 apresenta o diagrama de implantação.</p>
+<p><strong>Figura 7 –</strong> Diagrama de implantação do AulaCerta</p>
+<p><img alt="Diagrama de implantação do AulaCerta" src="../../assets/documento-de-arquitetura/media/v1-1/figura-7-implantacao.png" /></p>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>Quadro 7 –</strong> Infraestrutura de implantação</p>
+<table>
+<thead>
+<tr>
+<th><strong>Parte</strong></th>
+<th><strong>Tecnologia</strong></th>
+<th><strong>Justificativa</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Front-end</td>
+<td>Render – Static Site (CDN)</td>
+<td>Arquivos estáticos da SPA servidos por CDN, com HTTPS e regra de reescrita que entrega o <code>index.html</code> para as rotas do React Router; plano gratuito, sem hibernação.</td>
+</tr>
+<tr>
+<td>API REST</td>
+<td>Render – Web Service, em contêiner Docker com Node.js 20</td>
+<td>Executa o servidor Express; o Docker garante o mesmo ambiente em desenvolvimento e em produção; plano gratuito, com hibernação após inatividade (seção 2.4).</td>
+</tr>
+<tr>
+<td>Banco de dados</td>
+<td>Neon – PostgreSQL gerenciado</td>
+<td>PostgreSQL com conexão TLS e plano gratuito; suporta a restrição de exclusão usada no RF12 e permite criar um banco separado para os testes.</td>
+</tr>
+<tr>
+<td>E-mail</td>
+<td>Brevo – API HTTP</td>
+<td>Envio do e-mail de recuperação de senha por HTTPS. O plano gratuito do Render bloqueia as portas SMTP, por isso o envio não usa SMTP (risco R09 do Documento de Visão).</td>
+</tr>
+<tr>
+<td>Documentação</td>
+<td>GitHub Pages</td>
+<td>Publicação da documentação do projeto em MkDocs.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p>O PostgreSQL foi escolhido por ser relacional, o que se ajusta a um domínio com muitas relações entre usuários, agendas e aulas, e por oferecer transações e restrições de exclusão sobre intervalos de tempo, que garantem no próprio banco a ausência de reservas sobrepostas. Como a API pode hibernar, os lembretes não dependem de um processo sempre ativo: eles são gerados sob demanda, quando o usuário acessa a aplicação.</p>
+<p>Os ambientes acompanham a política de branches do Documento de Visão (Quadro 19), conforme o Quadro 8.</p>
+<p><strong>Quadro 8 –</strong> Ambientes de execução</p>
+<table>
+<thead>
+<tr>
+<th><strong>Ambiente</strong></th>
+<th><strong>Branch</strong></th>
+<th><strong>Front-end</strong></th>
+<th><strong>API e banco</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local</td>
+<td><code>feature/*</code>, <code>fix/*</code> e <code>test/*</code></td>
+<td>Vite (servidor de desenvolvimento)</td>
+<td>API local, com banco de desenvolvimento no Neon ou PostgreSQL local pelo Docker Compose</td>
+</tr>
+<tr>
+<td>Testes</td>
+<td>qualquer branch, na máquina do desenvolvedor</td>
+<td>Vite, iniciado pelos testes de sistema</td>
+<td>API local, com um banco de teste separado no Neon, apagado a cada execução</td>
+</tr>
+<tr>
+<td>Produção</td>
+<td>main</td>
+<td>Render – Static Site</td>
+<td>Render – Web Service e banco Neon principal</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h3 id="27-restricoes-adicionais">2.7 Restrições adicionais</h3>
+<p><strong>Restrições de negócio.</strong> O AulaCerta é acessado diretamente pela Internet, sem intranet. A busca de professores e a consulta a perfis e horários livres são públicas; todas as demais funcionalidades exigem login. Por ser um projeto acadêmico, a infraestrutura é dimensionada para demonstrações e testes, sem meta de escala nem de desempenho (seção 2.4). A interface é em português, e as datas são gravadas com fuso horário e exibidas no horário de Brasília. O pagamento das aulas não é tratado pela plataforma (classe Won’t do Documento de Visão).</p>
+<p>As características de qualidade mais relevantes, segundo o modelo da ISO/IEC 25010 (INTERNATIONAL ORGANIZATION FOR STANDARDIZATION, 2011), estão no Quadro 9.</p>
+<p><strong>Quadro 9 –</strong> Características de qualidade relevantes (ISO/IEC 25010)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Característica</strong></th>
+<th><strong>Como a arquitetura atende</strong></th>
+<th><strong>Justificativa</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usabilidade</td>
+<td>SPA com poucos passos para reservar, status sempre visível e notificações.</td>
+<td>Diretriz de projeto do Documento de Visão (seção 1.1): o fluxo precisa ser mais simples que a troca de mensagens.</td>
+</tr>
+<tr>
+<td>Confiabilidade</td>
+<td>Transações, bloqueio da agenda e restrição de exclusão no banco; testes da regra de conflito, inclusive com aceites simultâneos.</td>
+<td>Uma reserva duplicada destrói a confiança do usuário na agenda (RF12).</td>
+</tr>
+<tr>
+<td>Segurança</td>
+<td>Autenticação JWT, autorização por perfil e por dono do recurso, bcrypt, limite de tentativas e HTTPS.</td>
+<td>Há dados pessoais e perfis com permissões diferentes (RNF03 e RNF06).</td>
+</tr>
+<tr>
+<td>Manutenibilidade</td>
+<td>Camadas e módulos separados; padrão de codificação; cobertura de testes.</td>
+<td>Oito integrantes trabalhando em paralelo por sete semanas.</td>
+</tr>
+<tr>
+<td>Portabilidade</td>
+<td>Interface web responsiva nos navegadores atuais; back-end em contêiner Docker.</td>
+<td>Uso em celular e computador (RNF02) e o mesmo ambiente em todas as máquinas.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<p><strong>Segurança e perfis.</strong> Como perfis diferentes acessam a aplicação, a autorização ocorre em dois níveis: o middleware verifica se o perfil pode usar a rota, e o serviço verifica se o usuário é dono do recurso (um aluno só vê as próprias aulas; um professor só decide sobre os pedidos feitos a ele). O Quadro 10 resume as permissões, coerentes com o Quadro 11 do Documento de Visão. Para proteger a privacidade (RNF06), telefone e e-mail do outro usuário só ficam visíveis depois que a aula é confirmada.</p>
+<p><strong>Quadro 10 –</strong> Permissões de acesso por perfil</p>
+<table>
+<thead>
+<tr>
+<th><strong>Ação</strong></th>
+<th><strong>Visitante</strong></th>
+<th><strong>Aluno</strong></th>
+<th><strong>Professor</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buscar professores e ver horários livres</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Manter os dados da própria conta</td>
+<td>—</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Manter o perfil de professor</td>
+<td>—</td>
+<td>—</td>
+<td>Sim (próprio)</td>
+</tr>
+<tr>
+<td>Gerenciar disponibilidade e bloqueios</td>
+<td>—</td>
+<td>—</td>
+<td>Sim (própria)</td>
+</tr>
+<tr>
+<td>Solicitar aula</td>
+<td>—</td>
+<td>Sim</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Aceitar ou recusar solicitação</td>
+<td>—</td>
+<td>—</td>
+<td>Sim (próprias aulas)</td>
+</tr>
+<tr>
+<td>Remarcar ou cancelar aula</td>
+<td>—</td>
+<td>Sim (próprias aulas)</td>
+<td>Sim (próprias aulas)</td>
+</tr>
+<tr>
+<td>Ver status e histórico de aulas</td>
+<td>—</td>
+<td>Sim (próprias aulas)</td>
+<td>Sim (próprias aulas)</td>
+</tr>
+<tr>
+<td>Ver contato do outro usuário</td>
+<td>—</td>
+<td>Após confirmação</td>
+<td>Após confirmação</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> Elaborado pela equipe (2026).</p>
+<h2 id="3-bibliografia">3 Bibliografia</h2>
+<p>BASS, Len; CLEMENTS, Paul; KAZMAN, Rick. <strong>Software architecture in practice</strong>. 4. ed. Boston: Addison-Wesley, 2021.</p>
+<p>BRASIL. <strong>Lei nº 13.709, de 14 de agosto de 2018</strong>. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.</p>
+<p>FIELDING, Roy Thomas. <strong>Architectural styles and the design of network-based software architectures</strong>. 2000. Tese (Doutorado em Information and Computer Science) – University of California, Irvine, 2000.</p>
+<p>FOWLER, Martin. <strong>Patterns of enterprise application architecture</strong>. Boston: Addison-Wesley, 2002.</p>
+<p>GRUPO HOPPER. <strong>Documento de visão do produto e do projeto: AulaCerta</strong>. Versão 1.1. Brasília: UnB/FCTE, 2026. Trabalho da disciplina FGA0312 – Métodos de Desenvolvimento de Software.</p>
+<p>INTERNATIONAL ORGANIZATION FOR STANDARDIZATION. <strong>ISO/IEC 25010:2011</strong>: systems and software engineering – systems and software quality requirements and evaluation (SQuaRE) – system and software quality models. Geneva: ISO, 2011.</p>
+<p>KRUCHTEN, Philippe. The 4+1 view model of architecture. <strong>IEEE Software</strong>, v. 12, n. 6, p. 42-50, 1995.</p>
+<p>OBJECT MANAGEMENT GROUP. <strong>OMG Unified Modeling Language (OMG UML)</strong>: version 2.5.1. Needham: OMG, 2017.</p>
+<p>POSTGRESQL GLOBAL DEVELOPMENT GROUP. <strong>PostgreSQL documentation</strong>: constraints. Disponível em: <a href="https://www.postgresql.org/docs/current/ddl-constraints.html">https://www.postgresql.org/docs/current/ddl-constraints.html</a>. Acesso em: 2 out. 2026.</p>
+<p>PRESSMAN, Roger S.; MAXIM, Bruce R. <strong>Engenharia de software</strong>: uma abordagem profissional. 8. ed. Porto Alegre: AMGH, 2016.</p>
+<p>SOMMERVILLE, Ian. <strong>Engenharia de software</strong>. 10. ed. São Paulo: Pearson, 2018.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Rodapé" >
+        
+          
+          <a href="../../documento-de-visao/v1-0/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Versão 1.0">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Versão 1.0
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../v1-0/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Versão 1.0">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              <div class="md-ellipsis">
+                Versão 1.0
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      AulaCerta · Grupo Hopper · MDS 2026.2
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "toc.follow", "navigation.footer", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
