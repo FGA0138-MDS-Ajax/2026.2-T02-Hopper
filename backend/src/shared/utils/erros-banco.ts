@@ -2,6 +2,10 @@ import { Prisma } from '@prisma/client';
 
 const CODIGO_VIOLACAO_EXCLUSAO = '23P01';
 const CODIGO_VIOLACAO_UNICIDADE = 'P2002';
+/** Prisma: a transação falhou por conflito de escrita ou deadlock. */
+const CODIGO_CONFLITO_DE_ESCRITA = 'P2034';
+/** PostgreSQL: falha de serialização (40001) e deadlock detectado (40P01). */
+const CODIGOS_CONFLITO_DO_BANCO = ['40001', '40P01'];
 
 function lerCodigoDoDriver(erro: unknown): string | undefined {
   if (typeof erro !== 'object' || erro === null) return undefined;
@@ -30,4 +34,28 @@ export function ehViolacaoDeUnicidade(erro: unknown): boolean {
   return (
     erro instanceof Prisma.PrismaClientKnownRequestError && erro.code === CODIGO_VIOLACAO_UNICIDADE
   );
+}
+
+/**
+ * Duas transações disputaram as mesmas linhas e o banco desfez uma delas. Nada foi gravado pela
+ * transação desfeita; quem chamou pode tentar de novo.
+ */
+export function ehConflitoEntreTransacoes(erro: unknown): boolean {
+  if (
+    erro instanceof Prisma.PrismaClientKnownRequestError &&
+    erro.code === CODIGO_CONFLITO_DE_ESCRITA
+  ) {
+    return true;
+  }
+  const causa =
+    typeof erro === 'object' && erro !== null ? (erro as { cause?: unknown }).cause : undefined;
+  if (
+    typeof causa === 'object' &&
+    causa !== null &&
+    (causa as { kind?: unknown }).kind === 'TransactionWriteConflict'
+  ) {
+    return true;
+  }
+  const codigo = lerCodigoDoDriver(erro);
+  return codigo !== undefined && CODIGOS_CONFLITO_DO_BANCO.includes(codigo);
 }
