@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { CalendarDays, CircleCheck, Clock, RefreshCw } from 'lucide-react';
+import { CalendarDays, CircleCheck, Clock, RefreshCw, Repeat } from 'lucide-react';
 import { Cabecalho } from '../components/cabecalho';
 import { AlertaErro, BotaoEnviar } from '../components/layout-autenticacao';
 import { AvatarProfessor } from '../components/professor-info';
@@ -14,13 +14,22 @@ import { useProfessor } from '../hooks/use-professores';
 import { useTitulo } from '../hooks/use-titulo';
 import { mensagemDeErro } from '../services/api';
 import { codigoDeErro } from '../services/auth';
-import { solicitarAula, type Aula } from '../services/aulas';
+import { solicitarAula, type Aula, type DadosSolicitacao as DadosParaApi } from '../services/aulas';
 import { ROTULO_MODALIDADE, type Modalidade, type ProfessorDetalhe } from '../services/professores';
-import { chaveDoDia, diaPorExtenso, horaCurta } from '../utils/datas';
+import { chaveDoDia, diaDaUltimaAula, diaPorExtenso, horaCurta } from '../utils/datas';
 import { formatarReais } from '../utils/formatacao';
 import { ICONE_MODALIDADE } from '../utils/modalidades';
 
 const TAMANHO_MAXIMO_OBJETIVO = 500;
+
+/** RF10: limites da série semanal, os mesmos da API (backend/src/modules/aulas/aulas.schemas.ts). */
+const MINIMO_DE_SEMANAS = 2;
+const MAXIMO_DE_SEMANAS = 12;
+const SEMANAS_PADRAO = 4;
+const OPCOES_DE_SEMANAS = Array.from(
+  { length: MAXIMO_DE_SEMANAS - MINIMO_DE_SEMANAS + 1 },
+  (_, indice) => MINIMO_DE_SEMANAS + indice,
+);
 
 /** Erros em que a solução é escolher outro horário. */
 const ERROS_DE_HORARIO = ['HORARIO_INDISPONIVEL', 'AULA_NO_PASSADO'];
@@ -29,6 +38,8 @@ const esquemaSolicitacao = z.object({
   materiaId: z.string().min(1, 'Escolha a matéria e o nível.'),
   modalidade: z.enum(['ONLINE', 'PRESENCIAL', 'DOMICILIO'], { error: 'Escolha a modalidade da aula.' }),
   objetivo: z.string().trim().max(TAMANHO_MAXIMO_OBJETIVO, `Use no máximo ${TAMANHO_MAXIMO_OBJETIVO} caracteres.`),
+  frequencia: z.enum(['UNICA', 'SEMANAL']),
+  semanas: z.coerce.number().int().min(MINIMO_DE_SEMANAS).max(MAXIMO_DE_SEMANAS),
 });
 
 type EntradaSolicitacao = z.input<typeof esquemaSolicitacao>;
@@ -174,8 +185,10 @@ function OpcaoDeEscolha({ marcado, children, entrada }: { marcado: boolean; chil
   );
 }
 
-function PedidoEnviado({ professor, aula }: { professor: ProfessorDetalhe; aula: Aula }) {
+function PedidoEnviado({ professor, aulas }: { professor: ProfessorDetalhe; aulas: Aula[] }) {
+  const [aula] = aulas;
   const { dia, horas } = textoDoHorario(aula);
+  const serie = aulas.length > 1;
   return (
     <div className="cartao mx-auto max-w-xl p-8 text-center sm:p-10" aria-live="polite">
       <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-menta/15 text-emerald-700">
@@ -183,7 +196,10 @@ function PedidoEnviado({ professor, aula }: { professor: ProfessorDetalhe; aula:
       </span>
       <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-tinta">Solicitação enviada</h1>
       <p className="mt-2 text-suave">
-        {professor.nome} vai aceitar ou recusar o pedido. Você recebe um aviso aqui no AulaCerta quando houver resposta.
+        {serie
+          ? `${professor.nome} vai aceitar ou recusar cada uma das ${aulas.length} aulas.`
+          : `${professor.nome} vai aceitar ou recusar o pedido.`}{' '}
+        Você recebe um aviso aqui no AulaCerta quando houver resposta.
       </p>
 
       <dl className="mt-6 divide-y divide-slate-200 rounded-xl border border-slate-200 text-left text-sm">
@@ -194,11 +210,19 @@ function PedidoEnviado({ professor, aula }: { professor: ProfessorDetalhe; aula:
           </dd>
         </div>
         <div className="flex justify-between gap-4 px-4 py-3">
-          <dt className="text-suave">Quando</dt>
+          <dt className="text-suave">{serie ? 'Primeira aula' : 'Quando'}</dt>
           <dd className="text-right font-semibold text-tinta first-letter:uppercase">
             {dia}, {horas}
           </dd>
         </div>
+        {serie && (
+          <div className="flex justify-between gap-4 px-4 py-3">
+            <dt className="text-suave">Repetição</dt>
+            <dd className="text-right font-semibold text-tinta">
+              {aulas.length} aulas semanais, até {diaPorExtenso(chaveDoDia(aulas[aulas.length - 1].inicio))}
+            </dd>
+          </div>
+        )}
         <div className="flex justify-between gap-4 px-4 py-3">
           <dt className="text-suave">Matéria</dt>
           <dd className="text-right font-semibold text-tinta">
@@ -234,7 +258,7 @@ function FormularioDeSolicitacao({
 }: {
   professor: ProfessorDetalhe;
   horario: Horario;
-  aoEnviar: (aula: Aula) => void;
+  aoEnviar: (aulas: Aula[]) => void;
 }) {
   const [erroGeral, setErroGeral] = useState<string | null>(null);
   const [horarioIndisponivel, setHorarioIndisponivel] = useState<string | null>(null);
@@ -251,26 +275,31 @@ function FormularioDeSolicitacao({
       materiaId: professor.materias.length === 1 ? professor.materias[0].id : '',
       modalidade: professor.modalidades.length === 1 ? professor.modalidades[0] : undefined,
       objetivo: '',
+      frequencia: 'UNICA',
+      semanas: SEMANAS_PADRAO,
     },
   });
 
   const materiaEscolhida = watch('materiaId');
   const modalidadeEscolhida = watch('modalidade');
   const tamanhoDoObjetivo = (watch('objetivo') ?? '').length;
+  const semanal = watch('frequencia') === 'SEMANAL';
+  const semanasEscolhidas = Number(watch('semanas')) || SEMANAS_PADRAO;
 
   async function enviar(dados: DadosSolicitacao) {
     setErroGeral(null);
     setHorarioIndisponivel(null);
     try {
-      const [aula] = await solicitarAula({
+      const pedido: DadosParaApi = {
         professorId: professor.id,
         materiaId: dados.materiaId,
         modalidade: dados.modalidade as Modalidade,
         inicio: horario.inicio,
         fim: horario.fim,
         objetivo: dados.objetivo || undefined,
-      });
-      aoEnviar(aula);
+      };
+      if (dados.frequencia === 'SEMANAL') pedido.recorrencia = { semanas: dados.semanas };
+      aoEnviar(await solicitarAula(pedido));
     } catch (erro) {
       const codigo = codigoDeErro(erro);
       if (codigo && ERROS_DE_HORARIO.includes(codigo)) {
@@ -291,7 +320,11 @@ function FormularioDeSolicitacao({
       {horarioIndisponivel && (
         <div role="alert" className="rounded-xl bg-error/10 px-4 py-4 text-sm text-error">
           <p className="font-bold">{horarioIndisponivel}</p>
-          <p className="mt-1">Outra pessoa pode ter reservado esse horário enquanto você preenchia o pedido.</p>
+          <p className="mt-1">
+            {semanal
+              ? 'Uma das semanas da série já está ocupada ou fora da agenda do professor. Escolha menos semanas ou outro horário.'
+              : 'Outra pessoa pode ter reservado esse horário enquanto você preenchia o pedido.'}
+          </p>
           <Link
             to={`/professores/${professor.id}#horarios`}
             className="foco mt-3 inline-block rounded font-bold underline"
@@ -349,6 +382,51 @@ function FormularioDeSolicitacao({
         )}
       </fieldset>
 
+      <fieldset>
+        <legend className="text-lg font-bold text-tinta">Frequência</legend>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <OpcaoDeEscolha
+            marcado={!semanal}
+            entrada={<input type="radio" value="UNICA" className="sr-only" {...register('frequencia')} />}
+          >
+            <span className="block font-semibold text-tinta">Só esta aula</span>
+          </OpcaoDeEscolha>
+          <OpcaoDeEscolha
+            marcado={semanal}
+            entrada={<input type="radio" value="SEMANAL" className="sr-only" {...register('frequencia')} />}
+          >
+            <span className="flex items-center gap-2 font-semibold text-tinta">
+              <Repeat size={16} className="text-secondary" aria-hidden="true" />
+              Toda semana
+            </span>
+            <span className="block text-sm text-suave">Mesmo dia e horário</span>
+          </OpcaoDeEscolha>
+        </div>
+        {semanal && (
+          <div className="mt-4">
+            <label htmlFor="semanas" className="text-sm font-semibold text-tinta">
+              Por quantas semanas?
+            </label>
+            <select
+              id="semanas"
+              aria-describedby="dica-semanas"
+              className="mt-1.5 block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-base text-tinta focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30 sm:w-48"
+              {...register('semanas')}
+            >
+              {OPCOES_DE_SEMANAS.map((quantidade) => (
+                <option key={quantidade} value={quantidade}>
+                  {quantidade} semanas
+                </option>
+              ))}
+            </select>
+            <p id="dica-semanas" className="mt-1.5 text-sm text-suave">
+              {semanasEscolhidas} aulas, até {diaDaUltimaAula(horario.inicio, semanasEscolhidas)}. O professor aceita ou
+              recusa cada aula, e todas as semanas precisam estar livres na agenda dele.
+            </p>
+          </div>
+        )}
+      </fieldset>
+
       <div>
         <div className="flex items-baseline justify-between gap-3">
           <label htmlFor="objetivo" className="text-lg font-bold text-tinta">
@@ -374,7 +452,11 @@ function FormularioDeSolicitacao({
       </div>
 
       <div className="border-t border-slate-200 pt-6">
-        <BotaoEnviar enviando={isSubmitting} rotulo="Enviar solicitação" rotuloEnviando="Enviando…" />
+        <BotaoEnviar
+          enviando={isSubmitting}
+          rotulo={semanal ? `Solicitar ${semanasEscolhidas} aulas` : 'Enviar solicitação'}
+          rotuloEnviando="Enviando…"
+        />
         <p className="mt-3 text-center text-sm text-suave">
           O horário fica reservado para você quando o professor aceitar.
         </p>
@@ -395,7 +477,7 @@ export function PaginaSolicitarAula() {
   const { usuario } = useSessao();
   const clienteQuery = useQueryClient();
   const { data: professor, isPending, isError, refetch } = useProfessor(id);
-  const [aulaCriada, setAulaCriada] = useState<Aula | null>(null);
+  const [aulasCriadas, setAulasCriadas] = useState<Aula[] | null>(null);
 
   const voltarAoPerfil = (
     <Link to={`/professores/${id}#horarios`} className="botao-principal">
@@ -451,10 +533,10 @@ export function PaginaSolicitarAula() {
     );
   }
 
-  if (aulaCriada) {
+  if (aulasCriadas && aulasCriadas.length > 0) {
     return (
       <Moldura professor={professor}>
-        <PedidoEnviado professor={professor} aula={aulaCriada} />
+        <PedidoEnviado professor={professor} aulas={aulasCriadas} />
       </Moldura>
     );
   }
@@ -493,8 +575,8 @@ export function PaginaSolicitarAula() {
           <FormularioDeSolicitacao
             professor={professor}
             horario={horario}
-            aoEnviar={(aula) => {
-              setAulaCriada(aula);
+            aoEnviar={(aulas) => {
+              setAulasCriadas(aulas);
               window.scrollTo({ top: 0 });
               // A agenda do professor mudou: o perfil deve buscar os horários de novo.
               void clienteQuery.invalidateQueries({ queryKey: ['professor', id] });

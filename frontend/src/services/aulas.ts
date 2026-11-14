@@ -35,6 +35,8 @@ export interface DadosSolicitacao {
   fim: string;
   modalidade: Modalidade;
   objetivo?: string;
+  /** RF10: repete o pedido no mesmo dia e horário por 2 a 12 semanas. */
+  recorrencia?: { semanas: number };
 }
 
 export interface AulaDetalhe extends Aula {
@@ -69,9 +71,13 @@ export async function obterAula(id: string): Promise<AulaDetalhe> {
   return data;
 }
 
-/** RF11/RF12: o professor aceita; a API confere conflito de horário dentro de uma transação. */
-export async function aceitarAula(id: string): Promise<AulaDetalhe> {
-  const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/aceitar`);
+/**
+ * RF11/RF12: o professor aceita; a API confere conflito de horário dentro de uma transação e recusa
+ * sozinha os outros pedidos para o mesmo horário. Com serie, confirma também as próximas aulas
+ * pendentes da mesma série semanal (RF10), todas ou nenhuma.
+ */
+export async function aceitarAula(id: string, opcoes?: { serie: true }): Promise<AulaDetalhe> {
+  const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/aceitar`, opcoes);
   return data;
 }
 
@@ -80,7 +86,10 @@ export async function recusarAula(id: string, motivo?: string): Promise<AulaDeta
   return data;
 }
 
-/** RF09: o aluno solicita a aula; ela nasce com o status "Solicitada" e o professor é notificado. */
+/**
+ * RF09: o aluno solicita a aula; ela nasce com o status "Solicitada" e o professor é notificado.
+ * RF10: com recorrência, a API cria uma aula por semana (mesmo serieId) ou nenhuma, se alguma semana estiver ocupada.
+ */
 export async function solicitarAula(dados: DadosSolicitacao): Promise<Aula[]> {
   const { data } = await api.post<{ itens: Aula[] }>('/aulas', dados);
   return data.itens;

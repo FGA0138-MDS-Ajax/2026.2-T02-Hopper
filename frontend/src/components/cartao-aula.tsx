@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { ChevronDown, Clock, Lock, Mail, Phone } from 'lucide-react';
+import { ChevronDown, Clock, Lock, Mail, Phone, Repeat } from 'lucide-react';
 import { useAceitarAula, useAula, useRecusarAula } from '../hooks/use-aulas';
 import { mensagemDeErro } from '../services/api';
 import { ROTULO_STATUS, type Aula } from '../services/aulas';
@@ -106,11 +106,15 @@ function AcoesDoProfessor({ aula, aoConcluir }: { aula: Aula; aoConcluir: (mensa
   const idMotivo = useId();
   const ocupado = aceitar.isPending || recusar.isPending;
 
-  async function confirmarAula() {
+  async function confirmarAula(serie = false) {
     setErro(null);
     try {
-      await aceitar.mutateAsync(aula.id);
-      aoConcluir(`Aula com ${aula.aluno.nome} confirmada. O horário ficou reservado e o aluno foi avisado.`);
+      await aceitar.mutateAsync({ id: aula.id, serie });
+      aoConcluir(
+        serie
+          ? `Aulas semanais com ${aula.aluno.nome} confirmadas. Os horários ficaram reservados e o aluno foi avisado.`
+          : `Aula com ${aula.aluno.nome} confirmada. O horário ficou reservado e o aluno foi avisado.`,
+      );
     } catch (falha) {
       setErro(mensagemDeErro(falha, 'Não foi possível confirmar a aula. Tente novamente.'));
     }
@@ -170,12 +174,22 @@ function AcoesDoProfessor({ aula, aoConcluir }: { aula: Aula; aoConcluir: (mensa
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={confirmarAula}
+            onClick={() => confirmarAula()}
             disabled={ocupado}
             className="botao-principal h-11 px-5 text-sm disabled:opacity-60"
           >
-            {aceitar.isPending ? 'Confirmando…' : 'Aceitar'}
+            {aceitar.isPending ? 'Confirmando…' : aula.serieId ? 'Aceitar esta aula' : 'Aceitar'}
           </button>
+          {aula.serieId && (
+            <button
+              type="button"
+              onClick={() => confirmarAula(true)}
+              disabled={ocupado}
+              className="botao-secundario h-11 px-5 text-sm disabled:opacity-60"
+            >
+              Aceitar a série inteira
+            </button>
+          )}
           <button
             type="button"
             onClick={() => setRecusando(true)}
@@ -231,6 +245,12 @@ export function CartaoAula({
               <IconeModalidade size={14} aria-hidden="true" />
               {ROTULO_MODALIDADE[aula.modalidade]}
             </li>
+            {aula.serieId && (
+              <li className="inline-flex items-center gap-1.5">
+                <Repeat size={14} aria-hidden="true" />
+                Aula semanal
+              </li>
+            )}
           </ul>
           {aula.objetivo && <p className="mt-2 line-clamp-2 text-sm text-tinta">“{aula.objetivo}”</p>}
         </div>
