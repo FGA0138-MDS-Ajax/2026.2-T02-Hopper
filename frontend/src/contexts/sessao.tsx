@@ -18,6 +18,8 @@ interface Sessao {
   /** Cria a conta e já entra com ela. */
   cadastrar: (dados: DadosCadastro) => Promise<Usuario>;
   sair: () => void;
+  /** Troca os dados do usuário logado depois de editá-los (ex.: novo nome no cabeçalho). */
+  atualizarUsuario: (usuario: Usuario) => void;
 }
 
 const ContextoSessao = createContext<Sessao | null>(null);
@@ -62,6 +64,13 @@ export function SessaoProvider({ children }: { children: ReactNode }) {
     clienteQuery.removeQueries({ queryKey: [CHAVE_SESSAO] });
   }, [clienteQuery]);
 
+  const atualizarUsuario = useCallback(
+    (usuario: Usuario) => {
+      if (token) clienteQuery.setQueryData([CHAVE_SESSAO, token], usuario);
+    },
+    [clienteQuery, token],
+  );
+
   const valor = useMemo<Sessao>(
     () => ({
       usuario: token ? (data ?? null) : null,
@@ -69,8 +78,9 @@ export function SessaoProvider({ children }: { children: ReactNode }) {
       entrar,
       cadastrar,
       sair,
+      atualizarUsuario,
     }),
-    [token, data, isPending, entrar, cadastrar, sair],
+    [token, data, isPending, entrar, cadastrar, sair, atualizarUsuario],
   );
 
   return <ContextoSessao.Provider value={valor}>{children}</ContextoSessao.Provider>;
