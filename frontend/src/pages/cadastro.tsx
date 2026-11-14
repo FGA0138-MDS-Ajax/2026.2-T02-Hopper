@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { BookOpen, GraduationCap } from 'lucide-react';
 import { Campo } from '../components/campo';
 import { AlertaErro, BotaoEnviar, LayoutAutenticacao } from '../components/layout-autenticacao';
@@ -46,11 +46,13 @@ const OPCOES_DE_PERFIL = [
 export function PaginaCadastro() {
   useTitulo('Criar conta');
   const { usuario, cadastrar } = useSessao();
-  const navegar = useNavigate();
   const [parametros] = useSearchParams();
   const voltar = parametros.get('voltar');
   const destino = destinoSeguro(voltar);
   const [erroGeral, setErroGeral] = useState<string | null>(null);
+  // Destino escolhido no envio. O cadastro já entra na conta, e a regra "quem está logado sai desta
+  // página" logo abaixo dispara nesse momento: ela precisa levar ao destino certo (CT01).
+  const [destinoDoCadastro, setDestinoDoCadastro] = useState<string | null>(null);
 
   const {
     register,
@@ -71,18 +73,19 @@ export function PaginaCadastro() {
   });
   const perfilEscolhido = watch('perfil');
 
-  if (usuario) return <Navigate to={destino} replace />;
+  if (usuario) return <Navigate to={destinoDoCadastro ?? destino} replace />;
 
   async function enviar(dados: DadosCadastro) {
     setErroGeral(null);
+    // Quem veio de outra página (ex.: no meio de uma solicitação) volta para ela. Sem destino,
+    // cada perfil vai para o seu ponto de partida (CT01): o professor completa o perfil (sem ele,
+    // não aparece na busca) e o aluno vai encontrar um professor.
+    const inicioDoPerfil = dados.perfil === 'PROFESSOR' ? '/meu-perfil?bem-vindo=1' : '/professores';
+    setDestinoDoCadastro(voltar ? destino : inicioDoPerfil);
     try {
       await cadastrar({ ...dados, telefone: dados.telefone || undefined });
-      // Quem veio de outra página (ex.: no meio de uma solicitação) volta para ela. Sem destino,
-      // cada perfil vai para o seu ponto de partida (CT01): o professor completa o perfil (sem ele,
-      // não aparece na busca) e o aluno vai encontrar um professor.
-      const inicioDoPerfil = dados.perfil === 'PROFESSOR' ? '/meu-perfil?bem-vindo=1' : '/professores';
-      navegar(voltar ? destino : inicioDoPerfil, { replace: true });
     } catch (erro) {
+      setDestinoDoCadastro(null);
       if (codigoDeErro(erro) === 'EMAIL_JA_CADASTRADO') {
         setError(
           'email',
