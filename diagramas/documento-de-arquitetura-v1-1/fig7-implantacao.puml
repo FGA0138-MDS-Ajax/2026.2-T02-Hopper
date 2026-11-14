@@ -1,0 +1,28 @@
+@startuml
+!include estilo.iuml
+node "Dispositivo do usuário\n(celular ou computador)" as Disp {
+  node "Navegador web" as Nav {
+    artifact "SPA React\n(HTML, CSS, JS)" as SPA
+  }
+}
+node "GitHub" as GH {
+  artifact "Repositório\n(main, developer, docs)" as Repo
+  artifact "GitHub Pages\n(MkDocs)" as Pages
+}
+cloud "Vercel (CDN)" as Vercel {
+  artifact "Build estático\ndo front-end" as Build
+}
+node "Render - Web Service" as Render {
+  node "Contêiner Docker\nNode.js 20" as Docker {
+    artifact "API REST\n(Express)" as API
+  }
+}
+database "Neon - PostgreSQL\ngerenciado" as Neon
+cloud "Brevo\n(API HTTP de e-mail)" as Brevo
+Nav --> Vercel : HTTPS
+Nav --> API : HTTPS / JSON
+API --> Neon : TLS (5432)
+API --> Brevo : HTTPS\n(recuperação de senha)
+Repo ..> Vercel : publicação\n(main)
+Repo ..> Render : publicação\n(main)
+@enduml

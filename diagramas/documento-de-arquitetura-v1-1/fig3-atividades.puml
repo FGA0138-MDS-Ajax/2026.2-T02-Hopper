@@ -1,0 +1,68 @@
+@startuml
+!include estilo.iuml
+skinparam activity {
+  BackgroundColor #DDE8F4
+  BorderColor #2E75B6
+  DiamondBackgroundColor #FFF2CC
+  DiamondBorderColor #BF9000
+}
+skinparam swimlane {
+  BorderColor #404040
+  TitleFontStyle bold
+}
+|Aluno|
+start
+:Buscar professor por matéria,
+nível e modalidade;
+:Visualizar horários livres
+do professor;
+:Preencher solicitação (matéria, nível,
+modalidade, horário e objetivo);
+|Sistema|
+if (Dados válidos?) then (sim)
+else (não)
+  |Aluno|
+  :Corrigir dados informados;
+  stop
+endif
+|Sistema|
+if (Horário ainda livre?) then (sim)
+else (não)
+  :Informar indisponibilidade;
+  |Aluno|
+  stop
+endif
+|Sistema|
+:Registrar aula com status
+"solicitada";
+:Notificar professor;
+|Professor|
+:Analisar solicitação;
+if (Aceitar?) then (sim)
+  |Sistema|
+  :Abrir transação e reservar
+a agenda do professor;
+  if (Conflito detectado?) then (não)
+    :Alterar status para "confirmada"
+e bloquear o horário;
+    :Recusar automaticamente os pedidos
+pendentes para o mesmo horário;
+    :Confirmar transação;
+    :Notificar aluno (e os alunos
+dos pedidos recusados);
+    stop
+  else (sim)
+    :Desfazer transação e informar
+conflito ao professor;
+    stop
+  endif
+else (não)
+  |Professor|
+  :Recusar (motivo opcional);
+  |Sistema|
+  :Alterar status para "recusada"
+e manter o horário livre;
+  :Notificar aluno;
+  stop
+endif
+@enduml

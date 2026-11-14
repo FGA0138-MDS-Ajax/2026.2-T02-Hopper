@@ -1,0 +1,56 @@
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName "Verdana"
+skinparam dpi 150
+skinparam defaultFontSize 13
+skinparam roundCorner 8
+skinparam ArrowColor #404040
+skinparam ArrowFontColor #262626
+skinparam ArrowFontSize 12
+skinparam backgroundColor #FFFFFF
+skinparam class {
+  BackgroundColor #F5F9FD
+  BorderColor #2E75B6
+  HeaderBackgroundColor #DDE8F4
+  AttributeFontSize 13
+}
+skinparam usecase {
+  BackgroundColor #DDE8F4
+  BorderColor #2E75B6
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #404040
+}
+skinparam rectangle {
+  BorderColor #2E75B6
+}
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #2E75B6
+  FontStyle bold
+}
+skinparam component {
+  BackgroundColor #DDE8F4
+  BorderColor #2E75B6
+}
+skinparam node {
+  BackgroundColor #F2F2F2
+  BorderColor #1F3864
+}
+skinparam artifact {
+  BackgroundColor #F5F9FD
+  BorderColor #808080
+}
+skinparam database {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+skinparam cloud {
+  BackgroundColor #F2F2F2
+  BorderColor #808080
+}
+skinparam interface {
+  BackgroundColor #FFFFFF
+  BorderColor #404040
+}

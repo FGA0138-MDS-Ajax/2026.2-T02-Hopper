@@ -1,0 +1,46 @@
+@startuml
+!include estilo.iuml
+left to right direction
+actor Visitante
+actor Aluno
+actor Professor
+Aluno --|> Visitante
+Professor --|> Visitante
+rectangle AulaCerta {
+  usecase "UC01 Cadastrar-se" as UC01
+  usecase "UC02 Autenticar-se" as UC02
+  usecase "UC16 Recuperar senha\npor e-mail" as UC16
+  usecase "UC03 Buscar professores" as UC03
+  usecase "UC04 Visualizar perfil\ne horários livres" as UC04
+  usecase "UC07 Solicitar aula" as UC07
+  usecase "UC09 Remarcar aula" as UC09
+  usecase "UC10 Cancelar aula" as UC10
+  usecase "UC11 Acompanhar status\ne histórico" as UC11
+  usecase "UC14 Visualizar lembretes" as UC14
+  usecase "UC05 Manter perfil\ndo professor" as UC05
+  usecase "UC06 Gerenciar\ndisponibilidade" as UC06
+  usecase "UC08 Aceitar ou recusar\nsolicitação" as UC08
+  usecase "UC13 Notificar\nusuários" as UC13
+}
+Visitante --> UC01
+Visitante --> UC02
+Visitante --> UC16
+Visitante --> UC03
+Visitante --> UC04
+Aluno --> UC07
+Aluno --> UC09
+Aluno --> UC10
+Aluno --> UC11
+Aluno --> UC14
+Professor --> UC05
+Professor --> UC06
+Professor --> UC08
+Professor --> UC09
+Professor --> UC10
+Professor --> UC11
+Professor --> UC14
+UC07 ..> UC13 : <<include>>
+UC08 ..> UC13 : <<include>>
+UC09 ..> UC13 : <<include>>
+UC10 ..> UC13 : <<include>>
+@enduml

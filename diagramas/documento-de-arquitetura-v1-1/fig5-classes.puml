@@ -1,0 +1,108 @@
+@startuml
+!include estilo.iuml
+hide circle
+hide empty methods
+skinparam classAttributeIconSize 0
+class Usuario {
+  -id: UUID
+  -nome: String
+  -email: String
+  -senhaHash: String
+  -telefone: String
+  -perfil: Perfil
+  -ativo: Boolean
+  -consentimentoLgpdEm: DateTime
+}
+class PerfilProfessor {
+  -apresentacao: String
+  -valorHora: Decimal
+  -modalidades: Modalidade[]
+}
+class Materia {
+  -nome: String
+  -nivel: String
+}
+class Disponibilidade {
+  -diaSemana: Int
+  -horaInicio: String
+  -horaFim: String
+}
+class BloqueioHorario {
+  -inicio: DateTime
+  -fim: DateTime
+  -motivo: String
+}
+class Aula {
+  -inicio: DateTime
+  -fim: DateTime
+  -modalidade: Modalidade
+  -objetivo: String
+  -status: StatusAula
+  -motivoCancelamento: String
+  -serieId: String
+  -criadoEm: DateTime
+}
+class HistoricoStatus {
+  -status: StatusAula
+  -dataHora: DateTime
+  -motivo: String
+}
+class Remarcacao {
+  -novoInicio: DateTime
+  -novoFim: DateTime
+  -aceita: Boolean
+}
+class Notificacao {
+  -tipo: TipoNotificacao
+  -mensagem: String
+  -lida: Boolean
+  -criadoEm: DateTime
+}
+class TokenRecuperacaoSenha {
+  -tokenHash: String
+  -expiraEm: DateTime
+  -usadoEm: DateTime
+}
+enum Perfil {
+  ALUNO
+  PROFESSOR
+  ADMIN
+}
+enum Modalidade {
+  ONLINE
+  PRESENCIAL
+  DOMICILIO
+}
+enum StatusAula {
+  SOLICITADA
+  CONFIRMADA
+  RECUSADA
+  REMARCADA
+  CANCELADA
+  REALIZADA
+}
+enum TipoNotificacao {
+  SOLICITACAO
+  CONFIRMACAO
+  RECUSA
+  REMARCACAO
+  CANCELAMENTO
+  LEMBRETE
+}
+Usuario "1" -- "0..1" PerfilProfessor : possui >
+Usuario "1" -- "0..*" Aula : solicita (aluno) >
+Usuario "1" -- "0..*" Notificacao : recebe >
+Usuario "1" -- "0..*" TokenRecuperacaoSenha : redefine senha >
+PerfilProfessor "0..*" -- "1..*" Materia : ensina >
+PerfilProfessor "1" *-- "0..*" Disponibilidade
+PerfilProfessor "1" *-- "0..*" BloqueioHorario
+PerfilProfessor "1" -- "0..*" Aula : ministra >
+Materia "1" -- "0..*" Aula
+Aula "1" *-- "1..*" HistoricoStatus
+Aula "1" *-- "0..*" Remarcacao
+Aula "0..1" -- "0..*" Notificacao : refere-se <
+Usuario ..> Perfil
+Aula ..> StatusAula
+Aula ..> Modalidade
+Notificacao ..> TipoNotificacao
+@enduml

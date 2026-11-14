@@ -1,0 +1,36 @@
+@startuml
+!include estilo.iuml
+package "Cliente (navegador)" {
+  [SPA React] as SPA
+}
+interface "REST" as REST
+package "API REST (Express)" {
+  [Middlewares\n(Helmet, CORS, JWT,\nperfil, validação)] as MW
+  [Auth] as Auth
+  [Usuários] as Usuarios
+  [Agenda] as Agenda
+  [Aulas] as Aulas
+  [Notificações] as Notificacoes
+  [Repositórios Prisma] as Repo
+}
+database "PostgreSQL" as DB
+cloud "Brevo\n(API HTTP de e-mail)" as Brevo
+SPA --( REST
+REST - MW
+MW --> Auth
+MW --> Usuarios
+MW --> Agenda
+MW --> Aulas
+MW --> Notificacoes
+Aulas --> Agenda : consulta\ndisponibilidade
+Aulas --> Usuarios : dados do\nprofessor
+Aulas --> Notificacoes : eventos de\nstatus
+Usuarios --> Agenda : horários\nlivres
+Auth --> Repo
+Usuarios --> Repo
+Agenda --> Repo
+Aulas --> Repo
+Notificacoes --> Repo
+Repo --> DB
+Auth --> Brevo : HTTPS\n(recuperação de senha)
+@enduml

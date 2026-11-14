@@ -1,0 +1,40 @@
+@startuml
+!include estilo.iuml
+package "frontend (SPA React)" as FE {
+  package pages
+  package components
+  package hooks
+  package contexts
+  package services
+  package utils
+}
+pages ..> components
+pages ..> hooks
+pages ..> contexts
+pages ..> utils
+hooks ..> services
+contexts ..> services
+
+package "backend (API Express)" as BE {
+  package modules {
+    package auth
+    package usuarios
+    package agenda
+    package aulas
+    package notificacoes
+  }
+  package shared
+  package infra
+  package config
+}
+services ..> BE : HTTPS/JSON
+aulas ..> usuarios
+aulas ..> notificacoes
+aulas ..> agenda : <<injeção>>
+agenda ..> aulas : <<injeção>>\nhorários ocupados
+usuarios ..> agenda : <<injeção>>\nhorários livres
+modules ..> shared
+modules ..> infra : repositórios\ne transações
+auth ..> infra : e-mail (Brevo)\n<<injeção>>
+infra ..> config
+@enduml
