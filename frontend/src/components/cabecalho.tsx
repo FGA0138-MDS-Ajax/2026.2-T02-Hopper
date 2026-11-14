@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { useSessao } from '../contexts/sessao';
 import { Logo } from './logo';
 import { iniciais } from '../utils/formatacao';
+import { SinoNotificacoes } from './sino-notificacoes';
 
 const LINKS = [
   { href: '/#como-funciona', rotulo: 'Como funciona' },
@@ -50,38 +51,29 @@ export function Cabecalho() {
           {usuario ? (
             <>
               {usuario.perfil !== 'ADMIN' && (
-                <Link to="/minhas-aulas" className="botao-principal mr-2 h-10 px-4 text-sm">
-                  Minhas aulas
-                </Link>
+                <>
+                  <Link to="/minhas-aulas" className="botao-principal mr-1 h-10 px-4 text-sm">
+                    Minhas aulas
+                  </Link>
+                  <SinoNotificacoes />
+                </>
               )}
-              {usuario.perfil === 'PROFESSOR' ? (
-                <Link
-                  to="/meu-perfil"
-                  className="foco flex items-center gap-2 rounded-xl text-sm font-semibold text-tinta hover:text-secondary"
-                  title="Meu perfil"
+              <Link
+                to="/meu-perfil"
+                className="foco ml-1 flex items-center gap-2 rounded-xl text-sm font-semibold text-tinta hover:text-secondary"
+                title="Meu perfil"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
-                  >
-                    {iniciais(usuario.nome)}
-                  </span>
-                  <span>
-                    Olá, {primeiroNome(usuario.nome)}
-                    <span className="sr-only"> (meu perfil)</span>
-                  </span>
-                </Link>
-              ) : (
-                <span className="flex items-center gap-2 text-sm font-semibold text-tinta">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-secondary"
-                  >
-                    {iniciais(usuario.nome)}
-                  </span>
-                  Olá, {primeiroNome(usuario.nome)}
+                  {iniciais(usuario.nome)}
                 </span>
-              )}
+                <span>
+                  Olá, {primeiroNome(usuario.nome)}
+                  <span className="sr-only"> (meu perfil)</span>
+                </span>
+              </Link>
               <button
                 type="button"
                 onClick={sairDaConta}
@@ -107,16 +99,19 @@ export function Cabecalho() {
           )}
         </div>
 
-        <button
-          type="button"
-          className="foco -mr-2 inline-flex h-11 w-11 items-center justify-center rounded-xl text-primary md:hidden"
-          aria-expanded={aberto}
-          aria-controls="menu-movel"
-          aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
-          onClick={() => setAberto((valor) => !valor)}
-        >
-          {aberto ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div className="-mr-2 flex items-center gap-1 md:hidden">
+          {usuario && usuario.perfil !== 'ADMIN' && <SinoNotificacoes aoNavegar={() => setAberto(false)} />}
+          <button
+            type="button"
+            className="foco inline-flex h-11 w-11 items-center justify-center rounded-xl text-primary"
+            aria-expanded={aberto}
+            aria-controls="menu-movel"
+            aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
+            onClick={() => setAberto((valor) => !valor)}
+          >
+            {aberto ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {aberto && (
@@ -138,11 +133,9 @@ export function Cabecalho() {
                   Minhas aulas
                 </Link>
               )}
-              {usuario.perfil === 'PROFESSOR' && (
-                <Link to="/meu-perfil" onClick={() => setAberto(false)} className="botao-secundario mt-2">
-                  Meu perfil
-                </Link>
-              )}
+              <Link to="/meu-perfil" onClick={() => setAberto(false)} className="botao-secundario mt-2">
+                Meu perfil
+              </Link>
               <div className="mt-2 flex items-center justify-between rounded-xl bg-white px-3 py-3">
                 <span className="text-sm font-semibold text-tinta">Olá, {primeiroNome(usuario.nome)}</span>
                 <button type="button" onClick={sairDaConta} className="foco rounded-lg text-sm font-bold text-primary">

@@ -12,6 +12,7 @@ const PaginaMinhasAulas = lazy(() => import('./pages/minhas-aulas').then((m) => 
 const PaginaNaoEncontrada = lazy(() =>
   import('./pages/nao-encontrada').then((m) => ({ default: m.PaginaNaoEncontrada })),
 );
+const PaginaNotificacoes = lazy(() => import('./pages/notificacoes').then((m) => ({ default: m.PaginaNotificacoes })));
 const PaginaPrivacidade = lazy(() => import('./pages/privacidade').then((m) => ({ default: m.PaginaPrivacidade })));
 const PaginaProfessor = lazy(() => import('./pages/professor').then((m) => ({ default: m.PaginaProfessor })));
 const PaginaProfessores = lazy(() => import('./pages/professores').then((m) => ({ default: m.PaginaProfessores })));
@@ -79,6 +80,14 @@ export function App() {
               element={
                 <RotaProtegida>
                   <PaginaMinhasAulas />
+                </RotaProtegida>
+              }
+            />
+            <Route
+              path="/notificacoes"
+              element={
+                <RotaProtegida>
+                  <PaginaNotificacoes />
                 </RotaProtegida>
               }
             />
