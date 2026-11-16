@@ -1,0 +1,53 @@
+/* Visual do AulaCerta sobre o relatório de cobertura do Istanbul (gerado por scripts/registrar-testes.mjs). */
+:root, :root[data-theme] {
+  color-scheme: light;
+  --color-text: #0f172a; --color-bg: #f6f8fd; --color-quiet: #475569; --color-link: #0051d5;
+  --color-fraction: #00236f; --color-fraction-bg: #e8eefc; --color-border: #e2e8f0; --color-keyline: #e2e8f0;
+  --color-high: #e8faf3; --color-high-strong: #1fc58e; --color-covered: rgba(31, 197, 142, .25);
+  --color-medium: #fef6e4; --color-medium-strong: #f59e0b;
+  --color-low: #fdeceb; --color-low-strong: #ba1a1a; --color-uncovered: rgba(186, 26, 26, .18);
+  --color-highlighted: rgba(186, 26, 26, .5); --color-neutral: #f1f5f9; --color-cover-empty: #e2e8f0;
+}
+:root:not([data-theme="legacy"]) body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+.ac-topo { position: sticky; top: 0; z-index: 20; background: rgba(246, 248, 253, .9); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(226, 232, 240, .6); }
+.ac-topo .ac-conteudo { max-width: 80rem; margin: 0 auto; padding: 8px 16px; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; }
+.ac-marca { display: inline-flex; align-items: center; gap: 10px; text-decoration: none !important; }
+.ac-marca .logo { height: 32px; width: auto; }
+.ac-marca .nome { font-size: 1.25rem; font-weight: 800; letter-spacing: -.025em; color: #00236f; }
+.ac-marca .nome b { color: #0051d5; }
+.ac-marca small { font-size: .75rem; font-weight: 600; color: #475569; border-left: 1px solid #e2e8f0; padding-left: 10px; }
+.ac-topo nav { display: flex; gap: 6px 20px; flex-wrap: wrap; }
+.ac-topo nav a { font-size: .875rem; font-weight: 600; color: #475569; }
+.ac-topo nav a:hover { color: #00236f; text-decoration: none; }
+.wrapper { max-width: 80rem; padding: 0 16px; min-height: calc(100% - 65px); }
+.wrapper > .pad1:first-child { padding: 24px 0 8px; }
+.wrapper > .pad1:not(:first-child) { padding: 16px 0; }
+:root:not([data-theme="legacy"]) h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; color: #00236f; margin: 0 0 12px; }
+h1 a { color: #0051d5; }
+.clearfix .fl.pad1y { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 14px; margin: 0 10px 10px 0; }
+.clearfix .strong { font-size: 1.1rem; font-weight: 800; }
+:root:not([data-theme="legacy"]) pre, :root:not([data-theme="legacy"]) .fraction { font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
+:root:not([data-theme="legacy"]) .fraction { border-radius: 4px; padding: 3px 8px; font-size: 11px; }
+p.quiet { clear: both; font-size: .85rem; }
+:root:not([data-theme="legacy"]) #fileSearch { height: 36px; min-width: 260px; border-radius: 6px; padding: 0 12px; border-color: #cbd5e1; }
+.status-line { height: 6px; border-radius: 2px; }
+:root:not([data-theme="legacy"]) .coverage-summary { width: 100%; border-radius: 8px; background: #fff; }
+:root:not([data-theme="legacy"]) .coverage-summary th { background: #f8fafc; color: #0f172a; font-weight: 700; }
+.coverage-summary td, .coverage-summary th { padding: 9px 10px; white-space: nowrap; }
+.coverage-summary td.file a { font-weight: 600; }
+.coverage-summary td.pic { min-width: 110px; }
+.wrapper > .pad1:not(:first-child) { overflow-x: auto; }
+.chart, .high .chart, .medium .chart, .low .chart { display: flex; width: 96px; height: 8px; border: 0; border-radius: 2px; overflow: hidden; background: #e2e8f0; }
+.cover-fill, .cover-empty { height: 8px; }
+.cover-empty { background: transparent; }
+pre:has(> table.coverage) { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 0; overflow-x: auto; margin-top: 8px; }
+table.coverage { margin: 0; }
+table.coverage td.line-count { color: #94a3b8; padding: 0 10px 0 14px; }
+table.coverage td.line-coverage span.cline-any { padding: 0 8px; }
+.ac-legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin: 8px 0 0; font-size: .8rem; color: #475569; }
+.ac-amostra { display: inline-block; min-width: 26px; height: 18px; margin-right: 6px; border-radius: 3px; vertical-align: middle; font: 11px/18px "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; text-align: center; }
+.ac-amostra.coberta { background: var(--color-covered); }
+.ac-amostra.descoberta { background: var(--color-uncovered); }
+.ac-amostra.vezes { background: var(--color-high); color: #047857; }
+.ac-amostra.ramo { background: var(--color-missing-if-bg); color: var(--color-missing-if); padding: 0 4px; }
+.footer { color: #475569; }

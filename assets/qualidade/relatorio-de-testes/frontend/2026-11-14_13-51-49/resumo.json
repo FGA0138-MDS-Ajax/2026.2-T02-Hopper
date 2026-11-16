@@ -1,0 +1,29 @@
+{
+  "tipo": "frontend",
+  "titulo": "Front-end — testes de componentes (com cobertura)",
+  "carimbo": "2026-11-14_13-51-49",
+  "inicio": "14/11/2026 13:51:49",
+  "duracao": 41.027,
+  "situacao": "APROVADO",
+  "codigo": 0,
+  "totais": {
+    "total": 194,
+    "aprovados": 194,
+    "falharam": 0,
+    "ignorados": 0
+  },
+  "cobertura": {
+    "linhas": 96.26,
+    "instrucoes": 95.49,
+    "funcoes": 94.48,
+    "ramificacoes": 90.48
+  },
+  "branch": "test/casos-pendentes-do-roteiro",
+  "commit": "a6b0102",
+  "alterado": true,
+  "comando": "vitest run --reporter=default --reporter=json --outputFile.json=../relatorios/frontend/2026-11-14_13-51-49/resultado.json --includeTaskLocation --coverage --coverage.reportsDirectory=../relatorios/frontend/2026-11-14_13-51-49/cobertura --coverage.reporter=text --coverage.reporter=html --coverage.reporter=json-summary",
+  "relatorios": [
+    "html/index.html",
+    "cobertura/index.html"
+  ]
+}

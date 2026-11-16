@@ -1,0 +1,24 @@
+{
+  "tipo": "e2e",
+  "titulo": "Sistema — Playwright (ponta a ponta)",
+  "carimbo": "2026-11-14_13-50-04",
+  "inicio": "14/11/2026 13:50:04",
+  "duracao": 40.583,
+  "situacao": "APROVADO",
+  "codigo": 0,
+  "totais": {
+    "total": 9,
+    "aprovados": 9,
+    "falharam": 0,
+    "instaveis": 0,
+    "ignorados": 0
+  },
+  "cobertura": null,
+  "branch": "test/casos-pendentes-do-roteiro",
+  "commit": "a6b0102",
+  "alterado": true,
+  "comando": "playwright test",
+  "relatorios": [
+    "html/index.html"
+  ]
+}

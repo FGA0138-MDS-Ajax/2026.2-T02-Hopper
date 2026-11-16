@@ -1,0 +1,67 @@
+AulaCerta — registro de execução de testes
+------------------------------------------------------------------------------
+Tipo:      Back-end — testes unitários (com cobertura)
+Início:    14/11/2026 13:46:54 (horário de Brasília)
+Branch:    test/casos-pendentes-do-roteiro | commit a6b0102 (com alterações não commitadas)
+Node:      v22.22.3
+Pasta:     backend/
+Comando:   vitest run --project unit --reporter=default --reporter=json --outputFile.json=../relatorios/backend-unitarios/2026-11-14_13-46-54/resultado.json --includeTaskLocation --coverage --coverage.reportsDirectory=../relatorios/backend-unitarios/2026-11-14_13-46-54/cobertura --coverage.reporter=text --coverage.reporter=html --coverage.reporter=json-summary
+------------------------------------------------------------------------------
+
+ RUN  v5.1.0 C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/backend
+      Coverage enabled with v8
+
+ ✓ |unit| src/modules/usuarios/usuarios.service.test.ts (14 tests) 21ms
+ ✓ |unit| src/shared/utils/seguranca.test.ts (4 tests) 217ms
+ ✓ |unit| src/infra/brevo.test.ts (2 tests) 35ms
+ ✓ |unit| src/modules/aulas/aulas.service.test.ts (31 tests) 41ms
+ ✓ |unit| src/shared/utils/datas.test.ts (13 tests) 19ms
+ ✓ |unit| src/shared/middlewares/autenticar.test.ts (2 tests) 13ms
+ ✓ |unit| src/modules/auth/auth.service.test.ts (14 tests) 1267ms
+ ✓ |unit| src/modules/notificacoes/notificacoes.service.test.ts (6 tests) 15ms
+ ✓ |unit| src/config/zod-ptbr.test.ts (4 tests) 23ms
+ ✓ |unit| src/modules/agenda/agenda.service.test.ts (15 tests) 19ms
+ ✓ |unit| src/modules/aulas/aulas.estados.test.ts (5 tests) 15ms
+ ✓ |unit| src/shared/middlewares/validar.test.ts (4 tests) 16ms
+ ✓ |unit| src/shared/utils/paginacao.test.ts (3 tests) 16ms
+ ✓ |unit| src/shared/middlewares/tratar-erros.test.ts (6 tests) 14ms
+ ✓ |unit| tests/ferramentas/dependencias.test.ts (2 tests) 6ms
+ ✓ |unit| src/shared/middlewares/autorizar.test.ts (3 tests) 9ms
+ ✓ |unit| src/infra/conexao-banco.test.ts (1 test) 6ms
+ ✓ |unit| src/shared/utils/erros-banco.test.ts (4 tests) 7ms
+
+ Test Files  18 passed (18)
+      Tests  133 passed (133)
+   Start at  13:46:55
+   Duration  3.36s (tests 41%, import 38%, worker 16%, transform 5%)
+
+JSON report written to C:/Users/pedro/OneDrive/Documentos/Universidade de Brasília/2026 - 2/FGA0312 - MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE - T02 (2026.2)/2026.2-T02-Hopper/relatorios/backend-unitarios/2026-11-14_13-46-54/resultado.json
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   98.75 |     96.5 |   98.48 |   98.65 |                   
+ agenda            |   91.66 |       95 |    90.9 |   91.17 |                   
+  ...da.service.ts |   91.66 |       95 |    90.9 |   91.17 | 27,46-47          
+ aulas             |     100 |    96.92 |     100 |     100 |                   
+  aulas.service.ts |     100 |    96.92 |     100 |     100 | 251,320           
+ auth              |     100 |    96.55 |     100 |     100 |                   
+  auth.service.ts  |     100 |    96.55 |     100 |     100 | 126               
+ usuarios          |     100 |    94.73 |     100 |     100 |                   
+  ...os.service.ts |     100 |    94.73 |     100 |     100 | 179               
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 98.75% ( 237/240 )
+Branches     : 96.5% ( 138/143 )
+Functions    : 98.48% ( 65/66 )
+Lines        : 98.65% ( 220/223 )
+================================================================================
+
+------------------------------------------------------------------------------
+Resultado: APROVADO (código de saída 0)
+Testes:    133 aprovados (de 133)
+Cobertura: linhas 98,7%, instruções 98,8%, funções 98,5%, ramificações 96,5%
+Duração:   4,2 s
+Relatórios: html/index.html, cobertura/index.html
+------------------------------------------------------------------------------

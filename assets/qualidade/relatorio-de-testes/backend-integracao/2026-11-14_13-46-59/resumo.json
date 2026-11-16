@@ -1,0 +1,23 @@
+{
+  "tipo": "backend-integracao",
+  "titulo": "Back-end — testes de integração (banco de teste)",
+  "carimbo": "2026-11-14_13-46-59",
+  "inicio": "14/11/2026 13:46:59",
+  "duracao": 142.86,
+  "situacao": "APROVADO",
+  "codigo": 0,
+  "totais": {
+    "total": 73,
+    "aprovados": 73,
+    "falharam": 0,
+    "ignorados": 0
+  },
+  "cobertura": null,
+  "branch": "test/casos-pendentes-do-roteiro",
+  "commit": "a6b0102",
+  "alterado": true,
+  "comando": "vitest run --project integration --reporter=default --reporter=json --outputFile.json=../relatorios/backend-integracao/2026-11-14_13-46-59/resultado.json --includeTaskLocation",
+  "relatorios": [
+    "html/index.html"
+  ]
+}
