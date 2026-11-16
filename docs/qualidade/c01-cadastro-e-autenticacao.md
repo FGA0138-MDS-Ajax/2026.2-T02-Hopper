@@ -41,7 +41,7 @@ A coluna **Ciclos** conta quantas vezes o caso foi executado até ser aprovado.
 
 | Caso | Descrição | Req. | Nível | Esperado | Status | Ciclos | Defeito |
 |---|---|---|---|---|---|---|---|
-| CT01 | Cadastro com dados válidos | RF01 | Sistema | Conta criada; aluno vai para a busca de professores e professor, para a edição do perfil | ✅ Aprovado | 1 | [DEF-C01-01](#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro) |
+| CT01 | Cadastro com dados válidos | RF01 | Sistema | Conta criada; aluno vai para a busca de professores e professor, para a edição do perfil | ✅ Aprovado | 3 | [DEF-C01-01](#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro) |
 | CT01.1 | Cadastro com e-mail já existente | RF01 | Integração | Cadastro recusado com mensagem clara | ✅ Aprovado | 1 | — |
 | CT01.2 | Cadastro sem campos obrigatórios | RF01 | Integração | Cadastro recusado indicando os campos faltantes | ✅ Aprovado | 1 | — |
 | CT02 | Login com credenciais incorretas | RF02 | Integração e sistema | Acesso negado com mensagem clara, sem revelar qual dado está errado | ✅ Aprovado | 1 | — |

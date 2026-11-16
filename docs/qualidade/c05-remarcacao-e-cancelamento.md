@@ -26,7 +26,7 @@
 
 **RF15 e RF16 — Funcionalidade ainda não implementada (Sprint 5, de 16 a 26/11/2026).** Na `developer` (commit `a6b0102`), o módulo aulas expõe solicitar, listar, detalhar, aceitar e recusar; as rotas de remarcação e cancelamento estão previstas no Quadro 2 do Documento de Arquitetura. Os tipos, a tabela `Remarcacao`, o campo `motivoCancelamento` e a tabela de transições de status são estruturas de suporte, não evidência de um fluxo implementado. Todos os casos desta página permanecem ⛔ Bloqueado, com 0 ciclos, até existir implementação executável.
 
-Fontes: [Documento de Visão](../documento-de-visao/v1-1.md), Quadros 3, 13, 14, 18, 20 e 21; [Documento de Arquitetura](../documento-de-arquitetura/v1-1.md).
+Fontes: [Documento de Visão](../documento-de-visao/v1-1.md), Quadros 3, 14, 15, 19, 21 e 22; [Documento de Arquitetura](../documento-de-arquitetura/v1-1.md).
 
 ## 2. Critérios de aceitação testáveis
 

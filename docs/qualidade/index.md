@@ -23,7 +23,7 @@ Esta seção reúne o roteiro, as execuções, os defeitos e as correções do A
 
 ## Estratégia de testes
 
-O planejamento segue o [Documento de Visão](../documento-de-visao/v1-1.md), seção 6 e Quadros 18 a 21, e o [Documento de Arquitetura](../documento-de-arquitetura/v1-1.md).
+O planejamento segue o [Documento de Visão](../documento-de-visao/v1-1.md), seção 6 e Quadros 19 a 22, e o [Documento de Arquitetura](../documento-de-arquitetura/v1-1.md).
 
 | Nível / tipo | Foco | Ferramentas | Responsáveis |
 |---|---|---|---|
@@ -50,27 +50,29 @@ Conforme o Quadro 3 do Documento de Visão, Pedro Rodrigues é responsável por 
 
 ### Métricas
 
-As definições estão no Quadro 17 do Documento de Visão.
+As definições estão no Quadro 18 do Documento de Visão. A coleta começou ao fim da Sprint 4 (14/11/2026), com as Sprints 3 e 4 medidas em conjunto, e é repetida ao fim de cada sprint; a próxima medição é a da Sprint 5, em 26/11/2026.
 
-| Métrica | Meta | Medido em 14/11/2026 |
-|---|---|---|
-| M4 – Conflitos de agendamento | 0 | 0 |
-| M5 – Taxa de conclusão da sprint | ≥ 80% | Calculada pelo Scrum Master no GitHub Projects |
-| M6 – Cobertura de testes | ≥ 70% | 98,7% (back-end) e 96,3% (front-end), em linhas |
-| M7 – Densidade de defeitos | ≤ 0,5 por história | 0,15 por história: 2 defeitos ([DEF-C01-01](c01-cadastro-e-autenticacao.md#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro) e [DEF-C04-01](c04-confirmacao-ou-recusa.md#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500)) em 13 histórias entregues nas Sprints 3 e 4 (US01 a US13); dentro da meta |
-| M8 – Débito técnico aberto | Estável ou em queda | Acompanhado pelo Scrum Master no GitHub |
-| MN1 – Taxa de confirmação dos pedidos | ≥ 50% (hipótese) | Medida com dados de teste ao fim da Sprint 5 |
-| MN2 – Tempo até a confirmação | ≤ 24 h (hipótese) | Medida com dados de teste ao fim da Sprint 5 |
+| Métrica | Meta | Sprints 3 e 4 (14/11/2026) | Análise |
+|---|---|---|---|
+| M4 – Conflitos de agendamento | 0 | 0 | Dentro da meta. Nenhuma reserva sobreposta foi aceita, nem com dois aceites simultâneos do mesmo horário (CT05): a regra central de confiabilidade (RF12) está comprovada, o que responde à Q1 (G1). |
+| M5 – Taxa de conclusão da sprint | ≥ 80% | 100%: 13 de 13 histórias planejadas (US01 a US13) entregues | Dentro da meta; o critério de replanejamento (menos de 70% das histórias) não foi acionado. Como as duas sprints foram medidas juntas, não há valor isolado da Sprint 3. |
+| M6 – Cobertura de testes | ≥ 70% | 98,7% (back-end) e 96,3% (front-end), em linhas | Dentro da meta, com folga: as regras de agendamento e de status estão protegidas contra regressão nas mudanças da Sprint 5 (remarcação e cancelamento). |
+| M7 – Densidade de defeitos | ≤ 0,5 por história | 0,15 por história: 2 defeitos ([DEF-C01-01](c01-cadastro-e-autenticacao.md#def-c01-01-usuario-nao-e-direcionado-ao-destino-certo-apos-o-cadastro) e [DEF-C04-01](c04-confirmacao-ou-recusa.md#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500)) em 13 histórias | Dentro da meta. Os dois defeitos foram encontrados pelos testes ainda no desenvolvimento e corrigidos antes da entrega. |
+| M8 – Débito técnico aberto | Estável ou em queda | 0: nenhum débito técnico registrado | Dentro da meta. Os defeitos encontrados foram corrigidos sem deixar pendências para as sprints seguintes. |
+| MN1 – Taxa de confirmação dos pedidos | ≥ 50% (hipótese) | A medir ao fim da Sprint 5, com dados de teste | Servirá apenas para validar a forma de cálculo, já que não há uso real. |
+| MN2 – Tempo até a confirmação | ≤ 24 h (hipótese) | A medir ao fim da Sprint 5, com dados de teste | Servirá apenas para validar a forma de cálculo, já que não há uso real. |
+
+**Conclusão da medição de 14/11/2026:** todas as métricas medidas estão dentro da meta. A regra mais crítica do produto está comprovada (G1), e as entregas e a qualidade do código atendem ao planejado (G2). Por isso a equipe manteve o escopo previsto para a Sprint 5, sem replanejamento. Com a medição de 26/11/2026, a série passa a ter dois pontos, o que permite avaliar a tendência de M7 e M8.
 
 ## Roteiro consolidado
 
-| Caso | Nome no roteiro (Quadro 20) | Cenário | Situação | Ciclos |
+| Caso | Nome no roteiro (Quadro 21) | Cenário | Situação | Ciclos |
 |---|---|---|---|---|
-| [CT01](c01-cadastro-e-autenticacao.md) | Cadastro de usuário | C01 | ✅ Aprovado | 1 |
+| [CT01](c01-cadastro-e-autenticacao.md) | Cadastro de usuário | C01 | ✅ Aprovado | 3 |
 | [CT02](c01-cadastro-e-autenticacao.md) | Login inválido | C01 | ✅ Aprovado | 1 |
 | [CT03](c02-perfil-e-disponibilidade.md) | Publicar disponibilidade | C02 | ✅ Aprovado | 1 |
 | [CT04](c03-busca-e-solicitacao.md) | Solicitar aula em horário livre | C03 | ✅ Aprovado | 1 |
-| [CT05](c04-confirmacao-ou-recusa.md) | Impedir conflito de horário | C04 | ✅ Aprovado | 1 |
+| [CT05](c04-confirmacao-ou-recusa.md) | Impedir conflito de horário | C04 | ✅ Aprovado | 2 |
 | [CT06](c04-confirmacao-ou-recusa.md) | Aceitar solicitação | C04 | ✅ Aprovado | 1 |
 | [CT07](c04-confirmacao-ou-recusa.md) | Recusar solicitação | C04 | ✅ Aprovado | 1 |
 | [CT08](c05-remarcacao-e-cancelamento.md) | Remarcar aula | C05 | ⛔ Bloqueado (Sprint 5) | 0 |
@@ -105,7 +107,7 @@ A numeração não é contínua porque o CT11 (usabilidade) saiu do roteiro, e o
 
 ## Convenções de registro
 
-- **CTxx:** caso do roteiro oficial (Quadro 20 do Documento de Visão).
+- **CTxx:** caso do roteiro oficial (Quadro 21 do Documento de Visão).
 - **CTxx.y:** caso complementar, com sufixo numérico e requisito identificado. Os complementares do C02 começam em CT03.5 porque CT03.1 a CT03.4 são do RF03, no C01.
 - **DEF-Cnn-nn:** defeito vinculado ao cenário e a uma execução real. Para requisitos não funcionais, usar o cenário em que o defeito foi observado e referenciar o caso.
 - **Branch de correção:** `fix/<descricao>`; **commit:** `fix(<modulo>): <descricao>`, com o módulo do código alterado (`auth`, `usuarios`, `agenda`, `aulas`, `notificacoes` ou `frontend`).

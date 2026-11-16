@@ -24,7 +24,7 @@
 | Sprint | 5 |
 | Responsáveis (QA) | Pedro Rodrigues / Yasmim Ayres |
 
-Rotas sob `/api/v1`: `GET /aulas` (filtros de status e período, com paginação) e `GET /aulas/:id` (detalhe e histórico). Situação em 14/11/2026: a API de consulta já existe e está testada; na interface, o selo de status aparece nas aulas, mas nenhuma aula passa sozinha a "realizada" (RF17 parcial) e a aba Histórico ainda não tem filtros (RF18 parcial). Os lembretes (RF19) não foram implementados. Anotações (RF20) e avaliação de aulas (RF21) estão fora do escopo do semestre (Documento de Visão, Quadro 9).
+Rotas sob `/api/v1`: `GET /aulas` (filtros de status e período, com paginação) e `GET /aulas/:id` (detalhe e histórico). Situação em 14/11/2026: a API de consulta já existe e está testada; na interface, o selo de status aparece nas aulas, mas nenhuma aula passa sozinha a "realizada" (RF17 parcial) e a aba Histórico ainda não tem filtros (RF18 parcial). Os lembretes (RF19) não foram implementados. Anotações (RF20) e avaliação de aulas (RF21) estão fora do escopo do semestre (Documento de Visão, Quadro 10).
 
 ## 2. Critérios de aceitação testáveis
 

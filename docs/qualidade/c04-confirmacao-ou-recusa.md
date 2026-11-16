@@ -44,8 +44,8 @@ A coluna **Ciclos** conta quantas vezes o caso foi executado até ser aprovado.
 
 | Caso | Descrição | Req. | Nível | Esperado | Status | Ciclos | Defeito |
 |---|---|---|---|---|---|---|---|
-| CT05 | Impedir conflito de horário | RF12 | Unitário e integração | Pedido ou aceite recusado; nenhuma reserva duplicada (M4 = 0) | ✅ Aprovado | 1 | [DEF-C04-01](#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500) |
-| CT05.1 | Aceitar ao mesmo tempo dois pedidos sobrepostos do mesmo professor | RF12 | Integração | Um aceite confirmado (200) e o outro recusado com conflito (409); M4 = 0 | ✅ Aprovado | 1 | [DEF-C04-01](#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500) |
+| CT05 | Impedir conflito de horário | RF12 | Unitário e integração | Pedido ou aceite recusado; nenhuma reserva duplicada (M4 = 0) | ✅ Aprovado | 2 | [DEF-C04-01](#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500) |
+| CT05.1 | Aceitar ao mesmo tempo dois pedidos sobrepostos do mesmo professor | RF12 | Integração | Um aceite confirmado (200) e o outro recusado com conflito (409); M4 = 0 | ✅ Aprovado | 2 | [DEF-C04-01](#def-c04-01-aceites-simultaneos-do-mesmo-horario-respondem-com-erro-500) |
 | CT05.2 | Aceitar aulas consecutivas (fim de uma igual ao início da outra) | RF12 | Unitário e integração | Ambas confirmadas; intervalos consecutivos não se sobrepõem | ✅ Aprovado | 1 | — |
 | CT05.3 | Aceitar aulas no mesmo horário com professores diferentes | RF12 | Integração | Não há conflito entre agendas de professores diferentes | ✅ Aprovado | 1 | — |
 | CT05.4 | Confirmar uma aula com outro pedido pendente no mesmo horário | RF12 | Unitário e integração | O outro pedido é recusado automaticamente, e aceitá-lo depois é recusado (M4 = 0) | ✅ Aprovado | 1 | — |
