@@ -4,7 +4,9 @@ import {
   cancelarAula,
   listarAulas,
   obterAula,
+  proporRemarcacao,
   recusarAula,
+  responderRemarcacao,
   type FiltrosAulas,
 } from '../services/aulas';
 
@@ -56,5 +58,23 @@ export function useCancelarAula() {
   return useMutation({
     mutationFn: ({ id, motivo }: { id: string; motivo: string }) => cancelarAula(id, motivo),
     onSuccess: (_aula, { id }) => atualizar(id),
+  });
+}
+
+export function useProporRemarcacao() {
+  const atualizar = useAtualizarAulas();
+  return useMutation({
+    mutationFn: ({ aulaId, dados }: { aulaId: string; dados: { novoInicio: string; novoFim: string } }) =>
+      proporRemarcacao(aulaId, dados),
+    onSuccess: (_remarcacao, { aulaId }) => atualizar(aulaId),
+  });
+}
+
+export function useResponderRemarcacao() {
+  const atualizar = useAtualizarAulas();
+  return useMutation({
+    mutationFn: ({ aulaId, remarcacaoId, aceita }: { aulaId: string; remarcacaoId: string; aceita: boolean }) =>
+      responderRemarcacao(aulaId, remarcacaoId, aceita),
+    onSuccess: (_aula, { aulaId }) => atualizar(aulaId),
   });
 }

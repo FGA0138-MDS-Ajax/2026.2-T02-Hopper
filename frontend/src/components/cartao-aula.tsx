@@ -1,10 +1,25 @@
 import { useId, useState } from 'react';
 import { ChevronDown, Clock, Lock, Mail, Phone, Repeat } from 'lucide-react';
-import { useAceitarAula, useAula, useCancelarAula, useRecusarAula } from '../hooks/use-aulas';
+import {
+  useAceitarAula,
+  useAula,
+  useCancelarAula,
+  useProporRemarcacao,
+  useRecusarAula,
+  useResponderRemarcacao,
+} from '../hooks/use-aulas';
 import { mensagemDeErro } from '../services/api';
 import { ROTULO_STATUS, type Aula } from '../services/aulas';
 import { ROTULO_MODALIDADE } from '../services/professores';
-import { chaveDoDia, dataHoraCurta, diaDaSemanaCurto, horaCurta, mesCurto } from '../utils/datas';
+import {
+  chaveDoDia,
+  dataHoraCurta,
+  diaDaSemanaCurto,
+  hora,
+  horaCurta,
+  instanteEmBrasilia,
+  mesCurto,
+} from '../utils/datas';
 import { formatarTelefone } from '../utils/formatacao';
 import { ICONE_MODALIDADE } from '../utils/modalidades';
 import { SeloStatus } from './selo-status';
@@ -204,23 +219,165 @@ function AcoesDoProfessor({ aula, aoConcluir }: { aula: Aula; aoConcluir: (mensa
   );
 }
 
-function AcaoCancelarAula({
+function FormularioRemarcar({
   aula,
   papel,
+  onCancelar,
   aoConcluir,
 }: {
   aula: Aula;
   papel: Papel;
+  onCancelar: () => void;
+  aoConcluir: (mensagem: string) => void;
+}) {
+  const propor = useProporRemarcacao();
+  const [novaData, setNovaData] = useState(() => chaveDoDia(new Date(Date.now() + 24 * 60 * 60 * 1000)));
+  const [novoInicioHora, setNovoInicioHora] = useState(() => hora(aula.inicio));
+  const [novoFimHora, setNovoFimHora] = useState(() => hora(aula.fim));
+  const [erro, setErro] = useState<string | null>(null);
+
+  const idData = useId();
+  const idInicio = useId();
+  const idFim = useId();
+
+  const outroNome = papel === 'ALUNO' ? aula.professor.nome : aula.aluno.nome;
+  const hoje = chaveDoDia(new Date());
+
+  async function enviarProposta() {
+    setErro(null);
+    if (!novaData || !novoInicioHora || !novoFimHora) {
+      setErro('Preencha a data e os horários para remarcar.');
+      return;
+    }
+
+    const novoInicioIso = instanteEmBrasilia(novaData, novoInicioHora);
+    const novoFimIso = instanteEmBrasilia(novaData, novoFimHora);
+
+    if (new Date(novoInicioIso).getTime() <= Date.now()) {
+      setErro('O novo horário deve ser no futuro.');
+      return;
+    }
+
+    if (new Date(novoFimIso).getTime() <= new Date(novoInicioIso).getTime()) {
+      setErro('O horário de término deve ser posterior ao horário de início.');
+      return;
+    }
+
+    try {
+      await propor.mutateAsync({
+        aulaId: aula.id,
+        dados: { novoInicio: novoInicioIso, novoFim: novoFimIso },
+      });
+      aoConcluir(
+        papel === 'ALUNO'
+          ? `Proposta de remarcação enviada ao professor ${aula.professor.nome}.`
+          : `Proposta de remarcação enviada ao aluno ${aula.aluno.nome}.`,
+      );
+    } catch (falha) {
+      setErro(mensagemDeErro(falha, 'Não foi possível enviar a proposta de remarcação. Tente novamente.'));
+    }
+  }
+
+  return (
+    <div>
+      {erro && (
+        <p role="alert" className="mb-3 rounded-xl bg-error/10 px-4 py-3 text-sm font-medium text-error">
+          {erro}
+        </p>
+      )}
+      <h4 className="text-sm font-bold text-tinta">Propor novo horário</h4>
+      <p className="mt-0.5 text-xs text-suave">
+        O horário atual permanecerá reservado até que {outroNome} aprove a proposta.
+      </p>
+
+      <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        <div>
+          <label htmlFor={idData} className="block text-xs font-semibold text-tinta">
+            Nova data
+          </label>
+          <input
+            id={idData}
+            type="date"
+            min={hoje}
+            value={novaData}
+            onChange={(e) => {
+              setNovaData(e.target.value);
+              if (erro) setErro(null);
+            }}
+            className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-tinta focus:border-secondary focus:outline-none focus:ring-4 focus:ring-secondary/30"
+          />
+        </div>
+        <div>
+          <label htmlFor={idInicio} className="block text-xs font-semibold text-tinta">
+            Início
+          </label>
+          <input
+            id={idInicio}
+            type="time"
+            value={novoInicioHora}
+            onChange={(e) => {
+              setNovoInicioHora(e.target.value);
+              if (erro) setErro(null);
+            }}
+            className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-tinta focus:border-secondary focus:outline-none focus:ring-4 focus:ring-secondary/30"
+          />
+        </div>
+        <div>
+          <label htmlFor={idFim} className="block text-xs font-semibold text-tinta">
+            Término
+          </label>
+          <input
+            id={idFim}
+            type="time"
+            value={novoFimHora}
+            onChange={(e) => {
+              setNovoFimHora(e.target.value);
+              if (erro) setErro(null);
+            }}
+            className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-tinta focus:border-secondary focus:outline-none focus:ring-4 focus:ring-secondary/30"
+          />
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={enviarProposta}
+          disabled={propor.isPending}
+          className="botao-principal h-11 px-5 text-sm disabled:opacity-60"
+        >
+          {propor.isPending ? 'Enviando proposta…' : 'Enviar proposta'}
+        </button>
+        <button
+          type="button"
+          onClick={onCancelar}
+          disabled={propor.isPending}
+          className="botao-secundario h-11 px-5 text-sm"
+        >
+          Voltar
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function FormularioCancelar({
+  aula,
+  papel,
+  onVoltar,
+  aoConcluir,
+}: {
+  aula: Aula;
+  papel: Papel;
+  onVoltar: () => void;
   aoConcluir: (mensagem: string) => void;
 }) {
   const cancelar = useCancelarAula();
-  const [cancelando, setCancelando] = useState(false);
   const [motivo, setMotivo] = useState('');
   const [erro, setErro] = useState<string | null>(null);
   const idMotivo = useId();
 
   const ehPedido = aula.status === 'SOLICITADA';
-  const textoBotao = ehPedido ? 'Cancelar pedido' : 'Cancelar aula';
 
   async function confirmarCancelamento() {
     const motivoLimpo = motivo.trim();
@@ -244,64 +401,198 @@ function AcaoCancelarAula({
   }
 
   return (
-    <div className="mt-4 border-t border-slate-200 pt-4">
+    <div>
       {erro && (
         <p role="alert" className="mb-3 rounded-xl bg-error/10 px-4 py-3 text-sm font-medium text-error">
           {erro}
         </p>
       )}
-      {cancelando ? (
-        <div>
-          <label htmlFor={idMotivo} className="text-sm font-semibold text-tinta">
-            Motivo do cancelamento <span className="text-error">*</span>
-          </label>
-          <textarea
-            id={idMotivo}
-            rows={2}
-            maxLength={TAMANHO_MAXIMO_MOTIVO}
-            value={motivo}
-            onChange={(evento) => {
-              setMotivo(evento.target.value);
-              if (erro) setErro(null);
-            }}
-            placeholder={
-              ehPedido
-                ? 'Ex.: Não poderei mais no horário solicitado.'
-                : 'Ex.: Tive um imprevisto e precisarei cancelar esta aula.'
-            }
-            className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-tinta placeholder:text-slate-400 focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30"
-          />
+      <label htmlFor={idMotivo} className="text-sm font-semibold text-tinta">
+        Motivo do cancelamento <span className="text-error">*</span>
+      </label>
+      <textarea
+        id={idMotivo}
+        rows={2}
+        maxLength={TAMANHO_MAXIMO_MOTIVO}
+        value={motivo}
+        onChange={(evento) => {
+          setMotivo(evento.target.value);
+          if (erro) setErro(null);
+        }}
+        placeholder={
+          ehPedido
+            ? 'Ex.: Não poderei mais no horário solicitado.'
+            : 'Ex.: Tive um imprevisto e precisarei cancelar esta aula.'
+        }
+        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-tinta placeholder:text-slate-400 focus:outline-none focus-visible:border-secondary focus-visible:ring-4 focus-visible:ring-secondary/30"
+      />
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={confirmarCancelamento}
+          disabled={cancelar.isPending}
+          className="inline-flex h-11 items-center rounded-xl bg-error px-5 text-sm font-bold text-white hover:bg-red-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-error/30 disabled:opacity-60"
+        >
+          {cancelar.isPending ? 'Cancelando…' : 'Confirmar cancelamento'}
+        </button>
+        <button
+          type="button"
+          onClick={onVoltar}
+          disabled={cancelar.isPending}
+          className="botao-secundario h-11 px-5 text-sm"
+        >
+          Voltar
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function AcoesDaAula({
+  aula,
+  papel,
+  podeRemarcar,
+  podeCancelar,
+  aoConcluir,
+}: {
+  aula: Aula;
+  papel: Papel;
+  podeRemarcar: boolean;
+  podeCancelar: boolean;
+  aoConcluir: (mensagem: string) => void;
+}) {
+  const [modo, setModo] = useState<'nenhum' | 'remarcar' | 'cancelar'>('nenhum');
+  const responder = useResponderRemarcacao();
+  const [erroResposta, setErroResposta] = useState<string | null>(null);
+
+  const remarcacaoPendente = aula.remarcacaoPendente;
+  const usuarioId = papel === 'ALUNO' ? aula.aluno.id : aula.professor.usuarioId;
+  const outroNome = papel === 'ALUNO' ? aula.professor.nome : aula.aluno.nome;
+
+  if (remarcacaoPendente && remarcacaoPendente.aceita === null) {
+    const euPropus = remarcacaoPendente.propostoPorId === usuarioId;
+
+    if (euPropus) {
+      return (
+        <div className="mt-4 border-t border-slate-200 pt-4">
+          <div className="rounded-xl border border-blue-200 bg-blue-50/70 p-4 text-sm text-tinta">
+            <p className="font-semibold text-primary">Proposta de novo horário enviada</p>
+            <p className="mt-1 text-suave">
+              Você propôs remarcar para{' '}
+              <strong className="text-tinta">
+                {dataHoraCurta(remarcacaoPendente.novoInicio)} às {horaCurta(remarcacaoPendente.novoFim)}
+              </strong>
+              . Aguardando resposta de {outroNome}. O horário atual continua reservado até a decisão.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-4 border-t border-slate-200 pt-4">
+        <div className="rounded-xl border border-secondary/30 bg-surface-container-low p-4 text-sm text-tinta">
+          {erroResposta && (
+            <p role="alert" className="mb-3 rounded-xl bg-error/10 px-4 py-3 text-sm font-medium text-error">
+              {erroResposta}
+            </p>
+          )}
+          <p className="font-bold text-primary">Proposta de remarcação recebida</p>
+          <p className="mt-1 text-suave">
+            {outroNome} propôs alterar o horário desta aula para{' '}
+            <strong className="text-tinta">
+              {dataHoraCurta(remarcacaoPendente.novoInicio)} às {horaCurta(remarcacaoPendente.novoFim)}
+            </strong>
+            .
+          </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={confirmarCancelamento}
-              disabled={cancelar.isPending}
-              className="inline-flex h-11 items-center rounded-xl bg-error px-5 text-sm font-bold text-white hover:bg-red-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-error/30 disabled:opacity-60"
+              onClick={async () => {
+                setErroResposta(null);
+                try {
+                  await responder.mutateAsync({ aulaId: aula.id, remarcacaoId: remarcacaoPendente.id, aceita: true });
+                  aoConcluir('Proposta de remarcação aceita. O novo horário foi reservado.');
+                } catch (falha) {
+                  setErroResposta(mensagemDeErro(falha, 'Não foi possível aceitar a remarcação. Tente novamente.'));
+                }
+              }}
+              disabled={responder.isPending}
+              className="botao-principal h-11 px-5 text-sm disabled:opacity-60"
             >
-              {cancelar.isPending ? 'Cancelando…' : 'Confirmar cancelamento'}
+              {responder.isPending ? 'Confirmando…' : 'Aceitar novo horário'}
             </button>
             <button
               type="button"
-              onClick={() => {
-                setCancelando(false);
-                setErro(null);
+              onClick={async () => {
+                setErroResposta(null);
+                try {
+                  await responder.mutateAsync({ aulaId: aula.id, remarcacaoId: remarcacaoPendente.id, aceita: false });
+                  aoConcluir('Proposta de remarcação recusada. O horário original foi mantido.');
+                } catch (falha) {
+                  setErroResposta(mensagemDeErro(falha, 'Não foi possível recusar a proposta. Tente novamente.'));
+                }
               }}
-              disabled={cancelar.isPending}
-              className="botao-secundario h-11 px-5 text-sm"
+              disabled={responder.isPending}
+              className="botao-secundario h-11 px-5 text-sm disabled:opacity-60"
             >
-              Voltar
+              Recusar proposta
             </button>
           </div>
         </div>
-      ) : (
-        <div>
-          <button
-            type="button"
-            onClick={() => setCancelando(true)}
-            className="botao-secundario h-11 px-5 text-sm"
-          >
-            {textoBotao}
-          </button>
+      </div>
+    );
+  }
+
+  const ehPedido = aula.status === 'SOLICITADA';
+  const textoBotaoCancelar = ehPedido ? 'Cancelar pedido' : 'Cancelar aula';
+
+  return (
+    <div className="mt-4 border-t border-slate-200 pt-4">
+      {modo === 'remarcar' && (
+        <FormularioRemarcar
+          aula={aula}
+          papel={papel}
+          onCancelar={() => setModo('nenhum')}
+          aoConcluir={(msg) => {
+            setModo('nenhum');
+            aoConcluir(msg);
+          }}
+        />
+      )}
+
+      {modo === 'cancelar' && (
+        <FormularioCancelar
+          aula={aula}
+          papel={papel}
+          onVoltar={() => setModo('nenhum')}
+          aoConcluir={(msg) => {
+            setModo('nenhum');
+            aoConcluir(msg);
+          }}
+        />
+      )}
+
+      {modo === 'nenhum' && (
+        <div className="flex flex-wrap items-center gap-2.5">
+          {podeRemarcar && (
+            <button
+              type="button"
+              onClick={() => setModo('remarcar')}
+              className="botao-secundario h-11 px-5 text-sm"
+            >
+              Remarcar aula
+            </button>
+          )}
+          {podeCancelar && (
+            <button
+              type="button"
+              onClick={() => setModo('cancelar')}
+              className="botao-secundario h-11 px-5 text-sm"
+            >
+              {textoBotaoCancelar}
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -325,6 +616,8 @@ export function CartaoAula({
   const IconeModalidade = ICONE_MODALIDADE[aula.modalidade];
   const outro = papel === 'ALUNO' ? `com ${aula.professor.nome}` : `Aluno: ${aula.aluno.nome}`;
   const aguardandoResposta = aula.status === 'SOLICITADA' && new Date(aula.inicio).getTime() > agora;
+  const podeRemarcar =
+    (aula.status === 'CONFIRMADA' || aula.status === 'REMARCADA') && new Date(aula.inicio).getTime() > agora;
   const podeCancelar =
     (aula.status === 'CONFIRMADA' || (papel === 'ALUNO' && aula.status === 'SOLICITADA')) &&
     new Date(aula.inicio).getTime() > agora;
@@ -364,7 +657,15 @@ export function CartaoAula({
       </div>
 
       {papel === 'PROFESSOR' && aguardandoResposta && <AcoesDoProfessor aula={aula} aoConcluir={aoConcluirAcao} />}
-      {podeCancelar && <AcaoCancelarAula aula={aula} papel={papel} aoConcluir={aoConcluirAcao} />}
+      {(podeRemarcar || podeCancelar) && (
+        <AcoesDaAula
+          aula={aula}
+          papel={papel}
+          podeRemarcar={podeRemarcar}
+          podeCancelar={podeCancelar}
+          aoConcluir={aoConcluirAcao}
+        />
+      )}
 
       <div className="mt-3">
         <button

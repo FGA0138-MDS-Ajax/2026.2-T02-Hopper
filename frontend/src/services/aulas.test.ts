@@ -5,7 +5,9 @@ import {
   cancelarAula,
   listarAulas,
   obterAula,
+  proporRemarcacao,
   recusarAula,
+  responderRemarcacao,
   solicitarAula,
   type DadosSolicitacao,
 } from './aulas';
@@ -83,5 +85,30 @@ describe('serviço de aulas (rotas e corpo enviados à API)', () => {
       url: '/aulas/a1/cancelar',
       corpo: { motivo: 'Imprevisto' },
     });
+  });
+
+  it('proporRemarcacao envia o novo horário via POST /aulas/:id/remarcacoes (RF15)', async () => {
+    const dados = { novoInicio: '2026-11-21T10:00:00.000-03:00', novoFim: '2026-11-21T11:00:00.000-03:00' };
+    api = simularApi({ id: 'r1', aulaId: 'a1', ...dados, aceita: null });
+
+    await proporRemarcacao('a1', dados);
+
+    expect(api.unica()).toMatchObject({
+      metodo: 'POST',
+      url: '/aulas/a1/remarcacoes',
+      corpo: dados,
+    });
+  });
+
+  it('responderRemarcacao envia a decisão via PATCH /aulas/:id/remarcacoes/:rid (RF15)', async () => {
+    api = simularApi({ id: 'a1', status: 'REMARCADA' });
+
+    await responderRemarcacao('a1', 'r1', true);
+    await responderRemarcacao('a1', 'r1', false);
+
+    expect(api.chamadas.map((c) => [c.metodo, c.url, c.corpo])).toEqual([
+      ['PATCH', '/aulas/a1/remarcacoes/r1', { aceita: true }],
+      ['PATCH', '/aulas/a1/remarcacoes/r1', { aceita: false }],
+    ]);
   });
 });
