@@ -1,0 +1,490 @@
+import { fireEvent, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { lerValorEmReais, periodoDoBloqueio, validarGrade } from '../components/area-professor/regras';
+import { removerToken, salvarToken } from '../services/api';
+import {
+  criarBloqueio,
+  listarBloqueios,
+  obterGrade,
+  obterMeuPerfil,
+  removerBloqueio,
+  salvarGrade,
+  salvarMeuPerfil,
+  type MeuPerfil,
+} from '../services/area-professor';
+import { atualizarConta, obterUsuarioAtual, type Usuario } from '../services/auth';
+import { listarMaterias } from '../services/professores';
+import { renderizar } from '../test/renderizar';
+import { PaginaMeuPerfil } from './meu-perfil';
+
+vi.mock('../services/auth', async (importarOriginal) => ({
+  ...(await importarOriginal<typeof import('../services/auth')>()),
+  obterUsuarioAtual: vi.fn(),
+  atualizarConta: vi.fn(),
+}));
+vi.mock('../services/professores', async (importarOriginal) => ({
+  ...(await importarOriginal<typeof import('../services/professores')>()),
+  listarMaterias: vi.fn(),
+}));
+vi.mock('../services/area-professor', async (importarOriginal) => ({
+  ...(await importarOriginal<typeof import('../services/area-professor')>()),
+  obterMeuPerfil: vi.fn(),
+  salvarMeuPerfil: vi.fn(),
+  obterGrade: vi.fn(),
+  salvarGrade: vi.fn(),
+  listarBloqueios: vi.fn(),
+  criarBloqueio: vi.fn(),
+  removerBloqueio: vi.fn(),
+}));
+
+// "Agora" nos testes: segunda-feira, 09/11/2026, 09:00 em Brasília.
+const AGORA = new Date('2026-11-09T09:00:00.000-03:00');
+
+const RITA: Usuario = { id: 'u9', nome: 'Rita Lopes', email: 'rita@email.com', telefone: null, perfil: 'PROFESSOR' };
+
+const PERFIL_VAZIO: MeuPerfil = {
+  id: 'p9',
+  nome: 'Rita Lopes',
+  apresentacao: '',
+  valorHora: null,
+  modalidades: [],
+  materias: [],
+  completo: false,
+};
+
+const PERFIL_COMPLETO: MeuPerfil = {
+  ...PERFIL_VAZIO,
+  apresentacao: 'Professora de matemática.',
+  valorHora: 80,
+  modalidades: ['ONLINE'],
+  materias: [{ id: 'm1', nome: 'Matemática', nivel: 'Ensino Médio' }],
+  completo: true,
+};
+
+function abrir(url = '/meu-perfil') {
+  return renderizar(<PaginaMeuPerfil />, { url, caminho: '/meu-perfil' });
+}
+
+describe('PaginaMeuPerfil', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(AGORA);
+    salvarToken('token');
+    vi.mocked(obterUsuarioAtual).mockResolvedValue(RITA);
+    vi.mocked(listarMaterias).mockResolvedValue([
+      { id: 'm1', nome: 'Matemática', nivel: 'Ensino Médio' },
+      { id: 'm2', nome: 'Matemática', nivel: 'Ensino Fundamental' },
+      { id: 'm3', nome: 'Física', nivel: 'Ensino Médio' },
+    ]);
+    vi.mocked(obterMeuPerfil).mockResolvedValue(PERFIL_VAZIO);
+    vi.mocked(obterGrade).mockResolvedValue([]);
+    vi.mocked(listarBloqueios).mockResolvedValue([]);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    removerToken();
+  });
+
+  describe('dados da conta', () => {
+    const ALUNO: Usuario = {
+      ...RITA,
+      nome: 'Caio Alves',
+      email: 'caio@email.com',
+      telefone: '61991110001',
+      perfil: 'ALUNO',
+    };
+
+    it('aluno vê só os dados da conta, sem a área do professor', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      abrir();
+
+      expect(await screen.findByRole('heading', { name: 'Dados da conta' })).toBeInTheDocument();
+      expect(screen.getByLabelText('Nome completo')).toHaveValue('Caio Alves');
+      expect(screen.getByLabelText('E-mail')).toHaveValue('caio@email.com');
+      expect(screen.getByLabelText('E-mail')).toHaveAttribute('readonly');
+      expect(screen.getByLabelText('Telefone (opcional)')).toHaveValue('(61) 99111-0001');
+      expect(screen.queryByRole('tab', { name: 'Grade semanal' })).not.toBeInTheDocument();
+      expect(obterMeuPerfil).not.toHaveBeenCalled();
+    });
+
+    it('salva nome e telefone só com números e atualiza o nome na tela', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      vi.mocked(atualizarConta).mockResolvedValue({ ...ALUNO, nome: 'Caio Mendes', telefone: '61988887777' });
+      abrir();
+
+      const nome = await screen.findByLabelText('Nome completo');
+      fireEvent.change(nome, { target: { value: '  Caio Mendes ' } });
+      fireEvent.change(screen.getByLabelText('Telefone (opcional)'), { target: { value: '(61) 98888-7777' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Salvar dados' }));
+
+      expect(await screen.findByText('Dados da conta salvos.')).toBeInTheDocument();
+      expect(atualizarConta).toHaveBeenCalledWith({ nome: 'Caio Mendes', telefone: '61988887777' });
+      expect(screen.getByLabelText('Nome completo')).toHaveValue('Caio Mendes');
+    });
+
+    it('telefone em branco remove o telefone da conta', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      vi.mocked(atualizarConta).mockResolvedValue({ ...ALUNO, telefone: null });
+      abrir();
+
+      fireEvent.change(await screen.findByLabelText('Telefone (opcional)'), { target: { value: '' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Salvar dados' }));
+
+      expect(await screen.findByText('Dados da conta salvos.')).toBeInTheDocument();
+      expect(atualizarConta).toHaveBeenCalledWith({ nome: 'Caio Alves', telefone: null });
+    });
+
+    it('recusa nome curto e telefone sem DDD antes de chamar a API', async () => {
+      vi.mocked(obterUsuarioAtual).mockResolvedValue(ALUNO);
+      abrir();
+
+      fireEvent.change(await screen.findByLabelText('Nome completo'), { target: { value: 'C' } });
+      fireEvent.change(screen.getByLabelText('Telefone (opcional)'), { target: { value: '9999' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Salvar dados' }));
+
+      expect(await screen.findByText('Informe seu nome completo.')).toBeInTheDocument();
+      expect(screen.getByText('Informe o DDD e o número (10 ou 11 dígitos).')).toBeInTheDocument();
+      expect(atualizarConta).not.toHaveBeenCalled();
+    });
+
+    it('professor edita os dados da conta na aba própria', async () => {
+      vi.mocked(obterMeuPerfil).mockResolvedValue(PERFIL_COMPLETO);
+      abrir('/meu-perfil?aba=conta');
+
+      expect(await screen.findByRole('tab', { name: 'Dados da conta' })).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByLabelText('Nome completo')).toHaveValue('Rita Lopes');
+      expect(screen.getByLabelText('Telefone (opcional)')).toHaveValue('');
+    });
+  });
+
+  it('professor novo vê as boas-vindas e o que falta para aparecer na busca', async () => {
+    abrir('/meu-perfil?bem-vindo=1');
+
+    expect(await screen.findByRole('status')).toHaveTextContent('Conta criada!');
+    const situacao = await screen.findByRole('region', { name: 'Situação do perfil' });
+    expect(within(situacao).getByText('Complete seu perfil para aparecer na busca')).toBeInTheDocument();
+    // Os cinco itens (apresentação, matérias, modalidades, valor e grade) estão pendentes.
+    expect(within(situacao).getAllByText(': falta preencher')).toHaveLength(5);
+  });
+
+  it('perfil completo e com grade aparece como visível, com link para o perfil público', async () => {
+    vi.mocked(obterMeuPerfil).mockResolvedValue(PERFIL_COMPLETO);
+    vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+    abrir();
+
+    const situacao = await screen.findByRole('region', { name: 'Situação do perfil' });
+    expect(within(situacao).getByText('Seu perfil está visível na busca')).toBeInTheDocument();
+    expect(within(situacao).getByRole('link', { name: /Ver como os alunos veem/ })).toHaveAttribute(
+      'href',
+      '/professores/p9',
+    );
+  });
+
+  describe('aba Perfil', () => {
+    it('valida os campos obrigatórios', async () => {
+      abrir();
+      await userEvent.click(await screen.findByRole('button', { name: 'Salvar perfil' }));
+
+      expect(await screen.findByText('Escreva uma apresentação para os alunos.')).toBeInTheDocument();
+      expect(screen.getByText('Escolha pelo menos uma matéria e nível.')).toBeInTheDocument();
+      expect(screen.getByText('Escolha pelo menos uma modalidade.')).toBeInTheDocument();
+      expect(screen.getByText(/Informe o valor da hora-aula/)).toBeInTheDocument();
+      expect(salvarMeuPerfil).not.toHaveBeenCalled();
+    });
+
+    it('salva apresentação, matérias, modalidades e valor', async () => {
+      vi.mocked(salvarMeuPerfil).mockResolvedValue(PERFIL_COMPLETO);
+      abrir();
+
+      await userEvent.type(await screen.findByLabelText('Apresentação'), 'Professora de matemática.');
+      await userEvent.click(await screen.findByRole('checkbox', { name: 'Matemática, Ensino Médio' }));
+      await userEvent.click(screen.getByRole('checkbox', { name: /Online/ }));
+      await userEvent.type(screen.getByLabelText('Valor da hora-aula'), '80,50');
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar perfil' }));
+
+      expect(salvarMeuPerfil).toHaveBeenCalledWith({
+        apresentacao: 'Professora de matemática.',
+        materiaIds: ['m1'],
+        modalidades: ['ONLINE'],
+        valorHora: 80.5,
+      });
+      expect(await screen.findByRole('status')).toHaveTextContent('Perfil salvo.');
+    });
+
+    it('desmarca matéria e modalidade e mostra o erro quando a API não salva', async () => {
+      vi.mocked(obterMeuPerfil).mockResolvedValue({
+        ...PERFIL_COMPLETO,
+        modalidades: ['ONLINE', 'PRESENCIAL'],
+        materias: [
+          { id: 'm1', nome: 'Matemática', nivel: 'Ensino Médio' },
+          { id: 'm3', nome: 'Física', nivel: 'Ensino Médio' },
+        ],
+      });
+      vi.mocked(salvarMeuPerfil).mockRejectedValue(new Error('falha'));
+      abrir();
+
+      await userEvent.click(await screen.findByRole('checkbox', { name: 'Física, Ensino Médio' }));
+      await userEvent.click(screen.getByRole('checkbox', { name: /Presencial/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar perfil' }));
+
+      expect(salvarMeuPerfil).toHaveBeenCalledWith({
+        apresentacao: 'Professora de matemática.',
+        materiaIds: ['m1'],
+        modalidades: ['ONLINE'],
+        valorHora: 80,
+      });
+      expect(await screen.findByText('Não foi possível salvar o perfil. Tente novamente.')).toBeInTheDocument();
+    });
+  });
+
+  describe('aba Grade semanal', () => {
+    it('monta a grade, repete nos dias úteis e salva', async () => {
+      vi.mocked(salvarGrade).mockImplementation(async (faixas) => faixas);
+      abrir('/meu-perfil?aba=grade');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Adicionar horário na Segunda-feira' }));
+      expect(screen.getByText(/4 horários de aula por semana/)).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Repetir segunda nos dias úteis' }));
+      expect(screen.getByText(/20 horários de aula por semana/)).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(salvarGrade).toHaveBeenCalledWith(
+        [1, 2, 3, 4, 5].map((dia) => ({ diaSemana: dia, horaInicio: '08:00', horaFim: '12:00' })),
+      );
+      expect(await screen.findByRole('status')).toHaveTextContent('Grade salva.');
+    });
+
+    it('não salva horários sobrepostos no mesmo dia', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([
+        { diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' },
+        { diaSemana: 1, horaInicio: '14:00', horaFim: '18:00' },
+      ]);
+      abrir('/meu-perfil?aba=grade');
+
+      const inicioDaTarde = (await screen.findAllByLabelText('Segunda-feira: início'))[1];
+      fireEvent.change(inicioDaTarde, { target: { value: '11:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(await screen.findByText('Os horários deste dia se sobrepõem.')).toBeInTheDocument();
+      expect(salvarGrade).not.toHaveBeenCalled();
+    });
+
+    it('altera o fim de uma faixa e salva o novo horário', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+      vi.mocked(salvarGrade).mockImplementation(async (faixas) => faixas);
+      abrir('/meu-perfil?aba=grade');
+
+      fireEvent.change(await screen.findByLabelText('Segunda-feira: fim'), { target: { value: '10:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(salvarGrade).toHaveBeenCalledWith([{ diaSemana: 1, horaInicio: '08:00', horaFim: '10:00' }]);
+    });
+
+    it('remove a última faixa e avisa que os alunos não conseguem pedir aulas', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+      vi.mocked(salvarGrade).mockResolvedValue([]);
+      abrir('/meu-perfil?aba=grade');
+
+      await userEvent.click(
+        await screen.findByRole('button', { name: 'Remover horário de Segunda-feira das 08:00 às 12:00' }),
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(salvarGrade).toHaveBeenCalledWith([]);
+      expect(await screen.findByRole('status')).toHaveTextContent('Grade salva sem horários.');
+    });
+
+    it('mostra o erro quando a API não salva a grade', async () => {
+      vi.mocked(obterGrade).mockResolvedValue([{ diaSemana: 1, horaInicio: '08:00', horaFim: '12:00' }]);
+      vi.mocked(salvarGrade).mockRejectedValue(new Error('falha'));
+      abrir('/meu-perfil?aba=grade');
+
+      fireEvent.change(await screen.findByLabelText('Segunda-feira: fim'), { target: { value: '11:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(await screen.findByText('Não foi possível salvar a grade. Tente novamente.')).toBeInTheDocument();
+    });
+
+    it('não salva mais de 50 faixas de horário', async () => {
+      // 8 faixas de 1 hora por dia nos 7 dias (56), sem sobreposição; ficam 51.
+      const faixas = [0, 1, 2, 3, 4, 5, 6]
+        .flatMap((dia) =>
+          [8, 9, 10, 11, 12, 13, 14, 15].map((hora) => ({
+            diaSemana: dia,
+            horaInicio: `${String(hora).padStart(2, '0')}:00`,
+            horaFim: `${String(hora + 1).padStart(2, '0')}:00`,
+          })),
+        )
+        .slice(0, 51);
+      vi.mocked(obterGrade).mockResolvedValue(faixas);
+      abrir('/meu-perfil?aba=grade');
+
+      fireEvent.change((await screen.findAllByLabelText('Segunda-feira: fim'))[0], { target: { value: '08:30' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Salvar grade' }));
+
+      expect(await screen.findByText('Use no máximo 50 faixas de horário.')).toBeInTheDocument();
+      expect(salvarGrade).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('aba Bloqueios', () => {
+    it('cria um bloqueio de dia inteiro no horário de Brasília', async () => {
+      vi.mocked(criarBloqueio).mockResolvedValue({
+        id: 'b1',
+        inicio: '2026-11-20T00:00:00.000-03:00',
+        fim: '2026-11-21T00:00:00.000-03:00',
+        motivo: 'Feriado',
+      });
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      await userEvent.type(screen.getByLabelText(/Motivo/), 'Feriado');
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(criarBloqueio).toHaveBeenCalledWith({
+        inicio: '2026-11-20T03:00:00.000Z',
+        fim: '2026-11-21T03:00:00.000Z',
+        motivo: 'Feriado',
+      });
+      expect(await screen.findByRole('status')).toHaveTextContent('Bloqueio de Sex, 20/11 · dia inteiro criado.');
+    });
+
+    it('lista e remove bloqueios com confirmação', async () => {
+      vi.mocked(listarBloqueios).mockResolvedValue([
+        { id: 'b1', inicio: '2026-11-20T14:00:00.000-03:00', fim: '2026-11-20T18:00:00.000-03:00', motivo: 'Consulta' },
+      ]);
+      vi.mocked(removerBloqueio).mockResolvedValue();
+      abrir('/meu-perfil?aba=bloqueios');
+
+      expect(await screen.findByText('Sex, 20/11 · 14h às 18h')).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('button', { name: 'Remover bloqueio de Sex, 20/11 · 14h às 18h' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Sim, remover' }));
+
+      expect(removerBloqueio).toHaveBeenCalledWith('b1');
+      expect(await screen.findByRole('status')).toHaveTextContent('voltaram a ficar livres');
+    });
+
+    it('não aceita bloqueio de dia inteiro começando hoje (já começou)', async () => {
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-09' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(await screen.findByText(/O bloqueio precisa começar no futuro/)).toBeInTheDocument();
+      expect(criarBloqueio).not.toHaveBeenCalled();
+    });
+
+    it('cria um bloqueio com horário e exige as duas horas', async () => {
+      vi.mocked(criarBloqueio).mockResolvedValue({
+        id: 'b2',
+        inicio: '2026-11-20T14:00:00.000-03:00',
+        fim: '2026-11-21T10:00:00.000-03:00',
+        motivo: null,
+      });
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      await userEvent.click(screen.getByLabelText('Dia inteiro'));
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+      expect(await screen.findByText('Informe a hora de início.')).toBeInTheDocument();
+      expect(screen.getByText('Informe a hora de fim.')).toBeInTheDocument();
+
+      fireEvent.change(screen.getByLabelText('Até'), { target: { value: '2026-11-21' } });
+      fireEvent.change(screen.getByLabelText('A partir de'), { target: { value: '14:00' } });
+      fireEvent.change(screen.getByLabelText('Até as'), { target: { value: '10:00' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(criarBloqueio).toHaveBeenCalledWith({
+        inicio: '2026-11-20T17:00:00.000Z',
+        fim: '2026-11-21T13:00:00.000Z',
+        motivo: undefined,
+      });
+      expect(await screen.findByRole('status')).toHaveTextContent(
+        'Bloqueio de Sex, 20/11 14h a Sáb, 21/11 10h criado.',
+      );
+    });
+
+    it('não aceita fim antes do início', async () => {
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      fireEvent.change(screen.getByLabelText('Até'), { target: { value: '2026-11-19' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(await screen.findByText('O fim precisa ser depois do início.')).toBeInTheDocument();
+      expect(criarBloqueio).not.toHaveBeenCalled();
+    });
+
+    it('mostra o erro quando a API não cria o bloqueio', async () => {
+      vi.mocked(criarBloqueio).mockRejectedValue(new Error('falha'));
+      abrir('/meu-perfil?aba=bloqueios');
+
+      fireEvent.change(await screen.findByLabelText('De'), { target: { value: '2026-11-20' } });
+      await userEvent.click(screen.getByRole('button', { name: 'Bloquear período' }));
+
+      expect(await screen.findByText('Não foi possível criar o bloqueio. Tente novamente.')).toBeInTheDocument();
+    });
+
+    it('mostra bloqueios de vários dias, desiste da remoção e avisa quando a remoção falha', async () => {
+      vi.mocked(listarBloqueios).mockResolvedValue([
+        { id: 'b3', inicio: '2026-11-20T00:00:00.000-03:00', fim: '2026-11-23T00:00:00.000-03:00', motivo: null },
+      ]);
+      vi.mocked(removerBloqueio).mockRejectedValue(new Error('falha'));
+      abrir('/meu-perfil?aba=bloqueios');
+
+      const periodo = 'Sex, 20/11 a Dom, 22/11 · dias inteiros';
+      expect(await screen.findByText(periodo)).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: `Remover bloqueio de ${periodo}` }));
+      await userEvent.click(screen.getByRole('button', { name: 'Não' }));
+      expect(removerBloqueio).not.toHaveBeenCalled();
+
+      await userEvent.click(screen.getByRole('button', { name: `Remover bloqueio de ${periodo}` }));
+      await userEvent.click(screen.getByRole('button', { name: 'Sim, remover' }));
+      expect(await screen.findByText('Não foi possível remover o bloqueio.')).toBeInTheDocument();
+    });
+
+    it('oferece tentar de novo quando a lista de bloqueios não carrega', async () => {
+      vi.mocked(listarBloqueios).mockRejectedValueOnce(new Error('falha')).mockResolvedValue([]);
+      abrir('/meu-perfil?aba=bloqueios');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Tentar novamente' }));
+
+      expect(await screen.findByText('Nenhum bloqueio marcado.')).toBeInTheDocument();
+      expect(listarBloqueios).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe('regras da área do professor', () => {
+  it('lê valores em reais em formatos comuns', () => {
+    expect(lerValorEmReais('80')).toBe(80);
+    expect(lerValorEmReais('80,50')).toBe(80.5);
+    expect(lerValorEmReais('R$ 1.200,00')).toBe(1200);
+    expect(lerValorEmReais('abc')).toBeNaN();
+    expect(lerValorEmReais('')).toBeNaN();
+  });
+
+  it('valida a grade por dia', () => {
+    expect(validarGrade([{ diaSemana: 2, horaInicio: '10:00', horaFim: '09:00' }]).get(2)).toBe(
+      'O início precisa ser antes do fim.',
+    );
+    expect(validarGrade([{ diaSemana: 3, horaInicio: '08:00', horaFim: '12:00' }]).size).toBe(0);
+  });
+
+  it('calcula o período do bloqueio com horário', () => {
+    expect(
+      periodoDoBloqueio({
+        dataInicio: '2026-11-20',
+        dataFim: '2026-11-20',
+        diaInteiro: false,
+        horaInicio: '14:00',
+        horaFim: '18:00',
+      }),
+    ).toEqual({ inicio: '2026-11-20T17:00:00.000Z', fim: '2026-11-20T21:00:00.000Z' });
+  });
+});
