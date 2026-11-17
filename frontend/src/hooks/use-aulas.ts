@@ -1,5 +1,12 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { aceitarAula, listarAulas, obterAula, recusarAula, type FiltrosAulas } from '../services/aulas';
+import {
+  aceitarAula,
+  cancelarAula,
+  listarAulas,
+  obterAula,
+  recusarAula,
+  type FiltrosAulas,
+} from '../services/aulas';
 
 export function useAulas(filtros: FiltrosAulas) {
   return useQuery({
@@ -40,6 +47,14 @@ export function useRecusarAula() {
   const atualizar = useAtualizarAulas();
   return useMutation({
     mutationFn: ({ id, motivo }: { id: string; motivo?: string }) => recusarAula(id, motivo),
+    onSuccess: (_aula, { id }) => atualizar(id),
+  });
+}
+
+export function useCancelarAula() {
+  const atualizar = useAtualizarAulas();
+  return useMutation({
+    mutationFn: ({ id, motivo }: { id: string; motivo: string }) => cancelarAula(id, motivo),
     onSuccess: (_aula, { id }) => atualizar(id),
   });
 }

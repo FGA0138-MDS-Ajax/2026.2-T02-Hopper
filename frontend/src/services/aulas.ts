@@ -87,6 +87,15 @@ export async function recusarAula(id: string, motivo?: string): Promise<AulaDeta
 }
 
 /**
+ * RF16: O aluno ou o professor cancela a aula informando o motivo.
+ * A API atualiza o status para CANCELADA, grava o motivo e libera o horário ocupado.
+ */
+export async function cancelarAula(id: string, motivo: string): Promise<AulaDetalhe> {
+  const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/cancelar`, { motivo });
+  return data;
+}
+
+/**
  * RF09: o aluno solicita a aula; ela nasce com o status "Solicitada" e o professor é notificado.
  * RF10: com recorrência, a API cria uma aula por semana (mesmo serieId) ou nenhuma, se alguma semana estiver ocupada.
  */

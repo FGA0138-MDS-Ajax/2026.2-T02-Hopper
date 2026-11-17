@@ -7,6 +7,7 @@ import { removerToken, salvarToken } from '../services/api';
 import { obterUsuarioAtual, type Usuario } from '../services/auth';
 import {
   aceitarAula,
+  cancelarAula,
   listarAulas,
   obterAula,
   recusarAula,
@@ -27,6 +28,7 @@ vi.mock('../services/aulas', async (importarOriginal) => ({
   obterAula: vi.fn(),
   aceitarAula: vi.fn(),
   recusarAula: vi.fn(),
+  cancelarAula: vi.fn(),
 }));
 
 const usuarioMock = vi.mocked(obterUsuarioAtual);
@@ -34,6 +36,7 @@ const listarMock = vi.mocked(listarAulas);
 const obterMock = vi.mocked(obterAula);
 const aceitarMock = vi.mocked(aceitarAula);
 const recusarMock = vi.mocked(recusarAula);
+const cancelarMock = vi.mocked(cancelarAula);
 
 // "Agora" nos testes: segunda-feira, 09/11/2026, 09:00 em Brasília.
 const AGORA = new Date('2026-11-09T09:00:00.000-03:00');
@@ -215,6 +218,45 @@ describe('PaginaMinhasAulas', () => {
 
       expect(await screen.findByText('O contato aparece depois que a aula for confirmada.')).toBeInTheDocument();
     });
+
+    it('cancela um pedido pendente informando o motivo (CT09.4)', async () => {
+      listarPorStatus({ SOLICITADA: [aula({ status: 'SOLICITADA' })] });
+      cancelarMock.mockResolvedValue({ ...aula({ status: 'CANCELADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir('/minhas-aulas?aba=pendentes');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar pedido' }));
+      await userEvent.type(screen.getByLabelText(/Motivo do cancelamento/), 'Mudança de planos');
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).toHaveBeenCalledWith('a1', 'Mudança de planos');
+      expect(await screen.findByRole('status')).toHaveTextContent('Pedido de aula cancelado.');
+    });
+
+    it('cancela uma aula confirmada informando o motivo (CT09)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      cancelarMock.mockResolvedValue({ ...aula({ status: 'CANCELADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir();
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar aula' }));
+      await userEvent.type(screen.getByLabelText(/Motivo do cancelamento/), 'Imprevisto de saúde');
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).toHaveBeenCalledWith('a1', 'Imprevisto de saúde');
+      expect(await screen.findByRole('status')).toHaveTextContent(
+        'Aula com Ana Souza cancelada. O horário foi liberado e o professor foi avisado.',
+      );
+    });
+
+    it('avisa que o motivo é obrigatório caso tente submeter em branco (CT09.1)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      abrir();
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar aula' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).not.toHaveBeenCalled();
+      expect(await screen.findByRole('alert')).toHaveTextContent('Informe o motivo do cancelamento');
+    });
   });
 
   describe('como professor', () => {
@@ -277,6 +319,21 @@ describe('PaginaMinhasAulas', () => {
       await userEvent.click(await screen.findByRole('button', { name: 'Aceitar' }));
 
       expect(await screen.findByRole('alert')).toHaveTextContent('Já existe uma aula confirmada neste horário');
+    });
+
+    it('cancela uma aula confirmada com motivo (CT09)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      cancelarMock.mockResolvedValue({ ...aula({ status: 'CANCELADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir('/minhas-aulas?aba=proximas');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar aula' }));
+      await userEvent.type(screen.getByLabelText(/Motivo do cancelamento/), 'Compromisso acadêmico urgente');
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).toHaveBeenCalledWith('a1', 'Compromisso acadêmico urgente');
+      expect(await screen.findByRole('status')).toHaveTextContent(
+        'Aula com Caio Alves cancelada. O horário foi liberado e o aluno foi avisado.',
+      );
     });
   });
 

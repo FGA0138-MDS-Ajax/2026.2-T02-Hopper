@@ -1,6 +1,14 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { simularApi } from '../test/api-simulada';
-import { aceitarAula, listarAulas, obterAula, recusarAula, solicitarAula, type DadosSolicitacao } from './aulas';
+import {
+  aceitarAula,
+  cancelarAula,
+  listarAulas,
+  obterAula,
+  recusarAula,
+  solicitarAula,
+  type DadosSolicitacao,
+} from './aulas';
 
 describe('serviço de aulas (rotas e corpo enviados à API)', () => {
   let api: ReturnType<typeof simularApi>;
@@ -63,5 +71,17 @@ describe('serviço de aulas (rotas e corpo enviados à API)', () => {
 
     await expect(solicitarAula(dados)).resolves.toEqual(criadas);
     expect(api.unica()).toMatchObject({ metodo: 'POST', url: '/aulas', corpo: dados });
+  });
+
+  it('cancelarAula envia o motivo obrigatório e faz PATCH na rota correspondente (RF16)', async () => {
+    api = simularApi({ id: 'a1', status: 'CANCELADA', motivoCancelamento: 'Imprevisto' });
+
+    await cancelarAula('a1', 'Imprevisto');
+
+    expect(api.unica()).toMatchObject({
+      metodo: 'PATCH',
+      url: '/aulas/a1/cancelar',
+      corpo: { motivo: 'Imprevisto' },
+    });
   });
 });
