@@ -7,9 +7,12 @@ import { removerToken, salvarToken } from '../services/api';
 import { obterUsuarioAtual, type Usuario } from '../services/auth';
 import {
   aceitarAula,
+  cancelarAula,
   listarAulas,
   obterAula,
+  proporRemarcacao,
   recusarAula,
+  responderRemarcacao,
   type Aula,
   type AulaDetalhe,
   type FiltrosAulas,
@@ -27,6 +30,9 @@ vi.mock('../services/aulas', async (importarOriginal) => ({
   obterAula: vi.fn(),
   aceitarAula: vi.fn(),
   recusarAula: vi.fn(),
+  cancelarAula: vi.fn(),
+  proporRemarcacao: vi.fn(),
+  responderRemarcacao: vi.fn(),
 }));
 
 const usuarioMock = vi.mocked(obterUsuarioAtual);
@@ -34,6 +40,9 @@ const listarMock = vi.mocked(listarAulas);
 const obterMock = vi.mocked(obterAula);
 const aceitarMock = vi.mocked(aceitarAula);
 const recusarMock = vi.mocked(recusarAula);
+const cancelarMock = vi.mocked(cancelarAula);
+const proporMock = vi.mocked(proporRemarcacao);
+const responderMock = vi.mocked(responderRemarcacao);
 
 // "Agora" nos testes: segunda-feira, 09/11/2026, 09:00 em Brasília.
 const AGORA = new Date('2026-11-09T09:00:00.000-03:00');
@@ -215,6 +224,127 @@ describe('PaginaMinhasAulas', () => {
 
       expect(await screen.findByText('O contato aparece depois que a aula for confirmada.')).toBeInTheDocument();
     });
+
+    it('cancela um pedido pendente informando o motivo (CT09.4)', async () => {
+      listarPorStatus({ SOLICITADA: [aula({ status: 'SOLICITADA' })] });
+      cancelarMock.mockResolvedValue({ ...aula({ status: 'CANCELADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir('/minhas-aulas?aba=pendentes');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar pedido' }));
+      await userEvent.type(screen.getByLabelText(/Motivo do cancelamento/), 'Mudança de planos');
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).toHaveBeenCalledWith('a1', 'Mudança de planos');
+      expect(await screen.findByRole('status')).toHaveTextContent('Pedido de aula cancelado.');
+    });
+
+    it('cancela uma aula confirmada informando o motivo (CT09)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      cancelarMock.mockResolvedValue({ ...aula({ status: 'CANCELADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir();
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar aula' }));
+      await userEvent.type(screen.getByLabelText(/Motivo do cancelamento/), 'Imprevisto de saúde');
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).toHaveBeenCalledWith('a1', 'Imprevisto de saúde');
+      expect(await screen.findByRole('status')).toHaveTextContent(
+        'Aula com Ana Souza cancelada. O horário foi liberado e o professor foi avisado.',
+      );
+    });
+
+    it('avisa que o motivo é obrigatório caso tente submeter em branco (CT09.1)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      abrir();
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar aula' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).not.toHaveBeenCalled();
+      expect(await screen.findByRole('alert')).toHaveTextContent('Informe o motivo do cancelamento');
+    });
+
+    it('propõe remarcação de aula confirmada informando novo horário (CT08.1)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      proporMock.mockResolvedValue({
+        id: 'r1',
+        aulaId: 'a1',
+        propostoPorId: 'u1',
+        novoInicio: '2026-11-20T14:00:00.000-03:00',
+        novoFim: '2026-11-20T15:00:00.000-03:00',
+        aceita: null,
+        criadoEm: '2026-11-09T09:00:00.000-03:00',
+      });
+      abrir();
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Remarcar aula' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Enviar proposta' }));
+
+      expect(proporMock).toHaveBeenCalledWith('a1', expect.objectContaining({
+        novoInicio: expect.any(String),
+        novoFim: expect.any(String),
+      }));
+      expect(await screen.findByRole('status')).toHaveTextContent('Proposta de remarcação enviada ao professor Ana Souza.');
+    });
+
+    it('aceita proposta de remarcação recebida do professor (CT08)', async () => {
+      const remarcacaoPendente = {
+        id: 'r1',
+        aulaId: 'a1',
+        propostoPorId: 'up1',
+        novoInicio: '2026-11-20T10:00:00.000-03:00',
+        novoFim: '2026-11-20T11:00:00.000-03:00',
+        aceita: null,
+        criadoEm: '2026-11-09T09:00:00.000-03:00',
+      };
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA', remarcacaoPendente })] });
+      responderMock.mockResolvedValue({ ...aula({ status: 'REMARCADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir();
+
+      expect(await screen.findByText('Proposta de remarcação recebida')).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('button', { name: 'Aceitar novo horário' }));
+
+      expect(responderMock).toHaveBeenCalledWith('a1', 'r1', true);
+      expect(await screen.findByRole('status')).toHaveTextContent('Proposta de remarcação aceita. O novo horário foi reservado.');
+    });
+
+    it('recusa proposta de remarcação recebida do professor (CT08.2)', async () => {
+      const remarcacaoPendente = {
+        id: 'r1',
+        aulaId: 'a1',
+        propostoPorId: 'up1',
+        novoInicio: '2026-11-20T10:00:00.000-03:00',
+        novoFim: '2026-11-20T11:00:00.000-03:00',
+        aceita: null,
+        criadoEm: '2026-11-09T09:00:00.000-03:00',
+      };
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA', remarcacaoPendente })] });
+      responderMock.mockResolvedValue({ ...aula({ status: 'CONFIRMADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir();
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Recusar proposta' }));
+
+      expect(responderMock).toHaveBeenCalledWith('a1', 'r1', false);
+      expect(await screen.findByRole('status')).toHaveTextContent('Proposta de remarcação recusada. O horário original foi mantido.');
+    });
+
+    it('vê aviso de proposta enviada quando o próprio aluno propôs a remarcação', async () => {
+      const remarcacaoPendente = {
+        id: 'r1',
+        aulaId: 'a1',
+        propostoPorId: 'u1',
+        novoInicio: '2026-11-20T10:00:00.000-03:00',
+        novoFim: '2026-11-20T11:00:00.000-03:00',
+        aceita: null,
+        criadoEm: '2026-11-09T09:00:00.000-03:00',
+      };
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA', remarcacaoPendente })] });
+      abrir();
+
+      expect(await screen.findByText('Proposta de novo horário enviada')).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Remarcar aula' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Cancelar aula' })).not.toBeInTheDocument();
+    });
   });
 
   describe('como professor', () => {
@@ -277,6 +407,65 @@ describe('PaginaMinhasAulas', () => {
       await userEvent.click(await screen.findByRole('button', { name: 'Aceitar' }));
 
       expect(await screen.findByRole('alert')).toHaveTextContent('Já existe uma aula confirmada neste horário');
+    });
+
+    it('cancela uma aula confirmada com motivo (CT09)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      cancelarMock.mockResolvedValue({ ...aula({ status: 'CANCELADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir('/minhas-aulas?aba=proximas');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Cancelar aula' }));
+      await userEvent.type(screen.getByLabelText(/Motivo do cancelamento/), 'Compromisso acadêmico urgente');
+      await userEvent.click(screen.getByRole('button', { name: 'Confirmar cancelamento' }));
+
+      expect(cancelarMock).toHaveBeenCalledWith('a1', 'Compromisso acadêmico urgente');
+      expect(await screen.findByRole('status')).toHaveTextContent(
+        'Aula com Caio Alves cancelada. O horário foi liberado e o aluno foi avisado.',
+      );
+    });
+
+    it('professor propõe remarcação de aula confirmada (CT08.1)', async () => {
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA' })] });
+      proporMock.mockResolvedValue({
+        id: 'r2',
+        aulaId: 'a1',
+        propostoPorId: 'up1',
+        novoInicio: '2026-11-21T15:00:00.000-03:00',
+        novoFim: '2026-11-21T16:00:00.000-03:00',
+        aceita: null,
+        criadoEm: '2026-11-09T09:00:00.000-03:00',
+      });
+      abrir('/minhas-aulas?aba=proximas');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Remarcar aula' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Enviar proposta' }));
+
+      expect(proporMock).toHaveBeenCalledWith('a1', expect.objectContaining({
+        novoInicio: expect.any(String),
+        novoFim: expect.any(String),
+      }));
+      expect(await screen.findByRole('status')).toHaveTextContent('Proposta de remarcação enviada ao aluno Caio Alves.');
+    });
+
+    it('professor aceita proposta de remarcação recebida do aluno (CT08)', async () => {
+      const remarcacaoPendente = {
+        id: 'r3',
+        aulaId: 'a1',
+        propostoPorId: 'u1',
+        novoInicio: '2026-11-20T16:00:00.000-03:00',
+        novoFim: '2026-11-20T17:00:00.000-03:00',
+        aceita: null,
+        criadoEm: '2026-11-09T09:00:00.000-03:00',
+      };
+      listarPorStatus({ CONFIRMADA: [aula({ status: 'CONFIRMADA', remarcacaoPendente })] });
+      responderMock.mockResolvedValue({ ...aula({ status: 'REMARCADA' }), anotacoes: null, contato: null, historico: [] });
+      abrir('/minhas-aulas?aba=proximas');
+
+      expect(await screen.findByText('Proposta de remarcação recebida')).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('button', { name: 'Aceitar novo horário' }));
+
+      expect(responderMock).toHaveBeenCalledWith('a1', 'r3', true);
+      expect(await screen.findByRole('status')).toHaveTextContent('Proposta de remarcação aceita. O novo horário foi reservado.');
     });
   });
 

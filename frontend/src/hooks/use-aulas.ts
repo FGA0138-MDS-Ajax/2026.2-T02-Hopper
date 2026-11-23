@@ -1,5 +1,14 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { aceitarAula, listarAulas, obterAula, recusarAula, type FiltrosAulas } from '../services/aulas';
+import {
+  aceitarAula,
+  cancelarAula,
+  listarAulas,
+  obterAula,
+  proporRemarcacao,
+  recusarAula,
+  responderRemarcacao,
+  type FiltrosAulas,
+} from '../services/aulas';
 
 export function useAulas(filtros: FiltrosAulas) {
   return useQuery({
@@ -41,5 +50,31 @@ export function useRecusarAula() {
   return useMutation({
     mutationFn: ({ id, motivo }: { id: string; motivo?: string }) => recusarAula(id, motivo),
     onSuccess: (_aula, { id }) => atualizar(id),
+  });
+}
+
+export function useCancelarAula() {
+  const atualizar = useAtualizarAulas();
+  return useMutation({
+    mutationFn: ({ id, motivo }: { id: string; motivo: string }) => cancelarAula(id, motivo),
+    onSuccess: (_aula, { id }) => atualizar(id),
+  });
+}
+
+export function useProporRemarcacao() {
+  const atualizar = useAtualizarAulas();
+  return useMutation({
+    mutationFn: ({ aulaId, dados }: { aulaId: string; dados: { novoInicio: string; novoFim: string } }) =>
+      proporRemarcacao(aulaId, dados),
+    onSuccess: (_remarcacao, { aulaId }) => atualizar(aulaId),
+  });
+}
+
+export function useResponderRemarcacao() {
+  const atualizar = useAtualizarAulas();
+  return useMutation({
+    mutationFn: ({ aulaId, remarcacaoId, aceita }: { aulaId: string; remarcacaoId: string; aceita: boolean }) =>
+      responderRemarcacao(aulaId, remarcacaoId, aceita),
+    onSuccess: (_aula, { aulaId }) => atualizar(aulaId),
   });
 }

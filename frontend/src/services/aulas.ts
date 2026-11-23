@@ -12,6 +12,17 @@ export const ROTULO_STATUS: Record<StatusAula, string> = {
   REALIZADA: 'Realizada',
 };
 
+export interface Remarcacao {
+  id: string;
+  aulaId: string;
+  propostoPorId: string;
+  novoInicio: string;
+  novoFim: string;
+  aceita: boolean | null;
+  criadoEm: string;
+  propostoPor?: { id: string; nome: string };
+}
+
 /** Aula como a API devolve (datas em ISO 8601 no horário de Brasília). */
 export interface Aula {
   id: string;
@@ -22,6 +33,7 @@ export interface Aula {
   status: StatusAula;
   serieId: string | null;
   motivoCancelamento: string | null;
+  remarcacaoPendente?: Remarcacao | null;
   criadoEm: string;
   materia: { id: string; nome: string; nivel: string };
   aluno: { id: string; nome: string };
@@ -42,6 +54,7 @@ export interface DadosSolicitacao {
 export interface AulaDetalhe extends Aula {
   anotacoes: string | null;
   historico: { status: StatusAula; dataHora: string; motivo: string | null; autorId: string | null }[];
+  remarcacoes?: Remarcacao[];
   /** Contato do outro participante: só vem depois da confirmação (RNF06). */
   contato: { nome: string; email: string; telefone: string | null } | null;
 }
@@ -83,6 +96,44 @@ export async function aceitarAula(id: string, opcoes?: { serie: true }): Promise
 
 export async function recusarAula(id: string, motivo?: string): Promise<AulaDetalhe> {
   const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/recusar`, motivo ? { motivo } : {});
+  return data;
+}
+
+/**
+ * RF16: O aluno ou o professor cancela a aula informando o motivo.
+ * A API atualiza o status para CANCELADA, grava o motivo e libera o horário ocupado.
+ */
+export async function cancelarAula(id: string, motivo: string): Promise<AulaDetalhe> {
+  const { data } = await api.patch<AulaDetalhe>(`/aulas/${encodeURIComponent(id)}/cancelar`, { motivo });
+  return data;
+}
+
+/**
+ * RF15: Aluno ou professor propõe um novo horário para a aula confirmada ou remarcada.
+ * A proposta aguarda resposta da outra parte.
+ */
+export async function proporRemarcacao(
+  aulaId: string,
+  dados: { novoInicio: string; novoFim: string },
+): Promise<Remarcacao> {
+  const { data } = await api.post<Remarcacao>(`/aulas/${encodeURIComponent(aulaId)}/remarcacoes`, dados);
+  return data;
+}
+
+/**
+ * RF15: A outra parte aceita ou recusa a proposta de remarcação.
+ * Se aceita: o horário antigo é liberado, o novo é ocupado e o status muda para REMARCADA.
+ * Se recusada: a proposta é arquivada e o agendamento original é mantido.
+ */
+export async function responderRemarcacao(
+  aulaId: string,
+  remarcacaoId: string,
+  aceita: boolean,
+): Promise<AulaDetalhe> {
+  const { data } = await api.patch<AulaDetalhe>(
+    `/aulas/${encodeURIComponent(aulaId)}/remarcacoes/${encodeURIComponent(remarcacaoId)}`,
+    { aceita },
+  );
   return data;
 }
 
