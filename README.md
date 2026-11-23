@@ -384,6 +384,7 @@ Definidos no [Documento de Arquitetura](https://fga0138-mds-ajax.github.io/2026.
 | `feature/<descricao>` | Nova funcionalidade (ex.: `feature/us13-notificacoes`). |
 | `fix/<descricao>` | Correção de defeito (ex.: `fix/rf12-aceites-simultaneos`). |
 | `test/<descricao>` | Novos testes ou ajustes nos testes (ex.: `test/cobertura-frontend`). |
+| `chore/<descricao>` | Configuração, implantação, dependências e ajustes de documentação do repositório (ex.: `chore/implantacao-no-render`). |
 | `docs` | Fonte da documentação em MkDocs. |
 | `gh-pages` | Site da documentação gerado para o GitHub Pages. Não recebe código. |
 
@@ -391,8 +392,10 @@ Definidos no [Documento de Arquitetura](https://fga0138-mds-ajax.github.io/2026.
 
 1. Crie a branch de trabalho a partir da `developer`.
 2. Desenvolva com testes e rode `npm run testes` antes de abrir o pull request.
-3. Abra o pull request para a `developer`. Ele é revisado pelo Analista de Qualidade e por mais um desenvolvedor.
-4. Ao fim da sprint, o P.O. valida as entregas na revisão; quando a versão está pronta, a `developer` é integrada à `main`.
+3. Abra o pull request para a `developer`. Ele precisa de **1 aprovação** do Analista de Qualidade (Yasmim Ayres ou Pedro Henrique Rodrigues) ou, em casos pontuais, do Scrum Master/P.O. O autor nunca aprova o próprio pull request.
+4. Ao fim da sprint, o P.O. valida as entregas na revisão; quando a versão está pronta, a `developer` é integrada à `main` por pull request, com a mesma regra de aprovação.
+
+A `developer` e a `main` são protegidas no GitHub: não aceitam push direto nem push forçado, exigem a aprovação de alguém que não seja o autor (a regra vale também para administradores) e descartam a aprovação se um novo commit entrar depois dela.
 
 ---
 
