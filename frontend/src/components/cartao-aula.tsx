@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ChevronDown, Clock, Lock, Mail, Phone, Repeat } from 'lucide-react';
 import {
   useAceitarAula,
@@ -222,16 +222,18 @@ function AcoesDoProfessor({ aula, aoConcluir }: { aula: Aula; aoConcluir: (mensa
 function FormularioRemarcar({
   aula,
   papel,
+  agora,
   onCancelar,
   aoConcluir,
 }: {
   aula: Aula;
   papel: Papel;
+  agora: number;
   onCancelar: () => void;
   aoConcluir: (mensagem: string) => void;
 }) {
   const propor = useProporRemarcacao();
-  const [novaData, setNovaData] = useState(() => chaveDoDia(new Date(Date.now() + 24 * 60 * 60 * 1000)));
+  const [novaData, setNovaData] = useState(() => chaveDoDia(new Date(agora + 24 * 60 * 60 * 1000)));
   const [novoInicioHora, setNovoInicioHora] = useState(() => hora(aula.inicio));
   const [novoFimHora, setNovoFimHora] = useState(() => hora(aula.fim));
   const [erro, setErro] = useState<string | null>(null);
@@ -241,7 +243,7 @@ function FormularioRemarcar({
   const idFim = useId();
 
   const outroNome = papel === 'ALUNO' ? aula.professor.nome : aula.aluno.nome;
-  const hoje = chaveDoDia(new Date());
+  const hoje = chaveDoDia(new Date(agora));
 
   async function enviarProposta() {
     setErro(null);
@@ -253,7 +255,7 @@ function FormularioRemarcar({
     const novoInicioIso = instanteEmBrasilia(novaData, novoInicioHora);
     const novoFimIso = instanteEmBrasilia(novaData, novoFimHora);
 
-    if (new Date(novoInicioIso).getTime() <= Date.now()) {
+    if (new Date(novoInicioIso).getTime() <= agora) {
       setErro('O novo horário deve ser no futuro.');
       return;
     }
@@ -376,6 +378,11 @@ function FormularioCancelar({
   const [motivo, setMotivo] = useState('');
   const [erro, setErro] = useState<string | null>(null);
   const idMotivo = useId();
+  const refMotivo = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    refMotivo.current?.focus();
+  }, []);
 
   const ehPedido = aula.status === 'SOLICITADA';
 
@@ -411,6 +418,7 @@ function FormularioCancelar({
         Motivo do cancelamento <span className="text-error">*</span>
       </label>
       <textarea
+        ref={refMotivo}
         id={idMotivo}
         rows={2}
         maxLength={TAMANHO_MAXIMO_MOTIVO}
@@ -451,12 +459,14 @@ function FormularioCancelar({
 function AcoesDaAula({
   aula,
   papel,
+  agora,
   podeRemarcar,
   podeCancelar,
   aoConcluir,
 }: {
   aula: Aula;
   papel: Papel;
+  agora: number;
   podeRemarcar: boolean;
   podeCancelar: boolean;
   aoConcluir: (mensagem: string) => void;
@@ -553,6 +563,7 @@ function AcoesDaAula({
         <FormularioRemarcar
           aula={aula}
           papel={papel}
+          agora={agora}
           onCancelar={() => setModo('nenhum')}
           aoConcluir={(msg) => {
             setModo('nenhum');
@@ -576,20 +587,12 @@ function AcoesDaAula({
       {modo === 'nenhum' && (
         <div className="flex flex-wrap items-center gap-2.5">
           {podeRemarcar && (
-            <button
-              type="button"
-              onClick={() => setModo('remarcar')}
-              className="botao-secundario h-11 px-5 text-sm"
-            >
+            <button type="button" onClick={() => setModo('remarcar')} className="botao-secundario h-11 px-5 text-sm">
               Remarcar aula
             </button>
           )}
           {podeCancelar && (
-            <button
-              type="button"
-              onClick={() => setModo('cancelar')}
-              className="botao-secundario h-11 px-5 text-sm"
-            >
+            <button type="button" onClick={() => setModo('cancelar')} className="botao-secundario h-11 px-5 text-sm">
               {textoBotaoCancelar}
             </button>
           )}
@@ -619,7 +622,9 @@ export function CartaoAula({
   const podeRemarcar =
     (aula.status === 'CONFIRMADA' || aula.status === 'REMARCADA') && new Date(aula.inicio).getTime() > agora;
   const podeCancelar =
-    (aula.status === 'CONFIRMADA' || (papel === 'ALUNO' && aula.status === 'SOLICITADA')) &&
+    (aula.status === 'CONFIRMADA' ||
+      aula.status === 'REMARCADA' ||
+      (papel === 'ALUNO' && aula.status === 'SOLICITADA')) &&
     new Date(aula.inicio).getTime() > agora;
 
   return (
@@ -661,6 +666,7 @@ export function CartaoAula({
         <AcoesDaAula
           aula={aula}
           papel={papel}
+          agora={agora}
           podeRemarcar={podeRemarcar}
           podeCancelar={podeCancelar}
           aoConcluir={aoConcluirAcao}
