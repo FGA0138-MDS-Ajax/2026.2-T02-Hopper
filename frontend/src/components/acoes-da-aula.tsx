@@ -141,20 +141,12 @@ export function AcoesDaAula({
       {modo === 'nenhum' && (
         <div className="flex flex-wrap items-center gap-2.5">
           {podeRemarcar && (
-            <button
-              type="button"
-              onClick={() => setModo('remarcar')}
-              className="botao-secundario h-11 px-5 text-sm"
-            >
+            <button type="button" onClick={() => setModo('remarcar')} className="botao-secundario h-11 px-5 text-sm">
               Remarcar aula
             </button>
           )}
           {podeCancelar && (
-            <button
-              type="button"
-              onClick={() => setModo('cancelar')}
-              className="botao-secundario h-11 px-5 text-sm"
-            >
+            <button type="button" onClick={() => setModo('cancelar')} className="botao-secundario h-11 px-5 text-sm">
               {textoBotaoCancelar}
             </button>
           )}
