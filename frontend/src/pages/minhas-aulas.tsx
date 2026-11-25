@@ -10,9 +10,22 @@ import { Rodape } from '../components/rodape';
 import { useSessao } from '../contexts/sessao';
 import { useAulas } from '../hooks/use-aulas';
 import { useTitulo } from '../hooks/use-titulo';
-import type { FiltrosAulas } from '../services/aulas';
+import { ROTULO_STATUS, type FiltrosAulas, type StatusAula } from '../services/aulas';
 
 const AULAS_POR_PAGINA = 10;
+
+const OPCOES_STATUS_HISTORICO: StatusAula[] = [
+  'SOLICITADA',
+  'CONFIRMADA',
+  'REMARCADA',
+  'REALIZADA',
+  'CANCELADA',
+  'RECUSADA',
+];
+
+function dataParaIsoBrasilia(data: string, fimDoDia = false): string {
+  return `${data}T${fimDoDia ? '23:59:59.999' : '00:00:00.000'}-03:00`;
+}
 
 type IdAba = 'proximas' | 'pendentes' | 'historico';
 
@@ -85,44 +98,161 @@ function ListaDaAba({
   aoConcluirAcao: (mensagem: string) => void;
 }) {
   const [pagina, setPagina] = useState(1);
+  const [statusFiltro, setStatusFiltro] = useState<StatusAula | ''>('');
+  const [dataInicial, setDataInicial] = useState('');
+  const [dataFinal, setDataFinal] = useState('');
+
+  const ehHistorico = aba.id === 'historico';
+  const temFiltroAtivo = ehHistorico && Boolean(statusFiltro || dataInicial || dataFinal);
+  const intervaloInvalido = Boolean(dataInicial && dataFinal && dataInicial > dataFinal);
+
+  const filtrosHistorico: FiltrosAulas = ehHistorico
+    ? {
+        ...(statusFiltro ? { status: statusFiltro } : {}),
+        ...(dataInicial ? { de: dataParaIsoBrasilia(dataInicial) } : {}),
+        ...(dataFinal && !intervaloInvalido ? { ate: dataParaIsoBrasilia(dataFinal, true) } : {}),
+      }
+    : {};
+
   const { data, isPending, isError, isPlaceholderData, refetch } = useAulas({
     ...aba.filtros(agora),
+    ...filtrosHistorico,
     pagina,
     limite: AULAS_POR_PAGINA,
   });
 
+  function alterarStatus(valor: string) {
+    setStatusFiltro(valor as StatusAula | '');
+    setPagina(1);
+  }
+
+  function alterarDataInicial(valor: string) {
+    setDataInicial(valor);
+    setPagina(1);
+  }
+
+  function alterarDataFinal(valor: string) {
+    setDataFinal(valor);
+    setPagina(1);
+  }
+
+  function limparFiltros() {
+    setStatusFiltro('');
+    setDataInicial('');
+    setDataFinal('');
+    setPagina(1);
+  }
+
+  const barraDeFiltros = ehHistorico ? (
+    <section aria-label="Filtros do histórico" className="cartao mb-5 p-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
+        <div className="min-w-0">
+          <label htmlFor="filtro-status" className="mb-1 block text-xs font-bold uppercase tracking-wide text-suave">
+            Status
+          </label>
+          <select
+            id="filtro-status"
+            value={statusFiltro}
+            onChange={(e) => alterarStatus(e.target.value)}
+            className="foco h-11 w-full min-w-0 rounded-xl border border-slate-300 bg-white px-3 text-sm text-tinta"
+          >
+            <option value="">Todos</option>
+            {OPCOES_STATUS_HISTORICO.map((status) => (
+              <option key={status} value={status}>
+                {ROTULO_STATUS[status]}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="min-w-0">
+          <label htmlFor="filtro-data-de" className="mb-1 block text-xs font-bold uppercase tracking-wide text-suave">
+            Data inicial
+          </label>
+          <input
+            id="filtro-data-de"
+            type="date"
+            value={dataInicial}
+            max={dataFinal || undefined}
+            onChange={(e) => alterarDataInicial(e.target.value)}
+            className="foco h-11 w-full min-w-0 rounded-xl border border-slate-300 bg-white px-3 text-sm text-tinta"
+          />
+        </div>
+
+        <div className="min-w-0">
+          <label htmlFor="filtro-data-ate" className="mb-1 block text-xs font-bold uppercase tracking-wide text-suave">
+            Data final
+          </label>
+          <input
+            id="filtro-data-ate"
+            type="date"
+            value={dataFinal}
+            min={dataInicial || undefined}
+            onChange={(e) => alterarDataFinal(e.target.value)}
+            className="foco h-11 w-full min-w-0 rounded-xl border border-slate-300 bg-white px-3 text-sm text-tinta"
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={limparFiltros}
+          disabled={!temFiltroAtivo}
+          className="botao-secundario h-11 w-full px-4 text-sm disabled:cursor-not-allowed disabled:opacity-50 lg:w-auto"
+        >
+          Limpar filtros
+        </button>
+      </div>
+      {intervaloInvalido && (
+        <p role="alert" className="mt-2 text-xs font-medium text-red-700">
+          A data inicial deve ser anterior ou igual à data final.
+        </p>
+      )}
+    </section>
+  ) : null;
+
   if (isPending) {
     return (
-      <div className="space-y-3" aria-busy="true">
-        {Array.from({ length: 3 }, (_, indice) => (
-          <div key={indice} className="cartao h-28 animate-pulse bg-white" aria-hidden="true" />
-        ))}
-      </div>
+      <>
+        {barraDeFiltros}
+        <div className="space-y-3" aria-busy="true">
+          {Array.from({ length: 3 }, (_, indice) => (
+            <div key={indice} className="cartao h-28 animate-pulse bg-white" aria-hidden="true" />
+          ))}
+        </div>
+      </>
     );
   }
 
   if (isError) {
     return (
-      <div className="cartao flex flex-col items-center gap-2 p-10 text-center">
-        <p className="font-bold text-tinta">Não foi possível carregar suas aulas.</p>
-        <button type="button" onClick={() => refetch()} className="botao-secundario mt-3">
-          <RefreshCw size={16} aria-hidden="true" />
-          Tentar novamente
-        </button>
-      </div>
+      <>
+        {barraDeFiltros}
+        <div className="cartao flex flex-col items-center gap-2 p-10 text-center">
+          <p className="font-bold text-tinta">Não foi possível carregar suas aulas.</p>
+          <button type="button" onClick={() => refetch()} className="botao-secundario mt-3">
+            <RefreshCw size={16} aria-hidden="true" />
+            Tentar novamente
+          </button>
+        </div>
+      </>
     );
   }
 
   if (data.itens.length === 0) {
     return (
-      <div className="cartao p-10 text-center">
-        <p className="text-suave">{aba.vazio}</p>
-        {papel === 'ALUNO' && aba.id !== 'historico' && (
-          <Link to="/professores" className="botao-principal mt-6">
-            Encontrar professores
-          </Link>
-        )}
-      </div>
+      <>
+        {barraDeFiltros}
+        <div className="cartao p-10 text-center">
+          <p className="text-suave">
+            {temFiltroAtivo ? 'Nenhuma aula encontrada para os filtros selecionados.' : aba.vazio}
+          </p>
+          {papel === 'ALUNO' && aba.id !== 'historico' && (
+            <Link to="/professores" className="botao-principal mt-6">
+              Encontrar professores
+            </Link>
+          )}
+        </div>
+      </>
     );
   }
 
@@ -133,6 +263,7 @@ function ListaDaAba({
 
   return (
     <>
+      {barraDeFiltros}
       <ul className={`space-y-3 transition-opacity ${isPlaceholderData ? 'opacity-60' : ''}`}>
         {aulas.map((aula) => (
           <li key={aula.id}>
