@@ -345,6 +345,91 @@ describe('PaginaMinhasAulas', () => {
       expect(screen.queryByRole('button', { name: 'Remarcar aula' })).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: 'Cancelar aula' })).not.toBeInTheDocument();
     });
+
+    it('filtra o histórico por status e período combinados e limpa filtros (RF18)', async () => {
+      listarMock.mockResolvedValue(pagina([aula({ id: 'a1', status: 'REALIZADA' })]));
+      abrir('/minhas-aulas?aba=historico');
+
+      await screen.findByRole('region', { name: 'Filtros do histórico' });
+      expect(screen.getByRole('button', { name: 'Limpar filtros' })).toBeDisabled();
+
+      await userEvent.selectOptions(screen.getByLabelText('Status'), 'REALIZADA');
+      await waitFor(() =>
+        expect(listarMock).toHaveBeenLastCalledWith({
+          status: 'REALIZADA',
+          pagina: 1,
+          limite: 10,
+        }),
+      );
+
+      await userEvent.type(screen.getByLabelText('Data inicial'), '2026-11-01');
+      await userEvent.type(screen.getByLabelText('Data final'), '2026-11-15');
+      await waitFor(() =>
+        expect(listarMock).toHaveBeenLastCalledWith({
+          status: 'REALIZADA',
+          de: '2026-11-01T00:00:00.000-03:00',
+          ate: '2026-11-15T23:59:59.999-03:00',
+          pagina: 1,
+          limite: 10,
+        }),
+      );
+
+      await userEvent.click(screen.getByRole('button', { name: 'Limpar filtros' }));
+      await waitFor(() =>
+        expect(listarMock).toHaveBeenLastCalledWith({
+          pagina: 1,
+          limite: 10,
+        }),
+      );
+      expect(screen.getByLabelText('Status')).toHaveValue('');
+      expect(screen.getByLabelText('Data inicial')).toHaveValue('');
+      expect(screen.getByLabelText('Data final')).toHaveValue('');
+    });
+
+    it('volta para a página 1 ao alterar um filtro do histórico e exibe mensagem quando vazio', async () => {
+      listarMock.mockImplementation(async (filtros: FiltrosAulas) => {
+        if (filtros.status === 'CANCELADA') {
+          return pagina([]);
+        }
+        return {
+          itens: [aula({ id: `a-${filtros.pagina ?? 1}` })],
+          total: 15,
+          pagina: filtros.pagina ?? 1,
+        };
+      });
+      abrir('/minhas-aulas?aba=historico');
+
+      await userEvent.click(await screen.findByRole('button', { name: 'Próxima' }));
+      await waitFor(() =>
+        expect(listarMock).toHaveBeenLastCalledWith({
+          pagina: 2,
+          limite: 10,
+        }),
+      );
+
+      await userEvent.selectOptions(screen.getByLabelText('Status'), 'CANCELADA');
+      await waitFor(() =>
+        expect(listarMock).toHaveBeenLastCalledWith({
+          status: 'CANCELADA',
+          pagina: 1,
+          limite: 10,
+        }),
+      );
+      expect(await screen.findByText('Nenhuma aula encontrada para os filtros selecionados.')).toBeInTheDocument();
+    });
+
+    it('avisa quando a data inicial é maior que a data final no histórico', async () => {
+      listarMock.mockResolvedValue(pagina([]));
+      abrir('/minhas-aulas?aba=historico');
+
+      await screen.findByRole('region', { name: 'Filtros do histórico' });
+      await userEvent.type(screen.getByLabelText('Data inicial'), '2026-11-20');
+      await userEvent.type(screen.getByLabelText('Data final'), '2026-11-10');
+
+      expect(await screen.findByRole('alert')).toHaveTextContent(
+        'A data inicial deve ser anterior ou igual à data final.',
+      );
+    });
   });
 
   describe('como professor', () => {
