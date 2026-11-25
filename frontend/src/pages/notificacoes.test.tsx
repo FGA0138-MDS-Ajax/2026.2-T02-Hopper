@@ -129,6 +129,25 @@ describe('PaginaNotificacoes', () => {
     expect(screen.queryByRole('button', { name: 'Marcar todas como lidas' })).not.toBeInTheDocument();
   });
 
+  it('exibe lembretes de aulas nas próximas 24 h com destaque e link para próximas aulas (RF19)', async () => {
+    const lembrete: Notificacao = {
+      id: 'n3',
+      aulaId: 'a3',
+      tipo: 'LEMBRETE',
+      mensagem: 'Lembrete: sua aula de Matemática com Ana Souza começa em 10/11 às 08:00.',
+      lida: false,
+      criadoEm: '2026-11-09T09:00:00.000-03:00',
+    };
+    responderCom([lembrete]);
+    abrir();
+
+    const lista = await screen.findByRole('list');
+    const item = within(lista).getByRole('listitem');
+    expect(within(item).getByText('Lembrete · próximas 24 h')).toBeInTheDocument();
+    expect(within(item).getByText(/sua aula de Matemática com Ana Souza/)).toBeInTheDocument();
+    expect(within(item).getByRole('link', { name: 'Ver aula' })).toHaveAttribute('href', '/minhas-aulas?aba=proximas');
+  });
+
   it('administrador não recebe avisos de aulas', async () => {
     vi.mocked(obterUsuarioAtual).mockResolvedValue({ ...CAIO, perfil: 'ADMIN' });
     abrir();

@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { ChevronDown, Clock, Lock, Mail, Phone, Repeat } from 'lucide-react';
+import { BellRing, ChevronDown, Clock, Lock, Mail, Phone, Repeat } from 'lucide-react';
 import {
   useAceitarAula,
   useAula,
@@ -615,12 +615,15 @@ export function CartaoAula({
   const idDetalhes = useId();
   const IconeModalidade = ICONE_MODALIDADE[aula.modalidade];
   const outro = papel === 'ALUNO' ? `com ${aula.professor.nome}` : `Aluno: ${aula.aluno.nome}`;
-  const aguardandoResposta = aula.status === 'SOLICITADA' && new Date(aula.inicio).getTime() > agora;
-  const podeRemarcar =
-    (aula.status === 'CONFIRMADA' || aula.status === 'REMARCADA') && new Date(aula.inicio).getTime() > agora;
+  const inicioMs = new Date(aula.inicio).getTime();
+  const ehNasProximas24h =
+    (aula.status === 'CONFIRMADA' || aula.status === 'REMARCADA') &&
+    inicioMs > agora &&
+    inicioMs - agora <= 24 * 60 * 60 * 1000;
+  const aguardandoResposta = aula.status === 'SOLICITADA' && inicioMs > agora;
+  const podeRemarcar = (aula.status === 'CONFIRMADA' || aula.status === 'REMARCADA') && inicioMs > agora;
   const podeCancelar =
-    (aula.status === 'CONFIRMADA' || (papel === 'ALUNO' && aula.status === 'SOLICITADA')) &&
-    new Date(aula.inicio).getTime() > agora;
+    (aula.status === 'CONFIRMADA' || (papel === 'ALUNO' && aula.status === 'SOLICITADA')) && inicioMs > agora;
 
   return (
     <article className="cartao p-4 sm:p-5" aria-label={`Aula de ${aula.materia.nome}, ${outro}`}>
@@ -634,7 +637,15 @@ export function CartaoAula({
               </h3>
               <p className="text-sm text-suave">{outro}</p>
             </div>
-            <SeloStatus status={aula.status} />
+            <div className="flex flex-wrap items-center gap-1.5">
+              {ehNasProximas24h && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-bold text-secondary">
+                  <BellRing size={12} aria-hidden="true" />
+                  Nas próximas 24 h
+                </span>
+              )}
+              <SeloStatus status={aula.status} />
+            </div>
           </div>
           <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-suave">
             <li className="inline-flex items-center gap-1.5">

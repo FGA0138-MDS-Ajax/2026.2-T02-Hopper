@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { formatarTelefone } from '../utils/formatacao';
 import { removerToken, salvarToken } from '../services/api';
 import { obterUsuarioAtual, type Usuario } from '../services/auth';
+import { listarNotificacoes, marcarComoLidas, type Notificacao } from '../services/notificacoes';
 import {
   aceitarAula,
   cancelarAula,
@@ -43,6 +44,8 @@ const recusarMock = vi.mocked(recusarAula);
 const cancelarMock = vi.mocked(cancelarAula);
 const proporMock = vi.mocked(proporRemarcacao);
 const responderMock = vi.mocked(responderRemarcacao);
+const listarNotificacoesMock = vi.mocked(listarNotificacoes);
+const marcarLidasMock = vi.mocked(marcarComoLidas);
 
 // "Agora" nos testes: segunda-feira, 09/11/2026, 09:00 em Brasília.
 const AGORA = new Date('2026-11-09T09:00:00.000-03:00');
@@ -558,6 +561,109 @@ describe('PaginaMinhasAulas', () => {
     usuarioMock.mockResolvedValue({ ...CAIO, perfil: 'ADMIN' });
     abrir();
     expect(await screen.findByText('Contas de administrador não participam de aulas.')).toBeInTheDocument();
+  });
+
+  describe('lembretes das próximas 24 h (RF19)', () => {
+    const LEMBRETE_ALUNO: Notificacao = {
+      id: 'l1',
+      aulaId: 'a1',
+      tipo: 'LEMBRETE',
+      mensagem: 'Lembrete: sua aula de Matemática com Ana Souza começa amanhã às 08:00.',
+      lida: false,
+      criadoEm: '2026-11-09T09:00:00.000-03:00',
+    };
+
+    const CONFIRMACAO_COMUM: Notificacao = {
+      id: 'c1',
+      aulaId: 'a2',
+      tipo: 'CONFIRMACAO',
+      mensagem: 'Ana Souza confirmou a sua aula de Física.',
+      lida: false,
+      criadoEm: '2026-11-09T08:30:00.000-03:00',
+    };
+
+    it('não exibe a seção de lembretes quando não há lembretes não lidos', async () => {
+      usuarioMock.mockResolvedValue(CAIO);
+      listarPorStatus({ CONFIRMADA: [aula()] });
+      listarNotificacoesMock.mockResolvedValue({
+        itens: [CONFIRMACAO_COMUM],
+        total: 1,
+        pagina: 1,
+        naoLidas: 1,
+      });
+
+      abrir();
+      await screen.findByRole('article', { name: /Aula de Matemática/ });
+
+      expect(screen.queryByRole('region', { name: 'Lembretes das próximas 24 h' })).not.toBeInTheDocument();
+    });
+
+    it('exibe lembretes das próximas 24 h para o aluno e permite marcar como lido', async () => {
+      usuarioMock.mockResolvedValue(CAIO);
+      listarPorStatus({ CONFIRMADA: [aula()] });
+      listarNotificacoesMock.mockResolvedValue({
+        itens: [LEMBRETE_ALUNO, CONFIRMACAO_COMUM],
+        total: 2,
+        pagina: 1,
+        naoLidas: 2,
+      });
+      marcarLidasMock.mockResolvedValue(1);
+
+      abrir();
+
+      const regiao = await screen.findByRole('region', { name: 'Lembretes das próximas 24 h' });
+      expect(within(regiao).getByText(LEMBRETE_ALUNO.mensagem)).toBeInTheDocument();
+      expect(within(regiao).queryByText(CONFIRMACAO_COMUM.mensagem)).not.toBeInTheDocument();
+
+      await userEvent.click(within(regiao).getByRole('button', { name: 'Marcar como lido' }));
+      expect(marcarLidasMock).toHaveBeenCalledWith(['l1']);
+    });
+
+    it('exibe lembretes das próximas 24 h para o professor', async () => {
+      usuarioMock.mockResolvedValue(ANA_USUARIO);
+      listarPorStatus({ SOLICITADA: [] });
+      const lembreteProfessor: Notificacao = {
+        ...LEMBRETE_ALUNO,
+        id: 'l2',
+        mensagem: 'Lembrete: sua aula de Matemática com Caio Alves começa amanhã às 08:00.',
+      };
+      listarNotificacoesMock.mockResolvedValue({
+        itens: [lembreteProfessor],
+        total: 1,
+        pagina: 1,
+        naoLidas: 1,
+      });
+
+      abrir();
+
+      const regiao = await screen.findByRole('region', { name: 'Lembretes das próximas 24 h' });
+      expect(within(regiao).getByText(lembreteProfessor.mensagem)).toBeInTheDocument();
+    });
+
+    it('destaca no cartão aulas confirmadas nas próximas 24 h e omite para aulas mais distantes', async () => {
+      usuarioMock.mockResolvedValue(CAIO);
+      listarPorStatus({
+        CONFIRMADA: [
+          aula({
+            id: 'em-breve',
+            inicio: '2026-11-10T08:00:00.000-03:00',
+            fim: '2026-11-10T09:00:00.000-03:00',
+          }),
+          aula({
+            id: 'distante',
+            inicio: '2026-11-12T14:00:00.000-03:00',
+            fim: '2026-11-12T15:00:00.000-03:00',
+          }),
+        ],
+      });
+
+      abrir();
+
+      const cartoes = await screen.findAllByRole('article', { name: /Aula de Matemática/ });
+      expect(cartoes).toHaveLength(2);
+      expect(within(cartoes[0]).getByText('Nas próximas 24 h')).toBeInTheDocument();
+      expect(within(cartoes[1]).queryByText('Nas próximas 24 h')).not.toBeInTheDocument();
+    });
   });
 });
 

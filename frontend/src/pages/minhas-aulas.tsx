@@ -4,6 +4,7 @@ import { RefreshCw } from 'lucide-react';
 import { Abas, PainelDeAba } from '../components/abas';
 import { AvisoSucesso } from '../components/aviso-sucesso';
 import { Cabecalho } from '../components/cabecalho';
+import { LembretesProximasAulas } from '../components/lembretes-proximas-aulas';
 import { Paginacao } from '../components/paginacao';
 import { CartaoAula, type Papel } from '../components/cartao-aula';
 import { Rodape } from '../components/rodape';
@@ -329,6 +330,8 @@ export function PaginaMinhasAulas() {
               <AvisoSucesso aoFechar={() => setMensagem(null)}>{mensagem}</AvisoSucesso>
             </div>
           )}
+
+          <LembretesProximasAulas />
 
           <div className="mt-8">
             <Abas

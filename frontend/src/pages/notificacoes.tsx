@@ -84,6 +84,11 @@ function ItemDeNotificacao({
         <Icone size={18} />
       </span>
       <div className="min-w-0 flex-1">
+        {notificacao.tipo === 'LEMBRETE' && (
+          <span className="mb-1.5 inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-secondary">
+            Lembrete · próximas 24 h
+          </span>
+        )}
         <p className={`text-sm ${naoLida ? 'font-semibold text-tinta' : 'text-suave'}`}>
           {naoLida && <span className="sr-only">Não lida: </span>}
           {notificacao.mensagem}
@@ -267,7 +272,7 @@ export function PaginaNotificacoes() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight text-tinta sm:text-4xl">Notificações</h1>
-          <p className="mt-2 text-suave">Pedidos, confirmações e recusas das suas aulas.</p>
+          <p className="mt-2 text-suave">Pedidos, confirmações, lembretes e avisos das suas aulas.</p>
         </div>
         <MarcarTodas />
       </div>

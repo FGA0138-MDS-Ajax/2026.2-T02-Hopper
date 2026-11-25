@@ -2,6 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { listarNotificacoes, marcarComoLidas, type FiltrosNotificacoes } from '../services/notificacoes';
 
 const CHAVE = 'notificacoes';
+const LIMITE_LEMBRETES = 20;
 
 /** De quanto em quanto tempo o contador do sino procura avisos novos. */
 const INTERVALO_DE_ATUALIZACAO_MS = 60_000;
@@ -11,6 +12,16 @@ export function useNotificacoes(filtros: FiltrosNotificacoes) {
     queryKey: [CHAVE, filtros],
     queryFn: () => listarNotificacoes(filtros),
     placeholderData: keepPreviousData,
+  });
+}
+
+/** RF19: lembretes não lidos de aulas confirmadas ou remarcadas nas próximas 24 h. */
+export function useLembretes(habilitado = true) {
+  return useQuery({
+    queryKey: [CHAVE, 'lembretes'],
+    queryFn: () => listarNotificacoes({ apenasNaoLidas: true, limite: LIMITE_LEMBRETES }),
+    select: (pagina) => pagina.itens.filter((item) => item.tipo === 'LEMBRETE'),
+    enabled: habilitado,
   });
 }
 
