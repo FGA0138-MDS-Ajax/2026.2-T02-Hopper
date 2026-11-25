@@ -10,11 +10,12 @@ import {
   type FiltrosAulas,
 } from '../services/aulas';
 
-export function useAulas(filtros: FiltrosAulas) {
+export function useAulas(filtros: FiltrosAulas, habilitado = true) {
   return useQuery({
     queryKey: ['aulas', filtros],
     queryFn: () => listarAulas(filtros),
     placeholderData: keepPreviousData,
+    enabled: habilitado,
   });
 }
 

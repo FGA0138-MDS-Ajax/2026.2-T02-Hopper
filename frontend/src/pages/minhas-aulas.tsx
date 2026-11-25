@@ -102,6 +102,7 @@ function ListaDaAba({
   const [dataInicial, setDataInicial] = useState('');
   const [dataFinal, setDataFinal] = useState('');
 
+  const ehProximas = aba.id === 'proximas';
   const ehHistorico = aba.id === 'historico';
   const temFiltroAtivo = ehHistorico && Boolean(statusFiltro || dataInicial || dataFinal);
   const intervaloInvalido = Boolean(dataInicial && dataFinal && dataInicial > dataFinal);
@@ -114,12 +115,30 @@ function ListaDaAba({
       }
     : {};
 
-  const { data, isPending, isError, isPlaceholderData, refetch } = useAulas({
+  const consultaPrincipal = useAulas({
     ...aba.filtros(agora),
     ...filtrosHistorico,
     pagina,
     limite: AULAS_POR_PAGINA,
   });
+
+  // O back-end aceita apenas um status por consulta; em "Próximas", buscamos também aulas remarcadas futuras.
+  const consultaRemarcadas = useAulas({ status: 'REMARCADA', de: agora, pagina, limite: AULAS_POR_PAGINA }, ehProximas);
+
+  const isPending = consultaPrincipal.isPending || (ehProximas && consultaRemarcadas.isPending);
+  const isError = consultaPrincipal.isError || (ehProximas && consultaRemarcadas.isError);
+  const isPlaceholderData = consultaPrincipal.isPlaceholderData || (ehProximas && consultaRemarcadas.isPlaceholderData);
+  const itens = ehProximas
+    ? [...(consultaPrincipal.data?.itens ?? []), ...(consultaRemarcadas.data?.itens ?? [])]
+    : (consultaPrincipal.data?.itens ?? []);
+  const total = ehProximas
+    ? Math.max(consultaPrincipal.data?.total ?? 0, consultaRemarcadas.data?.total ?? 0)
+    : (consultaPrincipal.data?.total ?? 0);
+
+  function refetch() {
+    consultaPrincipal.refetch();
+    if (ehProximas) consultaRemarcadas.refetch();
+  }
 
   function alterarStatus(valor: string) {
     setStatusFiltro(valor as StatusAula | '');
@@ -238,7 +257,7 @@ function ListaDaAba({
     );
   }
 
-  if (data.itens.length === 0) {
+  if (itens.length === 0) {
     return (
       <>
         {barraDeFiltros}
@@ -257,9 +276,9 @@ function ListaDaAba({
   }
 
   const aulas = aba.ordemDoCalendario
-    ? [...data.itens].sort((a, b) => new Date(a.inicio).getTime() - new Date(b.inicio).getTime())
-    : data.itens;
-  const totalDePaginas = Math.max(1, Math.ceil(data.total / AULAS_POR_PAGINA));
+    ? [...itens].sort((a, b) => new Date(a.inicio).getTime() - new Date(b.inicio).getTime())
+    : itens;
+  const totalDePaginas = Math.max(1, Math.ceil(total / AULAS_POR_PAGINA));
 
   return (
     <>
