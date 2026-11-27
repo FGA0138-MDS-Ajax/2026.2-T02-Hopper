@@ -11,11 +11,16 @@ import { formatarDataHoraBrasilia, somarMinutos } from '../../shared/utils/datas
 import { calcularPaginacao, montarPagina } from '../../shared/utils/paginacao';
 import type { EntradaNotificar } from '../notificacoes/notificacoes.service';
 import type { ContatoUsuario, ProfessorParaAula } from '../usuarios/usuarios.service';
-import { STATUS_COM_CONTATO_LIBERADO, validarTransicao } from './aulas.estados';
+import {
+  STATUS_COM_CONTATO_LIBERADO,
+  STATUS_QUE_OCUPAM_HORARIO,
+  validarTransicao,
+} from './aulas.estados';
 import type {
   AulaDetalhe,
   AulaResumo,
   AulasRepositorio,
+  FiltroAulasVencidas,
   FiltroListagemAulas,
 } from './aulas.repository';
 import type { EntradaCriarAula, EntradaListarAulas } from './aulas.schemas';
@@ -133,13 +138,18 @@ export class AulasService {
   ): Promise<Pagina<AulaResumo>> {
     const { status, de, ate, pagina, limite } = consulta;
     const filtro: FiltroListagemAulas = { status, de, ate };
+    let vencidas: FiltroAulasVencidas;
     if (usuario.perfil === 'ALUNO') {
       filtro.alunoId = usuario.id;
+      vencidas = { alunoId: usuario.id };
     } else if (usuario.perfil === 'PROFESSOR') {
-      filtro.professorId = await this.deps.usuarios.obterProfessorIdPorUsuario(usuario.id);
+      const professorId = await this.deps.usuarios.obterProfessorIdPorUsuario(usuario.id);
+      filtro.professorId = professorId;
+      vencidas = { professorId };
     } else {
       throw new ErroProibido('Seu perfil não possui aulas');
     }
+    await this.marcarRealizadas(vencidas);
     const resultado = await this.deps.repositorio.listar(
       filtro,
       calcularPaginacao({ pagina, limite }),
@@ -148,8 +158,14 @@ export class AulasService {
   }
 
   async obterDetalhe(usuario: UsuarioAutenticado, aulaId: string): Promise<AulaComContato> {
-    const aula = await this.carregarAula(aulaId);
+    let aula = await this.carregarAula(aulaId);
     const papel = this.exigirParticipante(aula, usuario);
+    const venceu =
+      STATUS_QUE_OCUPAM_HORARIO.includes(aula.status) &&
+      aula.fim.getTime() < this.agora().getTime();
+    if (venceu && (await this.marcarRealizadas({ aulaId }))) {
+      aula = await this.carregarAula(aulaId);
+    }
     if (!STATUS_COM_CONTATO_LIBERADO.includes(aula.status)) return { ...aula, contato: null };
     const outroUsuarioId = papel === 'ALUNO' ? aula.professor.usuarioId : aula.aluno.id;
     const outroNome = papel === 'ALUNO' ? aula.professor.nome : aula.aluno.nome;
@@ -294,6 +310,14 @@ export class AulasService {
 
   private gerarId(): string {
     return this.deps.gerarId ? this.deps.gerarId() : randomUUID();
+  }
+
+  /** RF17: aulas confirmadas/remarcadas que já terminaram viram REALIZADA quando são consultadas. */
+  private async marcarRealizadas(filtro: FiltroAulasVencidas): Promise<boolean> {
+    const total = await this.deps.transacao((tx) =>
+      this.deps.repositorio.marcarVencidasComoRealizadas(tx, filtro, this.agora()),
+    );
+    return total > 0;
   }
 
   private async carregarAula(aulaId: string): Promise<AulaDetalhe> {
