@@ -566,6 +566,103 @@ describe('AulasService', () => {
     });
   });
 
+  describe('cancelar', () => {
+    const motivo = 'Imprevisto de saúde';
+
+    it('aluno cancela aula confirmada: grava motivo e histórico e notifica o professor (RF16)', async () => {
+      const { servico, repositorio, notificacoes, transacao } = criarServico(
+        criarDetalhe({ status: 'CONFIRMADA' }),
+      );
+
+      await servico.cancelar(aluno, 'a1', motivo);
+
+      expect(transacao).toHaveBeenCalledTimes(1);
+      expect(repositorio.transicionar).toHaveBeenCalledWith(tx, {
+        aulaId: 'a1',
+        de: 'CONFIRMADA',
+        para: 'CANCELADA',
+        autorId: 'u-aluno',
+        motivo,
+        motivoCancelamento: motivo,
+      });
+      expect(notificacoes.notificar).toHaveBeenCalledWith(tx, {
+        usuarioId: 'u-prof',
+        aulaId: 'a1',
+        tipo: 'CANCELAMENTO',
+        mensagem:
+          'Caio cancelou a aula de Matemática em 09/11/2026 às 09:00. Motivo: Imprevisto de saúde',
+      });
+    });
+
+    it('professor cancela aula remarcada e o aluno é avisado', async () => {
+      const { servico, repositorio, notificacoes } = criarServico(
+        criarDetalhe({ status: 'REMARCADA' }),
+      );
+
+      await servico.cancelar(professorUsuario, 'a1', motivo);
+
+      expect(repositorio.transicionar).toHaveBeenCalledWith(
+        tx,
+        expect.objectContaining({ de: 'REMARCADA', para: 'CANCELADA', autorId: 'u-prof' }),
+      );
+      expect(notificacoes.notificar).toHaveBeenCalledWith(
+        tx,
+        expect.objectContaining({ usuarioId: 'u-aluno', tipo: 'CANCELAMENTO' }),
+      );
+      expect(notificacoes.notificar.mock.calls[0][1].mensagem).toContain('Ana cancelou');
+    });
+
+    it('aluno cancela o próprio pedido ainda solicitado', async () => {
+      const { servico, repositorio } = criarServico(criarDetalhe({ status: 'SOLICITADA' }));
+
+      await servico.cancelar(aluno, 'a1', motivo);
+
+      expect(repositorio.transicionar).toHaveBeenCalledWith(
+        tx,
+        expect.objectContaining({ de: 'SOLICITADA', para: 'CANCELADA' }),
+      );
+    });
+
+    it('professor não cancela pedido ainda solicitado: 403 e nada é gravado', async () => {
+      const { servico, repositorio, notificacoes } = criarServico(
+        criarDetalhe({ status: 'SOLICITADA' }),
+      );
+
+      const erro = await capturarErro(servico.cancelar(professorUsuario, 'a1', motivo));
+
+      expect(erro).toBeInstanceOf(ErroProibido);
+      expect(repositorio.transicionar).not.toHaveBeenCalled();
+      expect(notificacoes.notificar).not.toHaveBeenCalled();
+    });
+
+    it('rejeita cancelar aula em status que não permite com 400', async () => {
+      for (const status of ['RECUSADA', 'CANCELADA', 'REALIZADA'] as const) {
+        const { servico, repositorio } = criarServico(criarDetalhe({ status }));
+
+        const erro = await capturarErro(servico.cancelar(aluno, 'a1', motivo));
+
+        expect(erro).toBeInstanceOf(ErroRegraNegocio);
+        expect(erro.codigo).toBe('TRANSICAO_INVALIDA');
+        expect(repositorio.transicionar).not.toHaveBeenCalled();
+      }
+    });
+
+    it('nega a quem não participa da aula com 403 e responde 404 quando ela não existe', async () => {
+      const { servico, repositorio } = criarServico(criarDetalhe({ status: 'CONFIRMADA' }));
+
+      const estranho = await capturarErro(
+        servico.cancelar({ id: 'outro', perfil: 'ALUNO' }, 'a1', motivo),
+      );
+      expect(estranho).toBeInstanceOf(ErroProibido);
+      expect(repositorio.transicionar).not.toHaveBeenCalled();
+
+      const inexistente = criarServico(null);
+      expect(await capturarErro(inexistente.servico.cancelar(aluno, 'a9', motivo))).toBeInstanceOf(
+        ErroNaoEncontrado,
+      );
+    });
+  });
+
   describe('listarIntervalosOcupados', () => {
     it('delega ao repositorio para alimentar a agenda', async () => {
       const { servico, repositorio } = criarServico();

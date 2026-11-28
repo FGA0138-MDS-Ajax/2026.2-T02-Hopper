@@ -296,6 +296,35 @@ export class AulasService {
     return this.deps.gerarId ? this.deps.gerarId() : randomUUID();
   }
 
+  async cancelar(
+    usuario: UsuarioAutenticado,
+    aulaId: string,
+    motivo: string,
+  ): Promise<AulaComContato> {
+    const aula = await this.carregarAula(aulaId);
+    const papel = this.exigirParticipante(aula, usuario);
+    validarTransicao(aula.status, 'CANCELADA', papel);
+    await this.deps.transacao(async (tx) => {
+      await this.deps.repositorio.transicionar(tx, {
+        aulaId: aula.id,
+        de: aula.status,
+        para: 'CANCELADA',
+        autorId: usuario.id,
+        motivo,
+        motivoCancelamento: motivo,
+      });
+      const destinatarioId = papel === 'ALUNO' ? aula.professor.usuarioId : aula.aluno.id;
+      const autorNome = papel === 'ALUNO' ? aula.aluno.nome : aula.professor.nome;
+      await this.deps.notificacoes.notificar(tx, {
+        usuarioId: destinatarioId,
+        aulaId: aula.id,
+        tipo: 'CANCELAMENTO',
+        mensagem: `${autorNome} cancelou a aula de ${aula.materia.nome} em ${formatarDataHoraBrasilia(aula.inicio)}. Motivo: ${motivo}`,
+      });
+    });
+    return this.obterDetalhe(usuario, aula.id);
+  }
+
   private async carregarAula(aulaId: string): Promise<AulaDetalhe> {
     const aula = await this.deps.repositorio.buscarPorId(aulaId);
     if (!aula) throw new ErroNaoEncontrado('Aula não encontrada', 'AULA_NAO_ENCONTRADA');

@@ -4,7 +4,12 @@ import { autorizar } from '../../shared/middlewares/autorizar';
 import { validar } from '../../shared/middlewares/validar';
 import { esquemaParametroId } from '../../shared/utils/validacoes';
 import type { AulasController } from './aulas.controller';
-import { esquemaAceitarAula, esquemaCriarAula, esquemaRecusarAula } from './aulas.schemas';
+import {
+  esquemaAceitarAula,
+  esquemaCancelarAula,
+  esquemaCriarAula,
+  esquemaRecusarAula,
+} from './aulas.schemas';
 
 const apenasAluno = [autenticar, autorizar('ALUNO')];
 const apenasProfessor = [autenticar, autorizar('PROFESSOR')];
@@ -31,6 +36,12 @@ export function criarRotasAulas(controlador: AulasController): Router {
     ...apenasProfessor,
     validar({ params: esquemaParametroId, body: esquemaRecusarAula }),
     controlador.recusar,
+  );
+  rotas.patch(
+    '/:id/cancelar',
+    ...alunoOuProfessor,
+    validar({ params: esquemaParametroId, body: esquemaCancelarAula }),
+    controlador.cancelar,
   );
   return rotas;
 }

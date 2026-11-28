@@ -67,7 +67,14 @@ export const esquemaRecusarAula = z
   .object({ motivo: z.string().trim().min(1).max(TAMANHO_MAXIMO_MOTIVO).optional() })
   .default({});
 
+const MINIMO_MOTIVO_CANCELAMENTO = 3;
+
+export const esquemaCancelarAula = z.object({
+  motivo: z.string().trim().min(MINIMO_MOTIVO_CANCELAMENTO).max(TAMANHO_MAXIMO_MOTIVO),
+});
+
 export type EntradaCriarAula = z.infer<typeof esquemaCriarAula>;
 export type EntradaListarAulas = z.infer<typeof esquemaListarAulas>;
 export type EntradaAceitarAula = z.infer<typeof esquemaAceitarAula>;
 export type EntradaRecusarAula = z.infer<typeof esquemaRecusarAula>;
+export type EntradaCancelarAula = z.infer<typeof esquemaCancelarAula>;
