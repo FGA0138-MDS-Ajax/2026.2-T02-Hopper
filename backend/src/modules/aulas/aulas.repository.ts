@@ -67,6 +67,7 @@ export interface DadosTransicao {
   para: StatusAula;
   autorId: string;
   motivo?: string | null;
+  motivoCancelamento?: string | null;
 }
 
 export interface ResultadoListagemAulas {
@@ -276,7 +277,10 @@ export class AulasRepositorioPrisma implements AulasRepositorio {
     try {
       const atualizadas = await tx.aula.updateMany({
         where: { id: dados.aulaId, status: dados.de },
-        data: { status: dados.para },
+        data: {
+          status: dados.para,
+          ...(dados.motivoCancelamento ? { motivoCancelamento: dados.motivoCancelamento } : {}),
+        },
       });
       if (atualizadas.count === 0) {
         throw new ErroConflito(

@@ -1,7 +1,11 @@
 import type { Request, Response } from 'express';
 import { lerConsulta } from '../../shared/middlewares/validar';
 import { exigirUsuario } from '../../shared/types/requisicao';
-import { esquemaListarAulas, type EntradaAceitarAula } from './aulas.schemas';
+import {
+  esquemaListarAulas,
+  type EntradaAceitarAula,
+  type EntradaCancelarAula,
+} from './aulas.schemas';
 import type { AulasService } from './aulas.service';
 
 export class AulasController {
@@ -35,6 +39,12 @@ export class AulasController {
       String(req.params.id),
       req.body.motivo,
     );
+    res.status(200).json(aula);
+  };
+
+  cancelar = async (req: Request, res: Response): Promise<void> => {
+    const { motivo } = req.body as EntradaCancelarAula;
+    const aula = await this.servico.cancelar(exigirUsuario(req), String(req.params.id), motivo);
     res.status(200).json(aula);
   };
 }
