@@ -1,13 +1,17 @@
 import { randomUUID } from 'crypto';
 import type { Transacao } from '../../infra/prisma';
 import type { TipoNotificacao } from '../../shared/types/dominio';
+import { formatarDataHoraBrasilia, somarMinutos } from '../../shared/utils/datas';
 import { calcularPaginacao } from '../../shared/utils/paginacao';
 import type { NotificacaoDados, NotificacoesRepositorio } from './notificacoes.repository';
 import type { EntradaListarNotificacoes, EntradaMarcarComoLidas } from './notificacoes.schemas';
 
+const MINUTOS_EM_24_HORAS = 24 * 60;
+
 export interface DependenciasNotificacoesService {
   repositorio: NotificacoesRepositorio;
   gerarId?: () => string;
+  agora?: () => Date;
 }
 
 export interface EntradaNotificar {
@@ -51,6 +55,8 @@ export class NotificacoesService {
     consulta: EntradaListarNotificacoes,
   ): Promise<ListagemNotificacoes> {
     const { pagina, limite, apenasNaoLidas } = consulta;
+    // RF19: os lembretes são gerados antes de listar, para já aparecerem na resposta.
+    await this.gerarLembretes(usuarioId);
     const [resultado, naoLidas] = await Promise.all([
       this.deps.repositorio.listar(
         usuarioId,
@@ -70,7 +76,37 @@ export class NotificacoesService {
     return { atualizadas };
   }
 
+  /**
+   * RF19: cria, sob demanda (sem cron), o lembrete das aulas confirmadas ou remarcadas do usuário
+   * que começam nas próximas 24 h. A chaveUnica leva o horário de início: consultas repetidas não
+   * duplicam o aviso, e uma aula remarcada gera um lembrete novo para o novo horário.
+   */
+  private async gerarLembretes(usuarioId: string): Promise<void> {
+    const agora = this.agora();
+    const aulas = await this.deps.repositorio.listarAulasProximas(
+      usuarioId,
+      agora,
+      somarMinutos(agora, MINUTOS_EM_24_HORAS),
+    );
+    await this.deps.repositorio.criarLembretes(
+      aulas.map((aula) => {
+        const outraParte = aula.alunoId === usuarioId ? aula.professorNome : aula.alunoNome;
+        return {
+          usuarioId,
+          aulaId: aula.id,
+          tipo: 'LEMBRETE' as const,
+          mensagem: `Lembrete: aula de ${aula.materiaNome} com ${outraParte} em ${formatarDataHoraBrasilia(aula.inicio)}.`,
+          chaveUnica: `lembrete:${aula.id}:${usuarioId}:${aula.inicio.getTime()}`,
+        };
+      }),
+    );
+  }
+
   private gerarId(): string {
     return this.deps.gerarId ? this.deps.gerarId() : randomUUID();
+  }
+
+  private agora(): Date {
+    return this.deps.agora ? this.deps.agora() : new Date();
   }
 }
