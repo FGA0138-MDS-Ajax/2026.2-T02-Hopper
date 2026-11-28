@@ -61,6 +61,12 @@ export interface FiltroListagemAulas {
   ate?: Date;
 }
 
+export interface FiltroAulasVencidas {
+  aulaId?: string;
+  alunoId?: string;
+  professorId?: string;
+}
+
 export interface DadosTransicao {
   aulaId: string;
   de: StatusAula;
@@ -100,6 +106,15 @@ export interface AulasRepositorio {
   ): Promise<AulaResumo[]>;
   /** Pedidos pendentes de uma série semanal que ainda vão acontecer, na ordem do calendário. */
   listarPedidosDaSerie(serieId: string, aPartirDe: Date): Promise<AulaResumo[]>;
+  /**
+   * RF17: passa para REALIZADA as aulas CONFIRMADA/REMARCADA que já terminaram, gravando o
+   * histórico sem autor (ação do sistema). Devolve quantas aulas mudaram.
+   */
+  marcarVencidasComoRealizadas(
+    tx: Transacao,
+    filtro: FiltroAulasVencidas,
+    agora: Date,
+  ): Promise<number>;
 }
 
 const inclusaoResumo = {
@@ -270,6 +285,38 @@ export class AulasRepositorioPrisma implements AulasRepositorio {
 
   async bloquearAgendaDoProfessor(tx: Transacao, professorId: string): Promise<void> {
     await tx.$queryRaw`SELECT 1 FROM "PerfilProfessor" WHERE id = ${professorId} FOR UPDATE`;
+  }
+
+  async marcarVencidasComoRealizadas(
+    tx: Transacao,
+    filtro: FiltroAulasVencidas,
+    agora: Date,
+  ): Promise<number> {
+    const candidatas = await tx.aula.findMany({
+      where: {
+        ...(filtro.aulaId ? { id: filtro.aulaId } : {}),
+        ...(filtro.alunoId ? { alunoId: filtro.alunoId } : {}),
+        ...(filtro.professorId ? { professorId: filtro.professorId } : {}),
+        status: { in: STATUS_QUE_OCUPAM_HORARIO },
+        fim: { lt: agora },
+      },
+      select: { id: true, status: true },
+    });
+    let marcadas = 0;
+    for (const candidata of candidatas) {
+      // A condição de status vai no próprio UPDATE: se outra requisição já marcou esta aula,
+      // count volta 0 e o histórico não é duplicado.
+      const resultado = await tx.aula.updateMany({
+        where: { id: candidata.id, status: candidata.status },
+        data: { status: 'REALIZADA' },
+      });
+      if (resultado.count === 0) continue;
+      await tx.historicoStatus.create({
+        data: { aulaId: candidata.id, status: 'REALIZADA', autorId: null },
+      });
+      marcadas += 1;
+    }
+    return marcadas;
   }
 
   async transicionar(tx: Transacao, dados: DadosTransicao): Promise<void> {

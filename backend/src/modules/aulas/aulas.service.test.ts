@@ -74,6 +74,7 @@ function criarServico(detalhe: AulaDetalhe | null = criarDetalhe()) {
     transicionar: vi.fn().mockResolvedValue(undefined),
     listarPedidosSobrepostos: vi.fn().mockResolvedValue([]),
     listarPedidosDaSerie: vi.fn().mockResolvedValue([]),
+    marcarVencidasComoRealizadas: vi.fn().mockResolvedValue(0),
   };
   const usuarios: Mocked<ServicoDeUsuariosParaAulas> = {
     obterProfessorParaAula: vi.fn().mockResolvedValue(professorParaAula),
@@ -276,6 +277,45 @@ describe('AulasService', () => {
       const erro = await capturarErro(servico.listar({ id: 'x', perfil: 'ADMIN' }, consulta));
       expect(erro).toBeInstanceOf(ErroProibido);
     });
+
+    it('marca como realizadas as aulas vencidas do aluno antes de listar (RF17)', async () => {
+      const { servico, repositorio, transacao } = criarServico();
+
+      await servico.listar(aluno, consulta);
+
+      expect(transacao).toHaveBeenCalledTimes(1);
+      expect(repositorio.marcarVencidasComoRealizadas).toHaveBeenCalledWith(
+        tx,
+        { alunoId: 'u-aluno' },
+        AGORA,
+      );
+      expect(repositorio.marcarVencidasComoRealizadas.mock.invocationCallOrder[0]).toBeLessThan(
+        repositorio.listar.mock.invocationCallOrder[0],
+      );
+    });
+
+    it('marca como realizadas as aulas vencidas do professor antes de listar (RF17)', async () => {
+      const { servico, repositorio } = criarServico();
+
+      await servico.listar(professorUsuario, consulta);
+
+      expect(repositorio.marcarVencidasComoRealizadas).toHaveBeenCalledWith(
+        tx,
+        { professorId: 'p1' },
+        AGORA,
+      );
+      expect(repositorio.marcarVencidasComoRealizadas.mock.invocationCallOrder[0]).toBeLessThan(
+        repositorio.listar.mock.invocationCallOrder[0],
+      );
+    });
+
+    it('nao marca nada quando a listagem e negada (RF17)', async () => {
+      const { servico, repositorio } = criarServico();
+
+      await capturarErro(servico.listar({ id: 'x', perfil: 'ADMIN' }, consulta));
+
+      expect(repositorio.marcarVencidasComoRealizadas).not.toHaveBeenCalled();
+    });
   });
 
   describe('obterDetalhe', () => {
@@ -325,6 +365,74 @@ describe('AulasService', () => {
       expect(await capturarErro(servico.obterDetalhe(aluno, 'a9'))).toBeInstanceOf(
         ErroNaoEncontrado,
       );
+    });
+    describe('aulas vencidas (RF17)', () => {
+      const passada = {
+        inicio: criarDataBrasilia(2026, 11, 1, 9),
+        fim: criarDataBrasilia(2026, 11, 1, 10),
+      };
+
+      it('marca a aula vencida como realizada, recarrega e mantem o contato liberado', async () => {
+        const vencida = criarDetalhe({ status: 'CONFIRMADA', ...passada });
+        const realizada = criarDetalhe({ status: 'REALIZADA', ...passada });
+        const { servico, repositorio, usuarios } = criarServico();
+        repositorio.buscarPorId.mockResolvedValueOnce(vencida).mockResolvedValueOnce(realizada);
+        repositorio.marcarVencidasComoRealizadas.mockResolvedValue(1);
+
+        const aula = await servico.obterDetalhe(aluno, 'a1');
+
+        expect(repositorio.marcarVencidasComoRealizadas).toHaveBeenCalledWith(
+          tx,
+          { aulaId: 'a1' },
+          AGORA,
+        );
+        expect(repositorio.buscarPorId).toHaveBeenCalledTimes(2);
+        expect(aula.status).toBe('REALIZADA');
+        expect(usuarios.obterContato).toHaveBeenCalledWith('u-prof');
+      });
+
+      it('nao recarrega a aula quando outra requisicao ja a tinha marcado', async () => {
+        const { servico, repositorio } = criarServico(
+          criarDetalhe({ status: 'REMARCADA', ...passada }),
+        );
+        repositorio.marcarVencidasComoRealizadas.mockResolvedValue(0);
+
+        await servico.obterDetalhe(aluno, 'a1');
+
+        expect(repositorio.marcarVencidasComoRealizadas).toHaveBeenCalledTimes(1);
+        expect(repositorio.buscarPorId).toHaveBeenCalledTimes(1);
+      });
+
+      it('nao mexe em aula confirmada que ainda vai acontecer', async () => {
+        const { servico, repositorio } = criarServico(criarDetalhe({ status: 'CONFIRMADA' }));
+
+        await servico.obterDetalhe(aluno, 'a1');
+
+        expect(repositorio.marcarVencidasComoRealizadas).not.toHaveBeenCalled();
+      });
+
+      it('nao marca aulas vencidas que nao ocupavam horario', async () => {
+        for (const status of ['SOLICITADA', 'RECUSADA', 'CANCELADA', 'REALIZADA'] as const) {
+          const { servico, repositorio } = criarServico(criarDetalhe({ status, ...passada }));
+
+          await servico.obterDetalhe(aluno, 'a1');
+
+          expect(repositorio.marcarVencidasComoRealizadas).not.toHaveBeenCalled();
+        }
+      });
+
+      it('nao grava nada quando quem consulta nao participa da aula', async () => {
+        const { servico, repositorio } = criarServico(
+          criarDetalhe({ status: 'CONFIRMADA', ...passada }),
+        );
+
+        const erro = await capturarErro(
+          servico.obterDetalhe({ id: 'outro', perfil: 'ALUNO' }, 'a1'),
+        );
+
+        expect(erro).toBeInstanceOf(ErroProibido);
+        expect(repositorio.marcarVencidasComoRealizadas).not.toHaveBeenCalled();
+      });
     });
   });
 
