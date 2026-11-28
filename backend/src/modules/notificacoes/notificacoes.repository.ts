@@ -27,6 +27,17 @@ export interface ResultadoListagemNotificacoes {
   total: number;
 }
 
+/** Aula confirmada ou remarcada de um usuário, com o necessário para montar o lembrete (RF19). */
+export interface AulaParaLembrete {
+  id: string;
+  inicio: Date;
+  materiaNome: string;
+  alunoId: string;
+  alunoNome: string;
+  professorUsuarioId: string;
+  professorNome: string;
+}
+
 export interface NotificacoesRepositorio {
   criar(tx: Transacao, dados: NovaNotificacao): Promise<void>;
   listar(
@@ -36,6 +47,10 @@ export interface NotificacoesRepositorio {
   ): Promise<ResultadoListagemNotificacoes>;
   contarNaoLidas(usuarioId: string): Promise<number>;
   marcarComoLidas(usuarioId: string, ids: string[] | null): Promise<number>;
+  /** Aulas CONFIRMADA/REMARCADA do usuário (como aluno ou professor) que começam no intervalo. */
+  listarAulasProximas(usuarioId: string, de: Date, ate: Date): Promise<AulaParaLembrete[]>;
+  /** Cria os lembretes ignorando os que já existem (mesma chaveUnica). Devolve quantos criou. */
+  criarLembretes(dados: NovaNotificacao[]): Promise<number>;
 }
 
 const selecaoNotificacao = {
@@ -80,6 +95,39 @@ export class NotificacoesRepositorioPrisma implements NotificacoesRepositorio {
       where: { usuarioId, lida: false, ...(ids ? { id: { in: ids } } : {}) },
       data: { lida: true },
     });
+    return resultado.count;
+  }
+
+  async listarAulasProximas(usuarioId: string, de: Date, ate: Date): Promise<AulaParaLembrete[]> {
+    const aulas = await prisma.aula.findMany({
+      where: {
+        status: { in: ['CONFIRMADA', 'REMARCADA'] },
+        inicio: { gt: de, lte: ate },
+        OR: [{ alunoId: usuarioId }, { professor: { usuarioId } }],
+      },
+      select: {
+        id: true,
+        inicio: true,
+        materia: { select: { nome: true } },
+        aluno: { select: { id: true, nome: true } },
+        professor: { select: { usuarioId: true, usuario: { select: { nome: true } } } },
+      },
+      orderBy: [{ inicio: 'asc' }, { id: 'asc' }],
+    });
+    return aulas.map((aula) => ({
+      id: aula.id,
+      inicio: aula.inicio,
+      materiaNome: aula.materia.nome,
+      alunoId: aula.aluno.id,
+      alunoNome: aula.aluno.nome,
+      professorUsuarioId: aula.professor.usuarioId,
+      professorNome: aula.professor.usuario.nome,
+    }));
+  }
+
+  async criarLembretes(dados: NovaNotificacao[]): Promise<number> {
+    if (dados.length === 0) return 0;
+    const resultado = await prisma.notificacao.createMany({ data: dados, skipDuplicates: true });
     return resultado.count;
   }
 }

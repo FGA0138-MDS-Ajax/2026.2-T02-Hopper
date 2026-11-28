@@ -2,6 +2,7 @@ import type { Mocked } from 'vitest';
 import type { Transacao } from '../../infra/prisma';
 import type { NotificacoesRepositorio } from './notificacoes.repository';
 import { NotificacoesService } from './notificacoes.service';
+import { criarDataBrasilia } from '../../shared/utils/datas';
 
 const tx = {} as Transacao;
 
@@ -11,6 +12,8 @@ function criarRepositorio(): Mocked<NotificacoesRepositorio> {
     listar: vi.fn().mockResolvedValue({ itens: [], total: 0 }),
     contarNaoLidas: vi.fn().mockResolvedValue(0),
     marcarComoLidas: vi.fn().mockResolvedValue(0),
+    listarAulasProximas: vi.fn().mockResolvedValue([]),
+    criarLembretes: vi.fn().mockResolvedValue(0),
   };
 }
 
@@ -118,5 +121,119 @@ describe('NotificacoesService', () => {
       expect(repositorio.marcarComoLidas).toHaveBeenCalledWith('u1', null);
       expect(resultado.atualizadas).toBe(7);
     });
+  });
+});
+describe('NotificacoesService - lembretes (RF19)', () => {
+  const AGORA = criarDataBrasilia(2026, 11, 6, 10, 0);
+  const INICIO = criarDataBrasilia(2026, 11, 7, 9, 0);
+  const consulta = { pagina: 1, limite: 20, apenasNaoLidas: false };
+
+  const aula = {
+    id: 'a1',
+    inicio: INICIO,
+    materiaNome: 'Matemática',
+    alunoId: 'u-aluno',
+    alunoNome: 'Caio',
+    professorUsuarioId: 'u-prof',
+    professorNome: 'Ana',
+  };
+
+  function criarServicoComRelogio() {
+    const repositorio = criarRepositorio();
+    const servico = new NotificacoesService({
+      repositorio,
+      gerarId: () => 'id-fixo',
+      agora: () => AGORA,
+    });
+    return { servico, repositorio };
+  }
+
+  it('busca as aulas que começam entre agora e 24 horas depois', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+
+    await servico.listar('u-aluno', consulta);
+
+    expect(repositorio.listarAulasProximas).toHaveBeenCalledWith(
+      'u-aluno',
+      AGORA,
+      criarDataBrasilia(2026, 11, 7, 10, 0),
+    );
+  });
+
+  it('cria o lembrete do aluno com o nome do professor e a chave do horário', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+    repositorio.listarAulasProximas.mockResolvedValue([aula]);
+
+    await servico.listar('u-aluno', consulta);
+
+    expect(repositorio.criarLembretes).toHaveBeenCalledWith([
+      {
+        usuarioId: 'u-aluno',
+        aulaId: 'a1',
+        tipo: 'LEMBRETE',
+        mensagem: 'Lembrete: aula de Matemática com Ana em 07/11/2026 às 09:00.',
+        chaveUnica: `lembrete:a1:u-aluno:${INICIO.getTime()}`,
+      },
+    ]);
+  });
+
+  it('cria o lembrete do professor com o nome do aluno', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+    repositorio.listarAulasProximas.mockResolvedValue([aula]);
+
+    await servico.listar('u-prof', consulta);
+
+    expect(repositorio.listarAulasProximas.mock.calls[0][0]).toBe('u-prof');
+    expect(repositorio.criarLembretes).toHaveBeenCalledWith([
+      expect.objectContaining({
+        usuarioId: 'u-prof',
+        tipo: 'LEMBRETE',
+        mensagem: 'Lembrete: aula de Matemática com Caio em 07/11/2026 às 09:00.',
+        chaveUnica: `lembrete:a1:u-prof:${INICIO.getTime()}`,
+      }),
+    ]);
+  });
+
+  it('não cria lembretes quando não há aulas nas próximas 24 horas', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+
+    await servico.listar('u-aluno', consulta);
+
+    expect(repositorio.criarLembretes).toHaveBeenCalledWith([]);
+  });
+
+  it('repete a mesma chave em consultas seguidas, para não duplicar o aviso', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+    repositorio.listarAulasProximas.mockResolvedValue([aula]);
+
+    await servico.listar('u-aluno', consulta);
+    await servico.listar('u-aluno', consulta);
+
+    const [primeira, segunda] = repositorio.criarLembretes.mock.calls;
+    expect(primeira[0][0].chaveUnica).toBe(segunda[0][0].chaveUnica);
+  });
+
+  it('gera uma chave nova quando a aula é remarcada para outro horário', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+    const remarcada = { ...aula, inicio: criarDataBrasilia(2026, 11, 7, 14, 0) };
+    repositorio.listarAulasProximas
+      .mockResolvedValueOnce([aula])
+      .mockResolvedValueOnce([remarcada]);
+
+    await servico.listar('u-aluno', consulta);
+    await servico.listar('u-aluno', consulta);
+
+    const [antes, depois] = repositorio.criarLembretes.mock.calls;
+    expect(antes[0][0].chaveUnica).not.toBe(depois[0][0].chaveUnica);
+  });
+
+  it('gera os lembretes antes de listar as notificações', async () => {
+    const { servico, repositorio } = criarServicoComRelogio();
+
+    await servico.listar('u-aluno', consulta);
+
+    expect(repositorio.criarLembretes.mock.invocationCallOrder[0]).toBeLessThan(
+      repositorio.listar.mock.invocationCallOrder[0],
+    );
   });
 });
